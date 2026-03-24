@@ -1,0 +1,497 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── BACKGROUNDS ── */
+    --background: 32 16% 80%;  /* taupe sable — assez foncé pour voir les méridians */
+    --foreground: 14 50% 8%;   /* espresso très foncé — contraste maximum */
+
+    --card: 34 20% 94%;        /* crème claire — distinct du fond */
+    --card-foreground: 14 50% 8%;
+
+    --popover: 34 20% 96%;
+    --popover-foreground: 14 50% 8%;
+
+    --primary: 13 42% 50%;     /* #B5614A terra signature */
+    --primary-foreground: 34 47% 97%;
+
+    --secondary: 30 14% 72%;   /* taupe moyen — clairement distinct du fond */
+    --secondary-foreground: 14 50% 8%;
+
+    --muted: 30 12% 66%;       /* taupe gris */
+    --muted-foreground: 14 35% 22%; /* brun foncé — lisible partout */
+
+    --accent: 349 43% 33%;
+    --accent-foreground: 34 47% 97%;
+
+    --destructive: 349 43% 33%;
+    --destructive-foreground: 34 47% 97%;
+
+    --border: 14 30% 17% / 0.22; /* bordures visibles */
+    --input: 14 30% 17% / 0.18;
+    --ring: 13 42% 50%;
+
+    --radius: 0.75rem;
+
+    /* ── BRAND DNA TOKENS ── */
+    --sand: 30 16% 80%;   /* = background */
+    --beige: 30 14% 72%;  /* = secondary */
+    --terra: 13 42% 50%;
+    --terra-dark: 12 33% 43%; /* #9D5240 hover */
+    --terra-light: 13 42% 58%;
+    --terra-pale: 17 52% 82%; /* #EACABB */
+    --terra-wash: 20 40% 93%; /* #F6EDE7 */
+    --burgundy: 349 43% 33%; /* #7A3040 */
+    --dark: 14 30% 17%; /* #3D2318 acajou chaud */
+    --dark-deep: 14 43% 20%; /* #4A2D1E gradient end */
+    --mid: 14 29% 32%; /* #6B4A3A body text */
+    --gold: 33 39% 56%; /* #C09A5E */
+    --blush: 17 50% 80%; /* #E8C4B0 accents féminins */
+    --warm-white: 34 47% 97%; /* #FBF7F2 */
+
+    /* ── STATUS ── */
+    --success: 147 33% 36%;
+    --success-light: 147 33% 36% / 0.12;
+    --warning: 33 39% 56%;
+    --danger: 349 43% 33%;
+    --next: 147 33% 36%;
+    --next-glow: 147 33% 36% / 0.28;
+
+    --font-display: "Cormorant Garamond", serif;
+    --font-body: "Montserrat", sans-serif;
+
+    --sidebar-background: 34 20% 94%;
+    --sidebar-foreground: 14 50% 8%;
+    --sidebar-primary: 13 42% 50%;
+    --sidebar-primary-foreground: 34 47% 97%;
+    --sidebar-accent: 349 43% 33%;
+    --sidebar-accent-foreground: 34 47% 97%;
+    --sidebar-border: 14 30% 17% / 0.08;
+    --sidebar-ring: 13 42% 50%;
+
+    /* ── MERIDIAN — visible on light 80% L taupe background ── */
+    --meridian: 13 52% 32%; /* burnt umber — strong contrast on taupe */
+  }
+
+
+  .dark {
+    /* Deep ink — cool midnight base, terra & burgundy forward */
+    --background: 220 30% 7%;      /* #0B0E15 deep ink */
+    --foreground: 30 25% 94%;      /* #F5EFE8 warm white */
+
+    --card: 220 25% 10%;           /* #111621 elevated surface */
+    --card-foreground: 30 22% 91%;
+
+    --popover: 220 25% 10%;
+    --popover-foreground: 30 22% 91%;
+
+    --primary: 13 52% 58%;         /* terra — vibrant on ink */
+    --primary-foreground: 30 25% 96%;
+
+    --secondary: 220 22% 13%;      /* #161C29 */
+    --secondary-foreground: 30 18% 82%;
+
+    --muted: 220 18% 17%;          /* #1E2435 */
+    --muted-foreground: 220 10% 58%;
+
+    --accent: 349 54% 48%;         /* burgundy — luminous on ink */
+    --accent-foreground: 30 25% 96%;
+
+    --destructive: 0 60% 52%;
+    --destructive-foreground: 30 25% 96%;
+
+    --border: 220 15% 22% / 0.50;
+    --input: 220 15% 22% / 0.50;
+    --ring: 13 52% 58%;
+
+    --sand: 220 18% 14%;
+    --beige: 220 16% 18%;
+    --terra: 13 52% 58%;
+    --terra-dark: 13 44% 48%;
+    --terra-light: 13 56% 66%;
+    --terra-pale: 16 28% 42%;
+    --terra-wash: 220 22% 13%;
+    --burgundy: 349 54% 48%;       /* vibrant burgundy on ink bg */
+    --dark: 220 25% 10%;           /* stays DARK — ink surface */
+    --dark-deep: 220 30% 5%;       /* deepest ink */
+    --mid: 220 10% 65%;
+    --gold: 33 48% 62%;
+    --blush: 349 30% 55%;
+    --warm-white: 30 25% 96%;
+
+    --success: 147 35% 44%;
+    --success-light: 147 35% 44% / 0.15;
+    --warning: 33 48% 62%;
+    --danger: 349 54% 48%;
+
+    --sidebar-background: 220 28% 9%;
+    --sidebar-foreground: 30 25% 94%;
+    --sidebar-primary: 13 52% 58%;
+    --sidebar-primary-foreground: 30 25% 96%;
+    --sidebar-accent: 349 54% 48%;
+    --sidebar-accent-foreground: 30 25% 96%;
+    --sidebar-border: 220 15% 20% / 0.4;
+    --sidebar-ring: 13 52% 58%;
+
+    /* ── MERIDIAN — brighter on dark ink background ── */
+    --meridian: 13 58% 62%; /* bright terra — glows on deep ink */
+  }
+
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.7;
+    cursor: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+
+  @media (pointer: coarse) {
+    body {
+      cursor: auto;
+    }
+  }
+
+  /* Montserrat: bump thin weights for readability */
+  .font-body,
+  [class*="font-body"] {
+    font-weight: 400;
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-body {
+    font-family: var(--font-body);
+  }
+}
+
+/* ── GRAIN OVERLAY ── */
+.grain-overlay {
+  position: fixed;
+  inset: -200%;
+  width: 400%;
+  height: 400%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.4s steps(1) infinite;
+}
+
+@keyframes grain-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3%, -4%);
+  }
+  40% {
+    transform: translate(-5%, 2%);
+  }
+  60% {
+    transform: translate(2%, -6%);
+  }
+  80% {
+    transform: translate(-4%, 3%);
+  }
+  100% {
+    transform: translate(3%, -3%);
+  }
+}
+
+/* ── CUSTOM CURSOR ── */
+#custom-cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: hsl(13 42% 50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.3s,
+    height 0.3s,
+    opacity 0.3s;
+  opacity: 0;
+}
+
+#custom-cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid hsl(13 42% 50% / 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.15s ease-out,
+    height 0.15s ease-out;
+}
+
+body:hover #custom-cursor {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  #custom-cursor,
+  #custom-cursor-ring {
+    display: none;
+  }
+}
+
+/* ── ORBIT ANIMATION ── */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ring-breathe {
+  0%,
+  100% {
+    stroke-width: 2.2;
+    opacity: 1;
+  }
+  50% {
+    stroke-width: 2.2;
+    opacity: 0.75;
+  }
+}
+
+/* ── Next session pulse ── */
+@keyframes next-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(147 33% 36% / 0);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+@keyframes blink-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ── BLACK CARD HOVER — cursor goes crazy ── */
+.black-card-hover:hover ~ #custom-cursor-ring,
+.black-card-hover:hover ~ #custom-cursor {
+  /* handled via JS */
+}
+
+@keyframes cursor-shake {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  10% {
+    transform: translate(-46%, -54%) rotate(5deg);
+  }
+  20% {
+    transform: translate(-54%, -48%) rotate(-3deg);
+  }
+  30% {
+    transform: translate(-48%, -52%) rotate(2deg);
+  }
+  40% {
+    transform: translate(-52%, -46%) rotate(-5deg);
+  }
+  50% {
+    transform: translate(-50%, -54%) rotate(4deg);
+  }
+  60% {
+    transform: translate(-54%, -50%) rotate(-2deg);
+  }
+  70% {
+    transform: translate(-46%, -48%) rotate(3deg);
+  }
+  80% {
+    transform: translate(-52%, -52%) rotate(-4deg);
+  }
+  90% {
+    transform: translate(-48%, -46%) rotate(5deg);
+  }
+}
+/* ── LOGO ANIMATIONS ÉTENDUES ── */
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-2px) rotate(-0.5deg);
+  }
+}
+@keyframes logo-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0px rgba(196, 112, 74, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(196, 112, 74, 0.3));
+  }
+}
+@keyframes scale-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.018);
+  }
+}
+@keyframes divider-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes hero-studio-reveal {
+  from {
+    opacity: 0;
+    letter-spacing: 0.15em;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.55em;
+    transform: translateY(0);
+  }
+}
+@keyframes scroll-indicator {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+    transform-origin: top;
+  }
+  30% {
+    transform: scaleY(1);
+    opacity: 1;
+    transform-origin: top;
+  }
+  70% {
+    transform: scaleY(1);
+    opacity: 1;
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+    transform-origin: bottom;
+  }
+}
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes shimmer-sweep {
+  from {
+    background-position: -200% center;
+  }
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* ── CLASSES UTILITAIRES ── */
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+.animate-logo-glow {
+  animation: logo-glow 4s ease-in-out infinite;
+}
+.animate-scale-breathe {
+  animation: scale-breathe 7s ease-in-out infinite;
+}
+.animate-divider-spin {
+  animation: divider-spin 20s linear infinite;
+}
+.animate-card-float {
+  animation: card-float 5s ease-in-out infinite;
+}
+
+/* ── HERO STUDIO SUBTITLE ── */
+.hero-studio-text {
+  animation: hero-studio-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 2.2s;
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-line {
+  animation: scroll-indicator 2.4s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* ── SHIMMER BUTTON ── */
+.btn-shimmer {
+  background-size: 200% auto;
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+  animation: shimmer-sweep 3s linear infinite;
+}
+
+/* ── CARTE BLACK CURSOR EFFECT ── */
+.carte-black-zone:hover #custom-cursor-ring {
+  width: 80px !important;
+  height: 80px !important;
+  border-color: hsl(13 42% 50%) !important;
+  animation: cursor-shake 0.4s ease-in-out;
+}

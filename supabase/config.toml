@@ -1,0 +1,16 @@
+project_id = "hvfzjxjyswrwuihwruzl"
+
+[functions.create-checkout]
+verify_jwt = false
+
+[functions.admin-data]
+verify_jwt = false
+
+[functions.verify-payment]
+verify_jwt = false
+
+[functions.create-payzone-session]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false

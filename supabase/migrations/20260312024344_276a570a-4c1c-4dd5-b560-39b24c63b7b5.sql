@@ -1,0 +1,1 @@
+ALTER TABLE public.coaches ADD COLUMN is_featured boolean NOT NULL DEFAULT false;
