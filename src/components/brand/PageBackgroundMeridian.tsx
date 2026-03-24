@@ -11,7 +11,7 @@ const PageBackgroundMeridian = () => (
     style={{ zIndex: -1 }}
     aria-hidden
   >
-    <div style={{ opacity: 0.08 }}>
+    <div style={{ opacity: 0.05 }}>
       <MeridianLogo size={900} variant="theme" animate spinDuration={180} />
     </div>
   </div>

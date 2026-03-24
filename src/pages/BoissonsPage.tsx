@@ -67,7 +67,7 @@ const BoissonsPage = () => {
               <button
                 onClick={() => setFilterCat(null)}
                 className={`px-4 py-1.5 font-body text-[10px] tracking-[0.25em] uppercase transition-all ${
-                  !filterCat ? "bg-terra text-warm-white" : "border border-border text-foreground/60 hover:border-terra/30"
+                  !filterCat ? "bg-terra text-warm-white" : "border border-border text-foreground/60 hover:border-foreground/20"
                 }`}
                 style={{ fontWeight: 400, borderRadius: "2px" }}
               >
@@ -77,7 +77,7 @@ const BoissonsPage = () => {
                 <button key={c}
                   onClick={() => setFilterCat(filterCat === c ? null : c)}
                   className={`px-4 py-1.5 font-body text-[10px] tracking-[0.25em] uppercase transition-all ${
-                    filterCat === c ? "bg-terra text-warm-white" : "border border-border text-foreground/60 hover:border-terra/30"
+                    filterCat === c ? "bg-terra text-warm-white" : "border border-border text-foreground/60 hover:border-foreground/20"
                   }`}
                   style={{ fontWeight: 400, borderRadius: "2px" }}
                 >
@@ -105,7 +105,7 @@ const BoissonsPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-card border border-border p-6 hover:border-terra/20 transition-all"
+                  className="bg-card border border-border p-6 hover:border-foreground/15 transition-all"
                   style={{ borderRadius: "2px" }}
                 >
                   {drink.image && (
@@ -127,7 +127,7 @@ const BoissonsPage = () => {
                   {drink.tags && drink.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-3">
                       {drink.tags.map(tag => (
-                        <span key={tag} className="font-body text-[9px] text-terra bg-terra/10 px-2 py-0.5" style={{ borderRadius: "2px", fontWeight: 500 }}>
+                        <span key={tag} className="font-body text-[9px] text-terra bg-secondary/40 px-2 py-0.5" style={{ borderRadius: "2px", fontWeight: 500 }}>
                           {tag}
                         </span>
                       ))}

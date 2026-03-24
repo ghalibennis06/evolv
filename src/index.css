@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,141 +6,135 @@
 
 @layer base {
   :root {
-    /* ── BACKGROUNDS ── */
-    --background: 32 16% 80%;  /* taupe sable — assez foncé pour voir les méridians */
-    --foreground: 14 50% 8%;   /* espresso très foncé — contraste maximum */
+    /* ── EVOLV LIGHT MODE — Ivory & Charcoal ── */
+    --background: 36 28% 96%;       /* #F9F6F1 warm ivory */
+    --foreground: 0 0% 11%;         /* #1C1C1C near-black */
 
-    --card: 34 20% 94%;        /* crème claire — distinct du fond */
-    --card-foreground: 14 50% 8%;
+    --card: 36 25% 98%;             /* #FDFBF8 pure ivory surface */
+    --card-foreground: 0 0% 11%;
 
-    --popover: 34 20% 96%;
-    --popover-foreground: 14 50% 8%;
+    --popover: 36 25% 98%;
+    --popover-foreground: 0 0% 11%;
 
-    --primary: 13 42% 50%;     /* #B5614A terra signature */
-    --primary-foreground: 34 47% 97%;
+    --primary: 0 0% 11%;            /* #1C1C1C charcoal — main CTA */
+    --primary-foreground: 36 28% 96%;
 
-    --secondary: 30 14% 72%;   /* taupe moyen — clairement distinct du fond */
-    --secondary-foreground: 14 50% 8%;
+    --secondary: 30 12% 88%;        /* #E8E2DA stone light */
+    --secondary-foreground: 0 0% 11%;
 
-    --muted: 30 12% 66%;       /* taupe gris */
-    --muted-foreground: 14 35% 22%; /* brun foncé — lisible partout */
+    --muted: 30 10% 82%;            /* #D4CDC4 muted stone */
+    --muted-foreground: 0 0% 38%;   /* #616161 readable gray */
 
-    --accent: 349 43% 33%;
-    --accent-foreground: 34 47% 97%;
+    --accent: 34 24% 63%;           /* #C4B5A5 warm stone */
+    --accent-foreground: 0 0% 11%;
 
-    --destructive: 349 43% 33%;
-    --destructive-foreground: 34 47% 97%;
+    --destructive: 0 48% 40%;
+    --destructive-foreground: 36 28% 96%;
 
-    --border: 14 30% 17% / 0.22; /* bordures visibles */
-    --input: 14 30% 17% / 0.18;
-    --ring: 13 42% 50%;
+    --border: 30 15% 80%;           /* #CFC9C0 soft border */
+    --input: 30 15% 80%;
+    --ring: 0 0% 11%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* ── BRAND DNA TOKENS ── */
-    --sand: 30 16% 80%;   /* = background */
-    --beige: 30 14% 72%;  /* = secondary */
-    --terra: 13 42% 50%;
-    --terra-dark: 12 33% 43%; /* #9D5240 hover */
-    --terra-light: 13 42% 58%;
-    --terra-pale: 17 52% 82%; /* #EACABB */
-    --terra-wash: 20 40% 93%; /* #F6EDE7 */
-    --burgundy: 349 43% 33%; /* #7A3040 */
-    --dark: 14 30% 17%; /* #3D2318 acajou chaud */
-    --dark-deep: 14 43% 20%; /* #4A2D1E gradient end */
-    --mid: 14 29% 32%; /* #6B4A3A body text */
-    --gold: 33 39% 56%; /* #C09A5E */
-    --blush: 17 50% 80%; /* #E8C4B0 accents féminins */
-    --warm-white: 34 47% 97%; /* #FBF7F2 */
+    /* ── EVOLV BRAND TOKENS ── */
+    --ivory: 36 28% 96%;
+    --cream: 34 22% 92%;
+    --stone: 34 24% 63%;
+    --stone-light: 34 20% 80%;
+    --stone-dark: 34 20% 48%;
+    --charcoal: 0 0% 11%;
+    --charcoal-deep: 0 0% 6%;
+    --charcoal-mid: 0 0% 23%;
+    --onyx: 0 0% 10%;
+    --pearl: 36 30% 97%;
+    --taupe: 30 16% 67%;
+    --gold: 36 44% 64%;
+    --gold-light: 36 42% 78%;
+    --gold-dark: 36 44% 45%;
+    --warm-white: 36 30% 98%;
+
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-body: "DM Sans", Inter, sans-serif;
 
     /* ── STATUS ── */
-    --success: 147 33% 36%;
-    --success-light: 147 33% 36% / 0.12;
-    --warning: 33 39% 56%;
-    --danger: 349 43% 33%;
-    --next: 147 33% 36%;
-    --next-glow: 147 33% 36% / 0.28;
+    --success: 158 35% 35%;
+    --success-light: 158 35% 35% / 0.12;
+    --warning: 36 44% 64%;
+    --danger: 0 48% 40%;
+    --next: 158 35% 35%;
+    --next-glow: 158 35% 35% / 0.25;
 
-    --font-display: "Cormorant Garamond", serif;
-    --font-body: "Montserrat", sans-serif;
-
-    --sidebar-background: 34 20% 94%;
-    --sidebar-foreground: 14 50% 8%;
-    --sidebar-primary: 13 42% 50%;
-    --sidebar-primary-foreground: 34 47% 97%;
-    --sidebar-accent: 349 43% 33%;
-    --sidebar-accent-foreground: 34 47% 97%;
-    --sidebar-border: 14 30% 17% / 0.08;
-    --sidebar-ring: 13 42% 50%;
-
-    /* ── MERIDIAN — visible on light 80% L taupe background ── */
-    --meridian: 13 52% 32%; /* burnt umber — strong contrast on taupe */
+    --sidebar-background: 36 25% 97%;
+    --sidebar-foreground: 0 0% 11%;
+    --sidebar-primary: 0 0% 11%;
+    --sidebar-primary-foreground: 36 28% 96%;
+    --sidebar-accent: 34 24% 63%;
+    --sidebar-accent-foreground: 0 0% 11%;
+    --sidebar-border: 30 15% 80%;
+    --sidebar-ring: 0 0% 11%;
   }
-
 
   .dark {
-    /* Deep ink — cool midnight base, terra & burgundy forward */
-    --background: 220 30% 7%;      /* #0B0E15 deep ink */
-    --foreground: 30 25% 94%;      /* #F5EFE8 warm white */
+    /* ── EVOLV DARK MODE — Onyx & Gold ── */
+    --background: 0 0% 6%;           /* #0F0F0F deep onyx */
+    --foreground: 36 28% 94%;        /* #F5F0E8 warm light */
 
-    --card: 220 25% 10%;           /* #111621 elevated surface */
-    --card-foreground: 30 22% 91%;
+    --card: 0 0% 10%;                /* #1A1A1A elevated card */
+    --card-foreground: 36 28% 94%;
 
-    --popover: 220 25% 10%;
-    --popover-foreground: 30 22% 91%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 36 28% 94%;
 
-    --primary: 13 52% 58%;         /* terra — vibrant on ink */
-    --primary-foreground: 30 25% 96%;
+    --primary: 36 28% 94%;           /* warm white — CTA on dark */
+    --primary-foreground: 0 0% 6%;
 
-    --secondary: 220 22% 13%;      /* #161C29 */
-    --secondary-foreground: 30 18% 82%;
+    --secondary: 0 0% 15%;           /* #262626 */
+    --secondary-foreground: 36 22% 82%;
 
-    --muted: 220 18% 17%;          /* #1E2435 */
-    --muted-foreground: 220 10% 58%;
+    --muted: 0 0% 18%;               /* #2E2E2E */
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 349 54% 48%;         /* burgundy — luminous on ink */
-    --accent-foreground: 30 25% 96%;
+    --accent: 36 44% 64%;            /* gold on dark */
+    --accent-foreground: 0 0% 6%;
 
-    --destructive: 0 60% 52%;
-    --destructive-foreground: 30 25% 96%;
+    --destructive: 0 52% 50%;
+    --destructive-foreground: 36 28% 96%;
 
-    --border: 220 15% 22% / 0.50;
-    --input: 220 15% 22% / 0.50;
-    --ring: 13 52% 58%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 36 44% 64%;
 
-    --sand: 220 18% 14%;
-    --beige: 220 16% 18%;
-    --terra: 13 52% 58%;
-    --terra-dark: 13 44% 48%;
-    --terra-light: 13 56% 66%;
-    --terra-pale: 16 28% 42%;
-    --terra-wash: 220 22% 13%;
-    --burgundy: 349 54% 48%;       /* vibrant burgundy on ink bg */
-    --dark: 220 25% 10%;           /* stays DARK — ink surface */
-    --dark-deep: 220 30% 5%;       /* deepest ink */
-    --mid: 220 10% 65%;
-    --gold: 33 48% 62%;
-    --blush: 349 30% 55%;
-    --warm-white: 30 25% 96%;
+    --ivory: 0 0% 8%;
+    --cream: 0 0% 12%;
+    --stone: 36 22% 55%;
+    --stone-light: 36 16% 40%;
+    --stone-dark: 36 22% 70%;
+    --charcoal: 36 28% 94%;
+    --charcoal-deep: 36 30% 98%;
+    --charcoal-mid: 36 22% 78%;
+    --onyx: 0 0% 6%;
+    --pearl: 0 0% 8%;
+    --taupe: 30 16% 52%;
+    --gold: 36 44% 68%;
+    --gold-light: 36 42% 80%;
+    --gold-dark: 36 44% 52%;
+    --warm-white: 36 30% 96%;
 
-    --success: 147 35% 44%;
-    --success-light: 147 35% 44% / 0.15;
-    --warning: 33 48% 62%;
-    --danger: 349 54% 48%;
+    --success: 158 38% 48%;
+    --success-light: 158 38% 48% / 0.15;
+    --warning: 36 44% 68%;
+    --danger: 0 52% 50%;
 
-    --sidebar-background: 220 28% 9%;
-    --sidebar-foreground: 30 25% 94%;
-    --sidebar-primary: 13 52% 58%;
-    --sidebar-primary-foreground: 30 25% 96%;
-    --sidebar-accent: 349 54% 48%;
-    --sidebar-accent-foreground: 30 25% 96%;
-    --sidebar-border: 220 15% 20% / 0.4;
-    --sidebar-ring: 13 52% 58%;
-
-    /* ── MERIDIAN — brighter on dark ink background ── */
-    --meridian: 13 58% 62%; /* bright terra — glows on deep ink */
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 36 28% 94%;
+    --sidebar-primary: 36 44% 64%;
+    --sidebar-primary-foreground: 0 0% 6%;
+    --sidebar-accent: 36 44% 64%;
+    --sidebar-accent-foreground: 0 0% 6%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 36 44% 64%;
   }
-
 }
 
 @layer base {
@@ -154,6 +148,8 @@
     font-weight: 400;
     line-height: 1.7;
     cursor: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -164,19 +160,14 @@
   h6 {
     font-family: var(--font-display);
     font-weight: 400;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
   }
 
   @media (pointer: coarse) {
     body {
       cursor: auto;
     }
-  }
-
-  /* Montserrat: bump thin weights for readability */
-  .font-body,
-  [class*="font-body"] {
-    font-weight: 400;
   }
 
   strong,
@@ -202,61 +193,52 @@
   height: 400%;
   pointer-events: none;
   z-index: 100;
-  opacity: 0.018;
+  opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   animation: grain-shift 0.4s steps(1) infinite;
 }
 
 @keyframes grain-shift {
-  0% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(-3%, -4%);
-  }
-  40% {
-    transform: translate(-5%, 2%);
-  }
-  60% {
-    transform: translate(2%, -6%);
-  }
-  80% {
-    transform: translate(-4%, 3%);
-  }
-  100% {
-    transform: translate(3%, -3%);
-  }
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, -4%); }
+  40% { transform: translate(-5%, 2%); }
+  60% { transform: translate(2%, -6%); }
+  80% { transform: translate(-4%, 3%); }
+  100% { transform: translate(3%, -3%); }
 }
 
 /* ── CUSTOM CURSOR ── */
 #custom-cursor {
   position: fixed;
-  width: 8px;
-  height: 8px;
-  background: hsl(13 42% 50%);
+  width: 6px;
+  height: 6px;
+  background: hsl(0 0% 11%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition:
-    width 0.3s,
-    height 0.3s,
-    opacity 0.3s;
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
   opacity: 0;
 }
 
 #custom-cursor-ring {
   position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 1px solid hsl(13 42% 50% / 0.5);
+  width: 36px;
+  height: 36px;
+  border: 1px solid hsl(0 0% 11% / 0.4);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
-  transition:
-    width 0.15s ease-out,
-    height 0.15s ease-out;
+  transition: width 0.15s ease-out, height 0.15s ease-out;
+}
+
+.dark #custom-cursor {
+  background: hsl(36 28% 94%);
+}
+
+.dark #custom-cursor-ring {
+  border-color: hsl(36 28% 94% / 0.4);
 }
 
 body:hover #custom-cursor {
@@ -272,184 +254,97 @@ body:hover #custom-cursor {
 
 /* ── ORBIT ANIMATION ── */
 @keyframes orbit {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes ring-breathe {
-  0%,
-  100% {
-    stroke-width: 2.2;
-    opacity: 1;
-  }
-  50% {
-    stroke-width: 2.2;
-    opacity: 0.75;
-  }
+  0%, 100% { stroke-width: 1.5; opacity: 0.6; }
+  50% { stroke-width: 1.5; opacity: 1; }
 }
 
-/* ── Next session pulse ── */
+/* ── Status animations ── */
 @keyframes next-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 hsl(147 33% 36% / 0);
-  }
-  50% {
-    box-shadow: 0 0 0 8px transparent;
-  }
+  0%, 100% { box-shadow: 0 0 0 0 hsl(158 35% 35% / 0); }
+  50% { box-shadow: 0 0 0 8px transparent; }
 }
 
 @keyframes blink-dot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
-/* ── BLACK CARD HOVER — cursor goes crazy ── */
-.black-card-hover:hover ~ #custom-cursor-ring,
-.black-card-hover:hover ~ #custom-cursor {
-  /* handled via JS */
-}
-
+/* ── BLACK CARD CURSOR ── */
 @keyframes cursor-shake {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  10% {
-    transform: translate(-46%, -54%) rotate(5deg);
-  }
-  20% {
-    transform: translate(-54%, -48%) rotate(-3deg);
-  }
-  30% {
-    transform: translate(-48%, -52%) rotate(2deg);
-  }
-  40% {
-    transform: translate(-52%, -46%) rotate(-5deg);
-  }
-  50% {
-    transform: translate(-50%, -54%) rotate(4deg);
-  }
-  60% {
-    transform: translate(-54%, -50%) rotate(-2deg);
-  }
-  70% {
-    transform: translate(-46%, -48%) rotate(3deg);
-  }
-  80% {
-    transform: translate(-52%, -52%) rotate(-4deg);
-  }
-  90% {
-    transform: translate(-48%, -46%) rotate(5deg);
-  }
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  10% { transform: translate(-46%, -54%) rotate(5deg); }
+  20% { transform: translate(-54%, -48%) rotate(-3deg); }
+  30% { transform: translate(-48%, -52%) rotate(2deg); }
+  40% { transform: translate(-52%, -46%) rotate(-5deg); }
+  50% { transform: translate(-50%, -54%) rotate(4deg); }
+  60% { transform: translate(-54%, -50%) rotate(-2deg); }
+  70% { transform: translate(-46%, -48%) rotate(3deg); }
+  80% { transform: translate(-52%, -52%) rotate(-4deg); }
+  90% { transform: translate(-48%, -46%) rotate(5deg); }
 }
-/* ── LOGO ANIMATIONS ÉTENDUES ── */
+
+/* ── ANIMATIONS ── */
 @keyframes float-gentle {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
 }
+
 @keyframes float-slow {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  33% {
-    transform: translateY(-4px) rotate(1deg);
-  }
-  66% {
-    transform: translateY(-2px) rotate(-0.5deg);
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(0.5deg); }
+  66% { transform: translateY(-2px) rotate(-0.5deg); }
 }
+
 @keyframes logo-glow {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 0px rgba(196, 112, 74, 0));
-  }
-  50% {
-    filter: drop-shadow(0 0 12px rgba(196, 112, 74, 0.3));
-  }
+  0%, 100% { filter: drop-shadow(0 0 0px rgba(201, 168, 124, 0)); }
+  50% { filter: drop-shadow(0 0 14px rgba(201, 168, 124, 0.25)); }
 }
+
 @keyframes scale-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.018);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
 }
+
 @keyframes divider-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
+
 @keyframes hero-studio-reveal {
   from {
     opacity: 0;
     letter-spacing: 0.15em;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    letter-spacing: 0.55em;
+    letter-spacing: 0.35em;
     transform: translateY(0);
-  }
-}
-@keyframes scroll-indicator {
-  0% {
-    transform: scaleY(0);
-    opacity: 0;
-    transform-origin: top;
-  }
-  30% {
-    transform: scaleY(1);
-    opacity: 1;
-    transform-origin: top;
-  }
-  70% {
-    transform: scaleY(1);
-    opacity: 1;
-    transform-origin: bottom;
-  }
-  100% {
-    transform: scaleY(0);
-    opacity: 0;
-    transform-origin: bottom;
-  }
-}
-@keyframes card-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-@keyframes shimmer-sweep {
-  from {
-    background-position: -200% center;
-  }
-  to {
-    background-position: 200% center;
   }
 }
 
-/* ── CLASSES UTILITAIRES ── */
+@keyframes scroll-indicator {
+  0% { transform: scaleY(0); opacity: 0; transform-origin: top; }
+  30% { transform: scaleY(1); opacity: 1; transform-origin: top; }
+  70% { transform: scaleY(1); opacity: 1; transform-origin: bottom; }
+  100% { transform: scaleY(0); opacity: 0; transform-origin: bottom; }
+}
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes shimmer-sweep {
+  from { background-position: -200% center; }
+  to { background-position: 200% center; }
+}
+
+/* ── UTILITY CLASSES ── */
 .animate-float-gentle {
   animation: float-gentle 6s ease-in-out infinite;
 }
@@ -469,29 +364,70 @@ body:hover #custom-cursor {
   animation: card-float 5s ease-in-out infinite;
 }
 
-/* ── HERO STUDIO SUBTITLE ── */
+/* ── HERO REVEAL TEXT ── */
 .hero-studio-text {
-  animation: hero-studio-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 2.2s;
+  animation: hero-studio-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 2s;
 }
 
 /* ── SCROLL INDICATOR ── */
 .scroll-line {
   animation: scroll-indicator 2.4s ease-in-out infinite;
-  animation-delay: 4s;
+  animation-delay: 3.5s;
 }
 
 /* ── SHIMMER BUTTON ── */
 .btn-shimmer {
   background-size: 200% auto;
-  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
   animation: shimmer-sweep 3s linear infinite;
 }
 
-/* ── CARTE BLACK CURSOR EFFECT ── */
+/* ── CARTE BLACK CURSOR ── */
 .carte-black-zone:hover #custom-cursor-ring {
-  width: 80px !important;
-  height: 80px !important;
-  border-color: hsl(13 42% 50%) !important;
+  width: 72px !important;
+  height: 72px !important;
   animation: cursor-shake 0.4s ease-in-out;
+}
+
+/* ── EVOLV EDITORIAL TYPOGRAPHY ── */
+.evolv-headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.evolv-overline {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.evolv-body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+/* ── DIVIDER LINES ── */
+.evolv-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+}
+
+/* ── PREMIUM SECTION SPACING ── */
+.evolv-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 1024px) {
+  .evolv-section {
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+  }
 }

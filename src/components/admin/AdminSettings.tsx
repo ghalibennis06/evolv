@@ -121,7 +121,7 @@ interface StudioConfig {
 const defaultConfig: StudioConfig = {
   email_studio: "",
   email_cc: "",
-  email_from_name: "The Circle Studio",
+  email_from_name: "EVØLV Studio",
   whatsapp_number: "",
   whatsapp_display: "WhatsApp Studio",
 };
@@ -267,7 +267,7 @@ export function AdminSettings() {
                 value={invEmail}
                 onChange={(e) => setInvEmail(e.target.value)}
                 className={iCls + " flex-1"}
-                placeholder="email@thecircle.ma"
+                placeholder="email@evolv.ma"
               />
               <select
                 value={invRole}
@@ -341,7 +341,7 @@ export function AdminSettings() {
                   value={config.email_studio}
                   onChange={e => setConfig(c => ({ ...c, email_studio: e.target.value }))}
                   className={iCls}
-                  placeholder="contact@thecircle.ma"
+                  placeholder="contact@evolv.ma"
                   type="email"
                 />
               </div>
@@ -351,7 +351,7 @@ export function AdminSettings() {
                   value={config.email_cc}
                   onChange={e => setConfig(c => ({ ...c, email_cc: e.target.value }))}
                   className={iCls}
-                  placeholder="admin@thecircle.ma"
+                  placeholder="admin@evolv.ma"
                   type="email"
                 />
               </div>
@@ -361,7 +361,7 @@ export function AdminSettings() {
                   value={config.email_from_name}
                   onChange={e => setConfig(c => ({ ...c, email_from_name: e.target.value }))}
                   className={iCls}
-                  placeholder="The Circle Studio"
+                  placeholder="EVØLV Studio"
                 />
               </div>
             </div>

@@ -35,7 +35,7 @@ const BookingPopup = () => {
               <X size={18} />
             </button>
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 border border-terra/30 flex items-center justify-center shrink-0" style={{ borderRadius: "2px" }}>
+              <div className="w-12 h-12 border border-foreground/20 flex items-center justify-center shrink-0" style={{ borderRadius: "2px" }}>
                 <CalendarCheck size={20} className="text-terra" />
               </div>
               <div>
@@ -46,7 +46,7 @@ const BookingPopup = () => {
                   Places limitées — réservez dès maintenant.
                 </p>
                 <Link to="/planning"
-                  className="inline-block bg-terra text-warm-white px-5 py-2 font-body text-[10px] tracking-[0.3em] uppercase hover:bg-terra-dark transition-colors"
+                  className="inline-block bg-terra text-warm-white px-5 py-2 font-body text-[10px] tracking-[0.3em] uppercase hover:bg-foreground/80 transition-colors"
                   style={{ fontWeight: 200, borderRadius: "2px" }}>
                   Voir le planning →
                 </Link>

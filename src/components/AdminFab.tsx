@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const AdminFab = () => (
   <Link
     to="/admin"
-    className="fixed bottom-6 right-6 z-[100] w-9 h-9 rounded-full bg-card/80 border border-border/60 shadow-sm flex items-center justify-center text-muted-foreground/40 hover:text-terra hover:border-terra/40 hover:bg-card hover:shadow-md transition-all duration-300"
+    className="fixed bottom-6 right-6 z-[100] w-9 h-9 rounded-full bg-card/80 border border-border/60 shadow-sm flex items-center justify-center text-muted-foreground/40 hover:text-foreground hover:border-terra/40 hover:bg-card hover:shadow-md transition-all duration-300"
     title="Espace admin"
   >
     <Settings size={13} />

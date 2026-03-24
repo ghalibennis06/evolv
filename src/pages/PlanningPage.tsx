@@ -242,7 +242,7 @@ const PlanningPage = () => {
           subject: `✅ Réservation confirmée — ${selectedSession.title}`,
           html: `
             <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#FAF6F1;border-radius:16px">
-              <h1 style="font-size:22px;font-weight:300;letter-spacing:0.08em;color:#1A1714;margin:0 0 8px">The Circle</h1>
+              <h1 style="font-size:22px;font-weight:300;letter-spacing:0.08em;color:#1A1714;margin:0 0 8px">EVØLV</h1>
               <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#B8634A;margin:0 0 28px">Confirmation de réservation</p>
               <p style="color:#3D3530;font-size:15px;margin:0 0 20px">Bonjour <strong>${name}</strong>,</p>
               <div style="background:#fff;border:1px solid #E8E0D8;border-radius:12px;padding:20px;margin:0 0 20px">
@@ -304,15 +304,15 @@ const PlanningPage = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative overflow-hidden border border-border bg-card/80 backdrop-blur-sm rounded-3xl p-6 md:p-10 mb-10"
           >
-            <div className="absolute -top-16 -right-12 w-52 h-52 rounded-full bg-terra/10 blur-3xl" />
-            <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-terra/10 blur-2xl" />
+            <div className="absolute -top-16 -right-12 w-52 h-52 rounded-full bg-secondary/40 blur-3xl" />
+            <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-secondary/40 blur-2xl" />
 
             <div className="relative z-10 text-center">
               <div className="flex justify-center mb-5">
                 <MeridianLogo size={48} variant="theme" animate floatAnimation spinDuration={13} />
               </div>
 
-              <p className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase text-terra mb-4 px-3 py-1 rounded-full border border-terra/30 bg-terra/5" style={{ fontWeight: 400 }}>
+              <p className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase text-terra mb-4 px-3 py-1 rounded-full border border-foreground/20 bg-secondary/20" style={{ fontWeight: 400 }}>
                 <Sparkles size={12} /> Places limitées chaque semaine
               </p>
 
@@ -348,7 +348,7 @@ const PlanningPage = () => {
           <div className="bg-terra text-warm-white rounded-2xl p-4 md:p-5 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div>
               <p className="font-body text-[10px] tracking-[0.2em] uppercase opacity-90" style={{ fontWeight: 500 }}>Offre découverte</p>
-              <p className="font-body text-sm md:text-base" style={{ fontWeight: 400 }}>Nouveau chez The Circle ? Réservez d'abord votre créneau, puis demandez votre offre d'essai sur WhatsApp.</p>
+              <p className="font-body text-sm md:text-base" style={{ fontWeight: 400 }}>Nouveau chez EVØLV ? Réservez d'abord votre créneau, puis demandez votre offre d'essai sur WhatsApp.</p>
             </div>
             <a href="https://wa.me/33668710966" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-warm-white text-terra px-4 py-2 rounded-full font-body text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity" style={{ fontWeight: 600 }}>
               Demander l'offre <ArrowRight size={14} />
@@ -399,7 +399,7 @@ const PlanningPage = () => {
                   <button
                     key={eq}
                     onClick={() => setEquipmentChoice(eq)}
-                    className={`w-full p-4 rounded-2xl border text-center transition-all ${equipmentChoice === eq ? "border-terra bg-terra/5 shadow-sm" : "border-border bg-card hover:border-terra/30"}`}
+                    className={`w-full p-4 rounded-2xl border text-center transition-all ${equipmentChoice === eq ? "border-terra bg-secondary/20 shadow-sm" : "border-border bg-card hover:border-foreground/20"}`}
                   >
                     <p className="font-body text-sm text-foreground">
                       {eq === "reformer" ? "Reformer classique" : "Springwall"}
@@ -414,7 +414,7 @@ const PlanningPage = () => {
                     setShowEquipmentPicker(false);
                     setShowOptionsModal(true);
                   }}
-                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-terra-dark transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                   style={{ fontWeight: 600 }}
                 >
                   Continuer <ArrowRight size={16} />
@@ -481,7 +481,7 @@ const PlanningPage = () => {
                               setShowWaitlist(false);
                               handleSelectSession(alt);
                             }}
-                            className="w-full text-left rounded-xl border border-border bg-card px-3 py-2 hover:border-terra/50 transition-colors"
+                            className="w-full text-left rounded-xl border border-border bg-card px-3 py-2 hover:border-foreground/30 transition-colors"
                           >
                             <p className="font-body text-[12px] text-foreground font-medium">{alt.title} · {alt.time}</p>
                             <p className="font-body text-[10px] text-muted-foreground">{formatDay(alt.date)} · {alt.instructor}</p>
@@ -514,7 +514,7 @@ const PlanningPage = () => {
                     <button
                       disabled={!name || !email || !isValidEmail(email) || loading}
                       onClick={handleJoinWaitlist}
-                      className="w-full bg-terra text-warm-white py-3 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-terra-dark transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-terra text-warm-white py-3 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                       style={{ fontWeight: 600 }}
                     >
                       {loading ? (
@@ -572,9 +572,9 @@ const PlanningPage = () => {
               <div className="p-6 space-y-3">
                 <button
                   onClick={() => setWantsDrink(!wantsDrink)}
-                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsDrink ? "border-terra bg-terra/5" : "border-border bg-card hover:border-terra/30"}`}
+                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsDrink ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-terra/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
                     <Coffee size={18} className="text-terra" />
                   </div>
                   <div className="text-left flex-1">
@@ -604,9 +604,9 @@ const PlanningPage = () => {
                 )}
                 <button
                   onClick={() => setWantsMat(!wantsMat)}
-                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsMat ? "border-terra bg-terra/5" : "border-border bg-card hover:border-terra/30"}`}
+                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsMat ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-terra/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
                     <Dumbbell size={18} className="text-terra" />
                   </div>
                   <div className="text-left flex-1">
@@ -624,7 +624,7 @@ const PlanningPage = () => {
                     setShowOptionsModal(false);
                     setShowPaymentModal(true);
                   }}
-                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase hover:bg-terra-dark transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                   style={{ fontWeight: 600 }}
                 >
                   Continuer <ArrowRight size={16} />
@@ -718,7 +718,7 @@ const PlanningPage = () => {
                       setPayOnSite(false);
                       setUsePackCode(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${!payOnSite && !usePackCode ? "border-terra bg-terra/5" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${!payOnSite && !usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <CreditCard size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">Payer en ligne (Stripe)</span>
@@ -728,7 +728,7 @@ const PlanningPage = () => {
                       setPayOnSite(true);
                       setUsePackCode(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${payOnSite ? "border-terra bg-terra/5" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${payOnSite ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <Clock size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">Payer sur place</span>
@@ -738,7 +738,7 @@ const PlanningPage = () => {
                       setUsePackCode(true);
                       setPayOnSite(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${usePackCode ? "border-terra bg-terra/5" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <Ticket size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">J'ai un code pack</span>
@@ -771,7 +771,7 @@ const PlanningPage = () => {
                 <button
                   disabled={!name || !email || !isValidEmail(email) || loading || (usePackCode && !packCode)}
                   onClick={handleSubmit}
-                  className="flex-1 bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-terra-dark transition-colors"
+                  className="flex-1 bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors"
                   style={{ fontWeight: 600 }}
                 >
                   {loading || packValidating

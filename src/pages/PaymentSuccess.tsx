@@ -51,10 +51,10 @@ const PaymentSuccess = () => {
             supabase.functions.invoke("send-email", {
               body: {
                 to: data.client_email,
-                subject: finalCode ? "🎫 Votre Carte The Circle est activée !" : "✅ Réservation confirmée — The Circle",
+                subject: finalCode ? "🎫 Votre Carte EVØLV est activée !" : "✅ Réservation confirmée — EVØLV",
                 html: `
                   <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#FAF6F1;border-radius:16px">
-                    <p style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#B8634A;margin:0 0 6px">The Circle</p>
+                    <p style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#B8634A;margin:0 0 6px">EVØLV</p>
                     <h1 style="font-size:22px;font-weight:300;letter-spacing:0.08em;color:#1A1714;margin:0 0 24px">
                       ${finalCode ? "Votre carte est activée" : "Réservation confirmée"}
                     </h1>
@@ -64,7 +64,7 @@ const PaymentSuccess = () => {
                       <p style="color:rgba(250,246,241,0.4);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;margin:0 0 8px">Votre code</p>
                       <p style="color:#FAF6F1;font-size:24px;font-family:monospace;letter-spacing:0.15em;margin:0;font-weight:300">${finalCode}</p>
                     </div>
-                    <p style="font-size:13px;color:#3D3530;margin:0 0 16px">Conservez ce code précieusement — il vous servira pour chaque réservation sur <a href="https://thecirclestudio.vercel.app/planning" style="color:#B8634A">thecircle.ma/reserver</a>.</p>
+                    <p style="font-size:13px;color:#3D3530;margin:0 0 16px">Conservez ce code précieusement — il vous servira pour chaque réservation sur <a href="https://thecirclestudio.vercel.app/planning" style="color:#B8634A">evolv.ma/reserver</a>.</p>
                     ` : ""}
                     <p style="font-size:12px;color:#6B605A;line-height:1.6;margin:0 0 24px">📌 Annulation gratuite jusqu'à 2h avant chaque cours.</p>
                     <a href="https://thecirclestudio.vercel.app/planning" style="display:inline-block;background:#B8634A;color:#fff;text-decoration:none;padding:12px 28px;border-radius:50px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">Réserver une séance</a>
@@ -137,7 +137,7 @@ const PaymentSuccess = () => {
                 <MessageCircle size={16} /> Confirmer sur WhatsApp
               </a>
               {isPack && (
-                <Link to="/mon-pack" className="w-full border border-terra text-terra py-3 rounded-full font-body text-sm font-medium hover:bg-terra hover:text-white transition-colors inline-flex items-center justify-center gap-2">
+                <Link to="/mon-pack" className="w-full border border-terra text-terra py-3 rounded-full font-body text-sm font-medium hover:bg-foreground hover:text-white transition-colors inline-flex items-center justify-center gap-2">
                   <Ticket size={16} /> Consulter ma carte
                 </Link>
               )}

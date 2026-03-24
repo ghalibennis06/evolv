@@ -27,7 +27,7 @@ const isCodeGeneratingOffer = (plan: PricingPlan) => (plan.sessions_included || 
 
 const fallbackPricing: PricingPlan[] = [
   { id: "1", name: "Séance unique", description: "", price: 350, original_price: null, sessions_included: 1, validity_days: null, is_popular: false, features: ["Accès à tous les cours du planning", "Réservation en ligne", "Choix boisson & tapis"], cta_text: "Réserver", cta_link: "/reserver" },
-  { id: "2", name: "Carte Black x10", description: "", price: 2800, original_price: 3500, sessions_included: 10, validity_days: 90, is_popular: true, features: ["10 séances — tous les cours", "Boisson offerte à chaque séance", "Réservation prioritaire", "Flexibilité totale sur le planning", "Économisez 700 DH", "Validité 3 mois"], cta_text: "Acheter la Carte Black", cta_link: "/carte-black" },
+  { id: "2", name: "Carte Signature x10", description: "", price: 2800, original_price: 3500, sessions_included: 10, validity_days: 90, is_popular: true, features: ["10 séances — tous les cours", "Boisson offerte à chaque séance", "Réservation prioritaire", "Flexibilité totale sur le planning", "Économisez 700 DH", "Validité 3 mois"], cta_text: "Acheter la Carte Signature", cta_link: "/carte-black" },
   { id: "3", name: "Pack 5 séances", description: "", price: 1600, original_price: 1750, sessions_included: 5, validity_days: 60, is_popular: false, features: ["5 séances — tous les cours", "Boisson offerte", "Économisez 150 DH", "Validité 2 mois"], cta_text: "Acheter le Pack 5", cta_link: "/carte-black" },
 ];
 
@@ -84,7 +84,7 @@ const TarifsPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className={`p-8 flex flex-col relative ${
-                    plan.is_popular ? "bg-terra/10 border border-terra/30" : "bg-card border border-border"
+                    plan.is_popular ? "bg-secondary/40 border border-foreground/20" : "bg-card border border-border"
                   }`}
                   style={{ borderRadius: "2px" }}>
                   {plan.is_popular && (
@@ -118,8 +118,8 @@ const TarifsPage = () => {
                     to={isCodeGeneratingOffer(plan) ? `/carte-black?plan=${encodeURIComponent(plan.name)}` : plan.cta_link}
                     className={`w-full py-3 font-body text-[11px] tracking-[0.3em] uppercase text-center block transition-all ${
                       plan.is_popular
-                        ? "bg-terra text-warm-white hover:bg-terra-dark"
-                        : "border border-terra text-foreground hover:bg-terra hover:text-warm-white"
+                        ? "bg-terra text-warm-white hover:bg-foreground/80"
+                        : "border border-terra text-foreground hover:bg-foreground hover:text-warm-white"
                     }`}
                     style={{ fontWeight: 200, borderRadius: "2px" }}>
                     {isCodeGeneratingOffer(plan) ? "Générer mon code" : plan.cta_text}
@@ -151,24 +151,24 @@ const TarifsPage = () => {
                 { step: "4", text: "Suivez vos crédits et votre historique sur /mon-pack." },
               ].map(item => (
                 <div key={item.step} className="text-center">
-                  <div className="w-10 h-10 border border-terra/30 text-terra flex items-center justify-center font-body text-sm mx-auto mb-3" style={{ fontWeight: 200, borderRadius: "2px" }}>
+                  <div className="w-10 h-10 border border-foreground/20 text-terra flex items-center justify-center font-body text-sm mx-auto mb-3" style={{ fontWeight: 200, borderRadius: "2px" }}>
                     {item.step}
                   </div>
-                  <p className="font-body text-sm text-warm-white/60" style={{ fontWeight: 300 }}>{item.text}</p>
+                  <p className="font-body text-sm text-white/60" style={{ fontWeight: 300 }}>{item.text}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-8 pt-6 border-t border-warm-white/10 flex flex-col sm:flex-row gap-3 relative z-10">
+            <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 relative z-10">
               <Link
                 to="/carte-black"
-                className="inline-flex items-center justify-center gap-2 bg-terra text-warm-white px-6 py-3 font-body text-[11px] tracking-[0.28em] uppercase hover:bg-terra-dark transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-terra text-warm-white px-6 py-3 font-body text-[11px] tracking-[0.28em] uppercase hover:bg-foreground/80 transition-all"
                 style={{ borderRadius: "2px", fontWeight: 400 }}
               >
                 Générer ma carte →
               </Link>
               <Link
                 to="/mon-pack"
-                className="inline-flex items-center justify-center gap-2 border border-warm-white/20 text-warm-white/60 px-6 py-3 font-body text-[11px] tracking-[0.28em] uppercase hover:border-terra hover:text-terra transition-all"
+                className="inline-flex items-center justify-center gap-2 border border-white/20 text-white/60 px-6 py-3 font-body text-[11px] tracking-[0.28em] uppercase hover:border-terra hover:text-foreground transition-all"
                 style={{ borderRadius: "2px", fontWeight: 300 }}
               >
                 Consulter ma carte

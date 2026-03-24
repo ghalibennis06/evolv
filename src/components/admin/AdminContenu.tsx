@@ -45,11 +45,11 @@ const DEFAULTS: Record<string, Record<string, any>> = {
   contact: {
     address: "El Menzeh, Rabat",
     phone: "+212 6XX XXX XXX",
-    email: "hello@thecircle.ma",
+    email: "hello@evolv.ma",
     hours_weekday: "Lundi – Vendredi : 9h – 21h",
     hours_saturday: "Samedi : 9h – 18h",
     hours_sunday: "Dimanche : 10h – 18h",
-    instagram: "@thecircle.ma",
+    instagram: "@evolv.ma",
     maps_link: "https://maps.google.com",
   },
 };
@@ -114,7 +114,7 @@ const sections = [
 export function AdminContenu() {
   const [data, setData] = useState<Record<string, Record<string, any>>>(DEFAULTS);
   const [saving, setSaving] = useState<string | null>(null);
-  const [emailFrom, setEmailFrom] = useState({ name: "The Circle Studio", email: "" });
+  const [emailFrom, setEmailFrom] = useState({ name: "EVØLV Studio", email: "" });
 
   useEffect(() => {
     const load = async () => {
@@ -186,13 +186,13 @@ export function AdminContenu() {
             <label className="font-body text-[10px] tracking-[0.25em] uppercase text-muted-foreground mb-1.5 block" style={{ fontWeight: 500 }}>Nom expéditeur</label>
             <input type="text" value={emailFrom.name} onChange={e => setEmailFrom(v => ({ ...v, name: e.target.value }))}
               className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-terra/40"
-              placeholder="The Circle Studio" />
+              placeholder="EVØLV Studio" />
           </div>
           <div>
             <label className="font-body text-[10px] tracking-[0.25em] uppercase text-muted-foreground mb-1.5 block" style={{ fontWeight: 500 }}>Adresse email</label>
             <input type="email" value={emailFrom.email} onChange={e => setEmailFrom(v => ({ ...v, email: e.target.value }))}
               className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-terra/40"
-              placeholder="hello@thecircle.ma" />
+              placeholder="hello@evolv.ma" />
           </div>
         </div>
         <button onClick={saveEmailConfig} className="mt-4 px-6 py-2 rounded-full bg-terra text-warm-white font-body text-[11px] tracking-[0.25em] uppercase hover:bg-terra-dark transition-colors" style={{ fontWeight: 500 }}>

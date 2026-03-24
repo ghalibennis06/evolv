@@ -13,7 +13,7 @@ const AppComingSoon = () => {
           className="border border-border p-10 md:p-14 text-center bg-card"
           style={{ borderRadius: "2px" }}
         >
-          <div className="w-14 h-14 border border-terra/30 flex items-center justify-center mx-auto mb-6" style={{ borderRadius: "2px" }}>
+          <div className="w-14 h-14 border border-foreground/20 flex items-center justify-center mx-auto mb-6" style={{ borderRadius: "2px" }}>
             <Smartphone size={24} className="text-terra" />
           </div>
           <p className="font-body text-[11px] tracking-[0.35em] uppercase text-terra mb-4" style={{ fontWeight: 200 }}>

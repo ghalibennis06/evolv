@@ -29,13 +29,13 @@ const disciplineData: Record<TabId, Course[]> = {
       name: "Reformer Signature",
       tag: "Signature",
       detail:
-        "Votre corps entier en 55 min. Renforcement profond, posture corrigée, silhouette redessinée — guidé par votre coach, en groupe intimiste.",
+        "Corps entier en 55 minutes. Renforcement profond, posture corrigée, silhouette redessinée — guidé par votre coach, en groupe intimiste de 6.",
     },
     {
       name: "Reformer Jumpboard",
       tag: "Cardio",
       detail:
-        "Cardio qui préserve vos genoux. Intensité, endurance, brûlure — sur une machine qui absorbe l'impact à votre place.",
+        "Intensité cardio sans impact articulaire. Endurance, force, brûlure — sur une machine qui absorbe l'impact à votre place.",
     },
   ],
   springwall: [
@@ -43,7 +43,7 @@ const disciplineData: Record<TabId, Course[]> = {
       name: "Reformer + Springwall Combo",
       tag: "Complet",
       detail:
-        "Bas du corps au Reformer, haut du corps au Springwall. La séance la plus complète du studio.",
+        "Bas du corps au Reformer, haut du corps au Springwall. La séance la plus complète du studio EVØLV.",
     },
   ],
   yoga: [
@@ -63,7 +63,7 @@ const disciplineData: Record<TabId, Course[]> = {
       name: "Power Yoga",
       tag: "Intensif",
       detail:
-        "Yoga athlétique. Séquences intenses pour bâtir de la force, de l'endurance et une concentration d'acier.",
+        "Yoga athlétique. Séquences intenses pour bâtir force, endurance et concentration.",
     },
   ],
   fitness: [
@@ -71,19 +71,19 @@ const disciplineData: Record<TabId, Course[]> = {
       name: "Mat Pilates",
       tag: null,
       detail:
-        "La puissance au sol. Développez votre centre de force sans matériel — contrôle, respiration, muscles profonds.",
+        "La puissance au sol. Développez votre centre de force — contrôle, respiration, muscles profonds.",
     },
     {
       name: "Barre Fit",
       tag: null,
       detail:
-        "Inspiré du ballet, sans en être un danseur. Micro-mouvements précis qui sculptent et tonifient avec grâce.",
+        "Inspiré du ballet. Micro-mouvements précis qui sculptent et tonifient avec grâce.",
     },
     {
       name: "Cardio Zumba",
       tag: "Fun",
       detail:
-        "Se défouler, vraiment. Cardio déguisé en fête — rythmes, chaleur, sourires. Aucun prérequis.",
+        "Se défouler, vraiment. Cardio déguisé en célébration — rythmes, chaleur, énergie.",
     },
   ],
   maternite: [
@@ -131,30 +131,18 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
   }, [visibleTabs, activeTab]);
 
   const filteredTabs = tabs.filter((t) => visibleTabs.includes(t.id));
-
   const courses = disciplineData[activeTab];
 
   return (
-    <section
-      id="cours"
-      className="min-h-screen overflow-hidden bg-background flex flex-col"
-    >
+    <section id="cours" className="min-h-screen overflow-hidden bg-background flex flex-col">
       {/* Header */}
-      <div className="relative py-16 px-6 text-center overflow-hidden flex-shrink-0">
-        {/* Subtle terra radial glow */}
+      <div className="relative py-20 px-6 text-center overflow-hidden flex-shrink-0">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 50%, rgba(184,99,74,0.08) 0%, transparent 65%)",
-          }}
+          style={{ background: "radial-gradient(ellipse at 50% 50%, hsl(var(--stone)/0.06) 0%, transparent 65%)" }}
         />
-        {/* Meridian — bottom-right corner, never overlaps centered heading text */}
-        <div
-          className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/3 pointer-events-none"
-          style={{ opacity: 0.28 }}
-        >
-          <MeridianLogo size={420} variant="theme" animate spinDuration={120} />
+        <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/3 pointer-events-none" style={{ opacity: 0.12 }}>
+          <MeridianLogo size={380} variant="theme" animate spinDuration={120} />
         </div>
 
         <motion.div
@@ -164,45 +152,25 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10"
         >
-          <p
-            className="font-body text-[11px] tracking-[0.45em] uppercase text-terra mb-5"
-            style={{ fontWeight: 500 }}
-          >
+          <p className="font-body text-[10px] tracking-[0.45em] uppercase text-muted-foreground mb-6" style={{ fontWeight: 400 }}>
             Nos disciplines
           </p>
           <h2
             className="font-display text-foreground"
-            style={{
-              fontSize: "clamp(36px, 6vw, 80px)",
-              fontWeight: 200,
-              letterSpacing: "0.08em",
-              lineHeight: 0.95,
-            }}
+            style={{ fontSize: "clamp(36px, 6vw, 76px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.1 }}
           >
             Les{" "}
-            <em className="italic text-terra">Cours</em>
+            <em className="italic" style={{ fontStyle: "italic", fontWeight: 300 }}>Cours</em>
           </h2>
-          <p
-            className="font-body text-foreground/80 mt-5 max-w-sm mx-auto leading-[1.9]"
-            style={{ fontWeight: 400, fontSize: "14px" }}
-          >
-            Une pratique pour chaque corps, chaque intention — choisissez
-            ce qui vous correspond.
+          <p className="font-body text-foreground/50 mt-6 max-w-sm mx-auto leading-[1.95]" style={{ fontWeight: 300, fontSize: "14px" }}>
+            Une pratique pour chaque corps, chaque intention — choisissez ce qui vous correspond.
           </p>
         </motion.div>
       </div>
 
       {/* Tab navigation */}
       <div className="relative flex-shrink-0 px-4">
-        {/* Thin top rule */}
-        <div
-          className="absolute top-0 left-0 right-0"
-          style={{
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(184,99,74,0.22), transparent)",
-          }}
-        />
+        <div className="absolute top-0 left-0 right-0 h-px bg-border" />
         <div className="overflow-x-auto scrollbar-none">
           <div className="flex gap-0 min-w-max mx-auto justify-center">
             {filteredTabs.map((tab) => {
@@ -211,20 +179,17 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className="relative px-5 py-4 font-body text-[11px] tracking-[0.22em] uppercase transition-colors whitespace-nowrap flex-shrink-0"
+                  className="relative px-6 py-4 font-body text-[10px] tracking-[0.22em] uppercase transition-colors whitespace-nowrap flex-shrink-0"
                   style={{
-                    fontWeight: isActive ? 600 : 400,
-                    color: isActive
-                      ? "hsl(var(--terra))"
-                      : "hsl(var(--foreground))",
+                    fontWeight: isActive ? 500 : 400,
+                    color: isActive ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
                   }}
                 >
                   {tab.label}
-                  {/* Active underline */}
                   {isActive && (
                     <motion.div
                       layoutId="tab-underline"
-                      className="absolute bottom-0 left-5 right-5 h-px bg-terra"
+                      className="absolute bottom-0 left-6 right-6 h-px bg-foreground"
                       transition={{ type: "spring", stiffness: 380, damping: 36 }}
                     />
                   )}
@@ -233,78 +198,51 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
             })}
           </div>
         </div>
-        {/* Thin bottom rule */}
-        <div
-          className="absolute bottom-0 left-0 right-0"
-          style={{
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(184,99,74,0.22), transparent)",
-          }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
       </div>
 
-      {/* Course cards — grows to fill remaining space */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-10 md:py-14">
+      {/* Course cards */}
+      <div className="flex-1 flex flex-col justify-center px-6 py-12 md:py-16">
         <div className="container mx-auto max-w-5xl">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border"
             >
               {courses.map((course, cIdx) => (
                 <motion.div
                   key={course.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: cIdx * 0.07,
-                    duration: 0.6,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="group relative p-6 bg-card border border-border rounded-sm cursor-default transition-all hover:border-terra/50 hover:bg-terra/5"
+                  transition={{ delay: cIdx * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="group relative p-8 bg-background cursor-default transition-all hover:bg-secondary/30"
                 >
-                  {/* Tag */}
                   {course.tag && (
                     <span
-                      className="inline-block font-body text-[10px] tracking-[0.2em] uppercase text-terra border border-terra/50 px-2.5 py-1 mb-4"
-                      style={{ fontWeight: 600, borderRadius: "2px" }}
+                      className="inline-block font-body text-[9px] tracking-[0.25em] uppercase text-foreground/40 border border-foreground/15 px-2.5 py-1 mb-5"
+                      style={{ fontWeight: 500 }}
                     >
                       {course.tag}
                     </span>
                   )}
-                  {!course.tag && <div className="mb-4 h-[26px]" />}
+                  {!course.tag && <div className="mb-5 h-[26px]" />}
 
-                  {/* Course name */}
                   <h4
-                    className="font-display text-foreground mb-3 group-hover:text-terra transition-colors"
-                    style={{
-                      fontSize: "clamp(18px, 2.2vw, 26px)",
-                      fontWeight: 400,
-                      letterSpacing: "0.04em",
-                      lineHeight: 1.15,
-                    }}
+                    className="font-display text-foreground mb-4 group-hover:opacity-70 transition-opacity"
+                    style={{ fontSize: "clamp(18px, 2.2vw, 24px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.2 }}
                   >
                     {course.name}
                   </h4>
 
-                  {/* Description */}
-                  <p
-                    className="font-body text-foreground/70 leading-[1.9]"
-                    style={{ fontWeight: 400, fontSize: "13px" }}
-                  >
+                  <p className="font-body text-foreground/50 leading-[1.9]" style={{ fontWeight: 300, fontSize: "13px" }}>
                     {course.detail}
                   </p>
 
-                  {/* Hover accent line */}
-                  <div
-                    className="absolute bottom-0 left-0 h-px w-0 bg-terra group-hover:w-full transition-all duration-500"
-                    style={{ borderRadius: "0 0 2px 2px" }}
-                  />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-foreground group-hover:w-full transition-all duration-500" />
                 </motion.div>
               ))}
             </motion.div>
@@ -313,31 +251,22 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
       </div>
 
       {/* CTA */}
-      <div className="relative py-10 text-center flex-shrink-0">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 100%, rgba(184,99,74,0.06) 0%, transparent 55%)",
-          }}
-        />
+      <div className="relative py-12 text-center flex-shrink-0">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, hsl(var(--secondary)) 0%, transparent 60%)" }} />
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col items-center gap-4"
+          className="relative z-10 flex flex-col items-center gap-5"
         >
-          <p
-            className="font-body text-foreground text-[11px] tracking-[0.3em] uppercase"
-            style={{ fontWeight: 500 }}
-          >
+          <p className="font-body text-foreground/40 text-[10px] tracking-[0.3em] uppercase" style={{ fontWeight: 400 }}>
             Prêt·e à commencer ?
           </p>
           <button
             onClick={onBookClick}
-            className="inline-flex items-center gap-3 bg-terra hover:bg-terra-dark text-white px-10 py-4 font-body text-[11px] tracking-[0.3em] uppercase transition-all"
-            style={{ fontWeight: 500, borderRadius: "40px" }}
+            className="inline-flex items-center gap-3 bg-foreground hover:bg-foreground/80 text-background px-10 py-4 font-body text-[10px] tracking-[0.3em] uppercase transition-all"
+            style={{ fontWeight: 500 }}
           >
             Réserver une séance →
           </button>

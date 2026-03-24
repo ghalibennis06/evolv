@@ -173,7 +173,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                 className={`px-3 h-8 rounded-full text-[10px] tracking-[0.12em] uppercase transition-all ${
                   planningView === "today" ? "bg-foreground text-background" : "text-muted-foreground"
                 }`}
-                style={{ fontFamily: "Montserrat, sans-serif" }}
+                style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
               >
                 <Sun size={12} className="inline mr-1" /> Today
               </button>
@@ -182,7 +182,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                 className={`px-3 h-8 rounded-full text-[10px] tracking-[0.12em] uppercase transition-all ${
                   planningView === "week" ? "bg-foreground text-background" : "text-muted-foreground"
                 }`}
-                style={{ fontFamily: "Montserrat, sans-serif" }}
+                style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
               >
                 <Calendar size={12} className="inline mr-1" /> Semaine
               </button>
@@ -191,14 +191,14 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             <button
               onClick={() => setWeekOffset((p) => p - 1)}
               disabled={planningView === "today"}
-              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-terra disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeft size={16} />
             </button>
 
             <p
               className="text-sm text-foreground capitalize min-w-[260px] text-center"
-              style={{ fontWeight: 500, fontFamily: "Montserrat, sans-serif" }}
+              style={{ fontWeight: 500, fontFamily: "'DM Sans', Inter, sans-serif" }}
             >
               {formatWeekLabel(weekDates)}
             </p>
@@ -206,7 +206,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             <button
               onClick={() => setWeekOffset((p) => p + 1)}
               disabled={planningView === "today"}
-              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-terra disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <ChevronRight size={16} />
             </button>
@@ -216,29 +216,29 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                 setWeekOffset(0);
                 setPlanningView("today");
               }}
-              className="ml-1 px-3 h-9 border border-border bg-secondary rounded-full text-[10px] tracking-[0.14em] uppercase text-foreground/60 hover:text-terra hover:border-terra/40 transition-all"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
+              className="ml-1 px-3 h-9 border border-border bg-secondary rounded-full text-[10px] tracking-[0.14em] uppercase text-foreground/60 hover:text-foreground hover:border-terra/40 transition-all"
+              style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
             >
               Aujourd'hui
             </button>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terra/10 text-terra text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary/40 text-terra text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
               <Calendar size={11} /> {weekSessions.length} séances
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
               <Users size={11} /> {remainingToday} places restantes aujourd'hui
             </span>
             {nextSession && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "Montserrat, sans-serif" }}>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
                 <Flame size={11} /> Prochaine : {nextSession.time}
               </span>
             )}
             <Link
               to="/carte-black"
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-terra/40 text-terra text-[10px] uppercase tracking-[0.12em] hover:bg-terra/10 transition-colors"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-terra/40 text-terra text-[10px] uppercase tracking-[0.12em] hover:bg-secondary/50 transition-colors"
+              style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
             >
               <CreditCard size={11} /> Recharger mes crédits
             </Link>
@@ -248,7 +248,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-border space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] tracking-[0.24em] uppercase text-foreground/70 font-medium" style={{ fontFamily: "Montserrat, sans-serif" }}>Objectif</span>
+              <span className="text-[11px] tracking-[0.24em] uppercase text-foreground/70 font-medium" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Objectif</span>
               {(Object.keys(FOCUS_LABELS) as FocusFilter[]).map((key) => (
                 <button
                   key={key}
@@ -256,7 +256,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                   className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.14em] border ${
                     focusFilter === key ? "bg-foreground text-background border-foreground" : "border-border bg-secondary text-foreground/60"
                   }`}
-                  style={{ fontFamily: "Montserrat, sans-serif" }}
+                  style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
                 >
                   {FOCUS_LABELS[key]}
                 </button>
@@ -264,7 +264,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] tracking-[0.24em] uppercase text-foreground/70 font-medium" style={{ fontFamily: "Montserrat, sans-serif" }}>Moment</span>
+              <span className="text-[11px] tracking-[0.24em] uppercase text-foreground/70 font-medium" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Moment</span>
               {(Object.keys(MOMENT_LABELS) as MomentFilter[]).map((key) => (
                 <button
                   key={key}
@@ -272,7 +272,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                   className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.14em] border ${
                     momentFilter === key ? "bg-foreground text-background border-foreground" : "border-border bg-secondary text-foreground/60"
                   }`}
-                  style={{ fontFamily: "Montserrat, sans-serif" }}
+                  style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}
                 >
                   {MOMENT_LABELS[key]}
                 </button>
@@ -283,7 +283,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
               <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
                 <button
                   onClick={() => setCoachFilter("all")}
-                  className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === "all" ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-terra/30"}`}
+                  className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === "all" ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
                   style={{ fontWeight: coachFilter === "all" ? 500 : 400 }}
                 >
                   Tous les coachs
@@ -292,7 +292,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                   <button
                     key={c.id}
                     onClick={() => setCoachFilter(c.name)}
-                    className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === c.name ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-terra/30"}`}
+                    className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === c.name ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
                     style={{ fontWeight: coachFilter === c.name ? 500 : 400 }}
                   >
                     {c.name}
@@ -306,10 +306,10 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
 
       <div className="bg-card border border-border rounded-2xl p-3 md:p-4">
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-xl text-foreground" style={{ fontWeight: 700, fontFamily: "Montserrat, sans-serif" }}>
+          <p className="text-xl text-foreground" style={{ fontWeight: 700, fontFamily: "'DM Sans', Inter, sans-serif" }}>
             {planningView === "today" ? "Today · Disponibilités en direct" : "Semaine complète · Tous les jours"}
           </p>
-          <p className="text-[11px] text-foreground/70" style={{ fontWeight: 600, fontFamily: "Montserrat, sans-serif" }}>
+          <p className="text-[11px] text-foreground/70" style={{ fontWeight: 600, fontFamily: "'DM Sans', Inter, sans-serif" }}>
             {planningView === "today"
               ? `${todaySessions.length} créneau${todaySessions.length > 1 ? "x" : ""} aujourd'hui`
               : `${weekSessions.length} créneau${weekSessions.length > 1 ? "x" : ""} cette semaine`}
@@ -319,9 +319,9 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
         {planningView === "today" ? (
           <div className="space-y-4">
             <div className="rounded-2xl border border-border bg-secondary/30 p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "Montserrat, sans-serif" }}>Matin</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Matin</p>
               {todayMorning.length === 0 ? (
-                <p className="text-sm text-foreground/60" style={{ fontFamily: "Montserrat, sans-serif" }}>Aucun créneau ce matin.</p>
+                <p className="text-sm text-foreground/60" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Aucun créneau ce matin.</p>
               ) : (
                 <div className="grid md:grid-cols-2 gap-2.5">
                   {todayMorning.map((session) => (
@@ -332,9 +332,9 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             </div>
 
             <div className="rounded-2xl border border-border bg-secondary/30 p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "Montserrat, sans-serif" }}>Après-midi & soir</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Après-midi & soir</p>
               {todayEvening.length === 0 ? (
-                <p className="text-sm text-foreground/60" style={{ fontFamily: "Montserrat, sans-serif" }}>Aucun créneau cet après-midi.</p>
+                <p className="text-sm text-foreground/60" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>Aucun créneau cet après-midi.</p>
               ) : (
                 <div className="grid md:grid-cols-2 gap-2.5">
                   {todayEvening.map((session) => (
@@ -349,17 +349,17 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             {weekSections.map((group) => (
               <div key={group.date} className="rounded-2xl border border-border bg-secondary/20 p-3 md:p-4">
                 <div className="flex items-center justify-between mb-2.5">
-                  <p className="text-sm text-foreground uppercase tracking-[0.12em]" style={{ fontWeight: 700, fontFamily: "Montserrat, sans-serif" }}>
+                  <p className="text-sm text-foreground uppercase tracking-[0.12em]" style={{ fontWeight: 700, fontFamily: "'DM Sans', Inter, sans-serif" }}>
                     {group.dayLabel} {formatDayNum(group.date)}
                     {group.isToday ? " · aujourd'hui" : ""}
                   </p>
-                  <p className="text-[10px] text-foreground/70" style={{ fontWeight: 600, fontFamily: "Montserrat, sans-serif" }}>
+                  <p className="text-[10px] text-foreground/70" style={{ fontWeight: 600, fontFamily: "'DM Sans', Inter, sans-serif" }}>
                     {group.sessions.length} séance{group.sessions.length > 1 ? "s" : ""}
                   </p>
                 </div>
 
                 {group.sessions.length === 0 ? (
-                  <p className="text-sm text-foreground/60 border border-dashed border-border rounded-xl px-4 py-3 text-center" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                  <p className="text-sm text-foreground/60 border border-dashed border-border rounded-xl px-4 py-3 text-center" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
                     Aucun créneau ce jour.
                   </p>
                 ) : (
@@ -412,26 +412,26 @@ function SessionCard({
     >
       <div className="flex items-start justify-between gap-2 mb-1.5">
         <div>
-          <p className="text-[10px] tracking-[0.15em] uppercase text-terra" style={{ fontWeight: 700, fontFamily: "Montserrat, sans-serif" }}>{session.time}</p>
-          <h4 className="text-[13px] text-foreground leading-tight" style={{ fontWeight: 600, fontFamily: "Montserrat, sans-serif" }}>
+          <p className="text-[10px] tracking-[0.15em] uppercase text-terra" style={{ fontWeight: 700, fontFamily: "'DM Sans', Inter, sans-serif" }}>{session.time}</p>
+          <h4 className="text-[13px] text-foreground leading-tight" style={{ fontWeight: 600, fontFamily: "'DM Sans', Inter, sans-serif" }}>
             {session.title}
           </h4>
         </div>
-        <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase tracking-[0.1em] border ${colors.bg} ${colors.text} ${colors.border}`} style={{ fontFamily: "Montserrat, sans-serif" }}>
+        <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase tracking-[0.1em] border ${colors.bg} ${colors.text} ${colors.border}`} style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
           {session.type}
         </span>
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-[11px] text-foreground/70" style={{ fontFamily: "Montserrat, sans-serif" }}>{session.instructor}</p>
-        <span className={`text-[10px] ${slot.urgency === "full" ? "text-destructive" : slot.urgency === "low" ? "text-amber-600" : "text-muted-foreground"}`} style={{ fontWeight: 600, fontFamily: "Montserrat, sans-serif" }}>
+        <p className="text-[11px] text-foreground/70" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>{session.instructor}</p>
+        <span className={`text-[10px] ${slot.urgency === "full" ? "text-destructive" : slot.urgency === "low" ? "text-amber-600" : "text-muted-foreground"}`} style={{ fontWeight: 600, fontFamily: "'DM Sans', Inter, sans-serif" }}>
           {slot.urgency !== "full" && <><Users size={10} className="inline mr-0.5" />{session.enrolled}/{session.capacity} · </>}{slot.text}
         </span>
       </div>
 
       {!isPast && (
         <div className="mt-2 pt-2 border-t border-border/50 flex items-center justify-end">
-          <span className="inline-flex items-center gap-1 text-terra text-[9px] tracking-[0.12em] uppercase" style={{ fontFamily: "Montserrat, sans-serif" }}>
+          <span className="inline-flex items-center gap-1 text-terra text-[9px] tracking-[0.12em] uppercase" style={{ fontFamily: "'DM Sans', Inter, sans-serif" }}>
             Réserver <ArrowRight size={10} />
           </span>
         </div>

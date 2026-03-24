@@ -11,7 +11,7 @@ const AnnouncementBanner = () => {
 
   return (
     <div
-      className="bg-terra text-warm-white text-center py-2 px-6 font-body text-[11px] tracking-[0.2em] uppercase relative z-20"
+      className="bg-foreground text-background text-center py-2 px-6 font-body text-[10px] tracking-[0.25em] uppercase relative z-20"
       style={{ fontWeight: 400 }}
     >
       {content.text as string}

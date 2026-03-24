@@ -123,7 +123,7 @@ const StudioPage = () => {
         >
           <img
             src={heroImage}
-            alt="The Circle Studio"
+            alt="EVØLV Studio"
             className="w-full h-full object-cover"
             style={{ filter: "brightness(0.42) saturate(0.75)" }}
           />
@@ -211,7 +211,7 @@ const StudioPage = () => {
           STATS STRIP
       ══════════════════════════════════════════════════════════════════════ */}
       <section
-        className="relative py-16 px-6 border-y border-terra/15"
+        className="relative py-16 px-6 border-y border-foreground/10"
         style={{ background: "rgba(184,99,74,0.06)" }}
       >
         <div className="container mx-auto max-w-4xl">
@@ -261,7 +261,7 @@ const StudioPage = () => {
             >
               <img
                 src={heroImage}
-                alt="The Circle Studio"
+                alt="EVØLV Studio"
                 className="w-full h-full object-cover"
                 style={{ filter: "brightness(0.62) saturate(0.80)" }}
               />
@@ -322,7 +322,7 @@ const StudioPage = () => {
                 style={{ fontSize: "14px", fontWeight: 300 }}
               >
                 {[
-                  "The Circle est né d'une conviction profonde : le mouvement est un acte de reconnexion. Loin des salles impersonnelles, nous avons imaginé un lieu intime, chaleureux, pensé comme un cocon.",
+                  "EVØLV est né d'une conviction profonde : le mouvement est un acte de reconnexion. Loin des salles impersonnelles, nous avons imaginé un lieu intime, chaleureux, pensé comme un cocon.",
                   "Ici, pas de cours bondés ni de coaching générique. Nous proposons des séances en petits groupes, afin de garantir un accompagnement attentif, précis et sécurisé.",
                   "Nous croyons que le Pilates est bien plus qu'un sport — c'est une philosophie du mouvement conscient, un chemin vers l'équilibre entre force et souplesse, intensité et douceur.",
                 ].map((p, i) => (
@@ -368,7 +368,7 @@ const StudioPage = () => {
             >
               L'expérience{" "}
               <em className="italic text-terra">
-                The Circle
+                EVØLV
               </em>
             </h2>
           </div>
@@ -517,7 +517,7 @@ const StudioPage = () => {
               >
                 <Link
                   to="/planning"
-                  className="inline-flex items-center gap-3 bg-terra text-white font-body text-[11px] tracking-[0.3em] uppercase px-8 py-3.5 rounded-full transition-all group shadow-[0_4px_20px_rgba(184,99,74,0.25)] hover:bg-terra-dark hover:shadow-[0_8px_32px_rgba(184,99,74,0.4)] hover:scale-[1.02]"
+                  className="inline-flex items-center gap-3 bg-terra text-white font-body text-[11px] tracking-[0.3em] uppercase px-8 py-3.5 rounded-full transition-all group shadow-[0_4px_20px_rgba(184,99,74,0.25)] hover:bg-foreground/80 hover:shadow-[0_8px_32px_rgba(184,99,74,0.4)] hover:scale-[1.02]"
                   style={{ fontWeight: 500 }}
                 >
                   Réserver une séance
@@ -543,7 +543,7 @@ const StudioPage = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-start gap-4 p-5 border border-terra/15 bg-card"
+                  className="flex items-start gap-4 p-5 border border-foreground/10 bg-card"
                   style={{ borderRadius: "2px" }}
                 >
                   <div className="w-1.5 h-1.5 rounded-full shrink-0 mt-2 bg-terra" />
@@ -579,7 +579,7 @@ const StudioPage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {visibleDisciplines.map((disc, i) => (
               <motion.div key={disc.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="p-6 rounded-sm border border-terra/15 hover:border-terra/40 transition-all group cursor-default bg-card"
+                className="p-6 rounded-sm border border-foreground/10 hover:border-terra/40 transition-all group cursor-default bg-card"
               >
                 <h3 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(18px, 2.5vw, 24px)", fontWeight: 200, letterSpacing: "0.06em" }}>{disc.label}</h3>
                 <ul className="space-y-1.5">
@@ -631,7 +631,7 @@ const StudioPage = () => {
               {/* Primary — solid filled, high contrast */}
               <Link
                 to="/planning"
-                className="inline-flex items-center gap-3 bg-terra text-white font-body text-[11px] tracking-[0.3em] uppercase px-10 py-4 rounded-full transition-all group shadow-[0_8px_32px_rgba(184,99,74,0.35)] hover:bg-terra-dark hover:shadow-[0_12px_44px_rgba(184,99,74,0.55)] hover:scale-[1.02]"
+                className="inline-flex items-center gap-3 bg-terra text-white font-body text-[11px] tracking-[0.3em] uppercase px-10 py-4 rounded-full transition-all group shadow-[0_8px_32px_rgba(184,99,74,0.35)] hover:bg-foreground/80 hover:shadow-[0_12px_44px_rgba(184,99,74,0.55)] hover:scale-[1.02]"
                 style={{ fontWeight: 500 }}
               >
                 Voir le planning

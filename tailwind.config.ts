@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
-        body: ["Montserrat", "sans-serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
+        body: ["DM Sans", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,23 +51,27 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sand: "hsl(var(--sand))",
-        beige: "hsl(var(--beige))",
-        terra: {
-          DEFAULT: "hsl(var(--terra))",
-          dark: "hsl(var(--terra-dark))",
-          light: "hsl(var(--terra-light))",
-          pale: "hsl(var(--terra-pale))",
-          wash: "hsl(var(--terra-wash))",
+        // EVOLV brand palette
+        ivory: "hsl(var(--ivory))",
+        cream: "hsl(var(--cream))",
+        stone: {
+          DEFAULT: "hsl(var(--stone))",
+          light: "hsl(var(--stone-light))",
+          dark: "hsl(var(--stone-dark))",
         },
-        burgundy: "hsl(var(--burgundy))",
-        dark: {
-          DEFAULT: "hsl(var(--dark))",
-          deep: "hsl(var(--dark-deep))",
+        charcoal: {
+          DEFAULT: "hsl(var(--charcoal))",
+          deep: "hsl(var(--charcoal-deep))",
+          mid: "hsl(var(--charcoal-mid))",
         },
-        mid: "hsl(var(--mid))",
-        gold: "hsl(var(--gold))",
-        blush: "hsl(var(--blush))",
+        onyx: "hsl(var(--onyx))",
+        pearl: "hsl(var(--pearl))",
+        taupe: "hsl(var(--taupe))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
+        },
         "warm-white": "hsl(var(--warm-white))",
         success: {
           DEFAULT: "hsl(var(--success))",
@@ -106,7 +110,88 @@ export default {
         },
         "pulse-soft": {
           "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.75" },
+          "50%": { opacity: "0.6" },
+        },
+        "reveal-text": {
+          "0%": { opacity: "0", letterSpacing: "0.3em" },
+          "100%": { opacity: "1", letterSpacing: "0.12em" },
+        },
+        "line-grow": {
+          "0%": { transform: "scaleX(0)" },
+          "100%": { transform: "scaleX(1)" },
+        },
+        "float-gentle": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "50%": { transform: "translateY(-12px) rotate(1deg)" },
+        },
+        "shimmer-sweep": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        "scale-breathe": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.015)" },
+        },
+        "divider-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "hero-studio-reveal": {
+          "0%": { opacity: "0", letterSpacing: "0.4em" },
+          "100%": { opacity: "1", letterSpacing: "0.12em" },
+        },
+        "scroll-indicator": {
+          "0%": { transform: "scaleY(0)", transformOrigin: "top" },
+          "40%": { transform: "scaleY(1)", transformOrigin: "top" },
+          "60%": { transform: "scaleY(1)", transformOrigin: "bottom" },
+          "100%": { transform: "scaleY(0)", transformOrigin: "bottom" },
+        },
+        "card-float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+        "grain-shift": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "10%": { transform: "translate(-2%, -3%)" },
+          "20%": { transform: "translate(3%, 2%)" },
+          "30%": { transform: "translate(-1%, 4%)" },
+          "40%": { transform: "translate(2%, -1%)" },
+          "50%": { transform: "translate(-3%, 2%)" },
+          "60%": { transform: "translate(1%, -3%)" },
+          "70%": { transform: "translate(-2%, 1%)" },
+          "80%": { transform: "translate(3%, -2%)" },
+          "90%": { transform: "translate(-1%, 3%)" },
+        },
+        "logo-glow": {
+          "0%, 100%": { filter: "drop-shadow(0 0 0px rgba(201,168,124,0))" },
+          "50%": { filter: "drop-shadow(0 0 12px rgba(201,168,124,0.3))" },
+        },
+        "next-pulse": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(201,168,124,0.3)" },
+          "50%": { boxShadow: "0 0 0 8px rgba(201,168,124,0)" },
+        },
+        "blink-dot": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.2" },
+        },
+        "cursor-shake": {
+          "0%": { transform: "translate(-50%, -50%) rotate(0deg)" },
+          "25%": { transform: "translate(-50%, -50%) rotate(5deg) scale(1.05)" },
+          "50%": { transform: "translate(-50%, -50%) rotate(-4deg)" },
+          "75%": { transform: "translate(-50%, -50%) rotate(3deg) scale(0.97)" },
+          "100%": { transform: "translate(-50%, -50%) rotate(0deg)" },
+        },
+        orbit: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "ring-breathe": {
+          "0%, 100%": { strokeOpacity: "0.3" },
+          "50%": { strokeOpacity: "0.8" },
         },
       },
       animation: {
@@ -114,6 +199,23 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.8s cubic-bezier(0.16,1,0.3,1)",
         "pulse-soft": "pulse-soft 5s ease-in-out infinite",
+        "reveal-text": "reveal-text 1.2s ease-out forwards",
+        "line-grow": "line-grow 0.8s ease-out forwards",
+        "float-gentle": "float-gentle 6s ease-in-out infinite",
+        "float-slow": "float-slow 9s ease-in-out infinite",
+        "shimmer-sweep": "shimmer-sweep 3s linear infinite",
+        "scale-breathe": "scale-breathe 7s ease-in-out infinite",
+        "divider-spin": "divider-spin 20s linear infinite",
+        "hero-studio-reveal": "hero-studio-reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "scroll-indicator": "scroll-indicator 2.4s ease-in-out infinite",
+        "card-float": "card-float 5s ease-in-out infinite",
+        "grain-shift": "grain-shift 0.4s steps(1) infinite",
+        "logo-glow": "logo-glow 4s ease-in-out infinite",
+        "next-pulse": "next-pulse 2s ease-in-out infinite",
+        "blink-dot": "blink-dot 1.5s ease-in-out infinite",
+        "cursor-shake": "cursor-shake 0.3s ease-in-out infinite",
+        orbit: "orbit 12s linear infinite",
+        "ring-breathe": "ring-breathe 3s ease-in-out infinite",
       },
     },
   },

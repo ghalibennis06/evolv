@@ -37,14 +37,14 @@ const CookieBanner = () => {
             <div className="flex gap-2 shrink-0">
               <button
                 onClick={() => accept("all")}
-                className="bg-terra text-warm-white border-none px-4 py-2 font-body text-[10px] tracking-[0.3em] uppercase cursor-pointer transition-colors hover:bg-terra-dark whitespace-nowrap"
+                className="bg-terra text-warm-white border-none px-4 py-2 font-body text-[10px] tracking-[0.3em] uppercase cursor-pointer transition-colors hover:bg-foreground/80 whitespace-nowrap"
                 style={{ fontWeight: 200, borderRadius: "2px" }}
               >
                 Tout accepter
               </button>
               <button
                 onClick={() => accept("essential")}
-                className="bg-transparent border border-warm-white/20 text-warm-white/60 px-4 py-2 font-body text-[10px] tracking-[0.3em] uppercase cursor-pointer transition-colors hover:border-warm-white/40 hover:text-warm-white/80 whitespace-nowrap"
+                className="bg-transparent border border-white/20 text-white/60 px-4 py-2 font-body text-[10px] tracking-[0.3em] uppercase cursor-pointer transition-colors hover:border-white/40 hover:text-white/80 whitespace-nowrap"
                 style={{ fontWeight: 200, borderRadius: "2px" }}
               >
                 Essentiels

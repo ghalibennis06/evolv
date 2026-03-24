@@ -46,7 +46,7 @@ const stats = [
 
 const fallbackBlack: PricingPlan = {
   id: "black-fallback",
-  name: "Carte Black x10",
+  name: "Carte Signature x10",
   price: 2800,
   original_price: 3500,
   sessions_included: 10,
@@ -61,7 +61,7 @@ const ScrollProgressBar = () => {
   return (
     <motion.div
       style={{ scaleX, transformOrigin: "left" }}
-      className="fixed top-0 left-0 right-0 h-[2px] bg-terra z-[200] pointer-events-none"
+      className="fixed top-0 left-0 right-0 h-[2px] bg-foreground z-[200] pointer-events-none"
     />
   );
 };
@@ -199,7 +199,7 @@ const CarnetsSection = () => {
         }
         // Auto-send emails (non-blocking)
         supabase.functions.invoke("send-email", {
-          body: { to: email, subject: `Demande reçue — ${selected.name} · The Circle Studio`, html: `<div style="font-family:Montserrat,sans-serif;padding:32px;background:#FBF7F2;max-width:520px"><h2 style="color:#B8634A;font-weight:200;font-size:24px">Demande reçue ✓</h2><p style="color:#3D2318">Bonjour ${name},</p><p style="color:#5A4538">Votre demande pour <strong>${selected.name}</strong> (${credits} crédit${credits > 1 ? 's' : ''}) a bien été reçue. L'équipe The Circle vous contactera pour confirmer.</p><p style="color:#9D8070;font-size:11px;text-transform:uppercase;letter-spacing:0.2em">The Circle Studio · El Menzeh, Rabat</p></div>` },
+          body: { to: email, subject: `Demande reçue — ${selected.name} · EVØLV Studio`, html: `<div style="font-family:Montserrat,sans-serif;padding:32px;background:#FBF7F2;max-width:520px"><h2 style="color:#B8634A;font-weight:200;font-size:24px">Demande reçue ✓</h2><p style="color:#3D2318">Bonjour ${name},</p><p style="color:#5A4538">Votre demande pour <strong>${selected.name}</strong> (${credits} crédit${credits > 1 ? 's' : ''}) a bien été reçue. L'équipe The Circle vous contactera pour confirmer.</p><p style="color:#9D8070;font-size:11px;text-transform:uppercase;letter-spacing:0.2em">EVØLV Studio · El Menzeh, Rabat</p></div>` },
         }).catch(() => {});
         supabase.functions.invoke("send-email", {
           body: { to: "ghali.bennis06@gmail.com", subject: `[Admin] Nouvelle demande pack — ${name}`, html: `<div style="font-family:Montserrat,sans-serif;padding:28px;background:#FBF7F2;max-width:480px"><h2 style="color:#7A3040;font-weight:200">Nouvelle demande</h2><p><b>Client:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Pack:</b> ${selected.name}</p><p><b>Crédits:</b> ${credits}</p><a href="https://thecirclestudio.vercel.app/admin" style="background:#B8634A;color:#FBF7F2;padding:10px 20px;border-radius:20px;text-decoration:none;font-size:11px">Voir admin →</a></div>` },
@@ -209,7 +209,7 @@ const CarnetsSection = () => {
       }
       const session = await createPayzoneSession({
         amount: selected.price,
-        description: `${selected.name} — The Circle Studio`,
+        description: `${selected.name} — EVØLV Studio`,
         customerName: name, customerEmail: email, customerPhone: phone,
         offerId: safeId, offerName: selected.name,
         packType: selected.name, packCredits: credits,
@@ -270,7 +270,7 @@ const CarnetsSection = () => {
             { step: "03", label: "Réservez librement", desc: "Utilisez vos crédits pour toute séance du planning" },
           ].map((item) => (
             <div key={item.step} className="flex items-start gap-3 max-w-[200px]">
-              <span className="font-display text-terra/40 text-2xl shrink-0" style={{ fontWeight: 200, lineHeight: 1 }}>{item.step}</span>
+              <span className="font-display text-foreground/30 text-2xl shrink-0" style={{ fontWeight: 200, lineHeight: 1 }}>{item.step}</span>
               <div>
                 <p className="font-body text-foreground text-[12px] tracking-[0.15em] uppercase mb-0.5" style={{ fontWeight: 600 }}>{item.label}</p>
                 <p className="font-body text-foreground/55 text-[12px] leading-[1.7]" style={{ fontWeight: 300 }}>{item.desc}</p>
@@ -416,7 +416,7 @@ const CarnetsSection = () => {
           style={{ fontWeight: 300 }}
         >
           Code généré instantanément · Suivi sur{" "}
-          <Link to="/mon-pack" className="text-terra/60 hover:text-terra transition-colors">/mon-pack</Link>
+          <Link to="/mon-pack" className="text-muted-foreground hover:text-foreground transition-colors">/mon-pack</Link>
           {" "}· Paiement en ligne ou sur place
         </motion.p>
       </div>
@@ -450,7 +450,7 @@ const CarnetsSection = () => {
                     Présentez-vous sur place pour finaliser le paiement. Votre code sera activé par l'équipe.
                   </p>
                   <div className="flex flex-col gap-3">
-                    <a href="/mon-pack" className="w-full rounded-full border border-terra text-terra py-3 text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 hover:bg-terra hover:text-white transition-all">
+                    <a href="/mon-pack" className="w-full rounded-full border border-terra text-terra py-3 text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 hover:bg-foreground hover:text-white transition-all">
                       <Ticket size={13} /> Suivre ma carte
                     </a>
                     <button onClick={closeModal} className="w-full rounded-full bg-terra py-3 text-white text-[11px] tracking-[0.25em] uppercase">
@@ -484,17 +484,17 @@ const CarnetsSection = () => {
                     <div className="grid grid-cols-2 gap-2 pt-1">
                       <button
                         onClick={() => setMethod("online")}
-                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "online" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-terra/50"}`}
+                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "online" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
                       >En ligne</button>
                       <button
                         onClick={() => setMethod("cash_on_site")}
-                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "cash_on_site" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-terra/50"}`}
+                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "cash_on_site" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
                       >Sur place</button>
                     </div>
                     <button
                       onClick={handleBuy}
                       disabled={!name || !email}
-                      className="w-full rounded-full bg-terra py-4 text-white text-[11px] tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-terra-dark transition-all mt-1"
+                      className="w-full rounded-full bg-terra py-4 text-white text-[11px] tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-foreground/80 transition-all mt-1"
                       style={{ fontWeight: 500 }}
                     >
                       <Sparkles size={13} />
@@ -680,7 +680,7 @@ function TodaySessionsStrip() {
           <div className="flex items-center gap-3">
             <Link
               to="/carte-black"
-              className="inline-flex items-center gap-1.5 font-body text-[10px] tracking-[0.2em] uppercase bg-terra text-warm-white px-4 py-2 rounded-full hover:bg-terra-dark transition-colors"
+              className="inline-flex items-center gap-1.5 font-body text-[10px] tracking-[0.2em] uppercase bg-terra text-warm-white px-4 py-2 rounded-full hover:bg-foreground/80 transition-colors"
               style={{ fontWeight: 500 }}
             >
               <Ticket size={10} /> Acheter des crédits
@@ -701,7 +701,7 @@ function TodaySessionsStrip() {
                 onClick={() => navigate(`/planning?session=${s.id}`)}
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex-shrink-0 bg-card border rounded-2xl p-4 text-left min-w-[170px] transition-all shadow-sm ${isFull ? "opacity-60 cursor-default border-border" : "hover:shadow-md cursor-pointer border-border hover:border-terra/30"}`}
+                className={`flex-shrink-0 bg-card border rounded-2xl p-4 text-left min-w-[170px] transition-all shadow-sm ${isFull ? "opacity-60 cursor-default border-border" : "hover:shadow-md cursor-pointer border-border hover:border-foreground/20"}`}
                 disabled={isFull}
                 style={{ borderTopWidth: 3, borderTopColor: c.dot }}
               >
@@ -709,7 +709,7 @@ function TodaySessionsStrip() {
                 <p className="font-display text-[13px] text-foreground leading-tight mb-1" style={{ fontWeight: 400 }}>{s.title}</p>
                 <p className="font-body text-[10px] text-muted-foreground mb-2">{s.instructor} · {s.duration}min</p>
                 <div className="flex items-center justify-between gap-2">
-                  <span className={`font-body text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full ${isFull ? "bg-destructive/10 text-destructive" : "bg-terra/10 text-terra"}`} style={{ fontWeight: 600 }}>
+                  <span className={`font-body text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full ${isFull ? "bg-destructive/10 text-destructive" : "bg-secondary/40 text-terra"}`} style={{ fontWeight: 600 }}>
                     {isFull ? "Complet" : `${spotsLeft} place${spotsLeft > 1 ? "s" : ""}`}
                   </span>
                   {!isFull && (
@@ -791,7 +791,7 @@ const Index = () => {
       <TodaySessionsStrip />
 
       {/* Stats strip with parallax */}
-      <div ref={statsSectionRef} className="relative overflow-hidden bg-terra/12 border-y border-terra/15 py-6 px-6">
+      <div ref={statsSectionRef} className="relative overflow-hidden bg-terra/12 border-y border-foreground/10 py-6 px-6">
         <motion.div style={{ y: statsY }} className="container mx-auto max-w-5xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((s, i) => (
@@ -884,7 +884,7 @@ const Index = () => {
                     <div className="flex flex-col gap-3">
                       <Link
                         to="/planning"
-                        className="inline-flex items-center gap-3 bg-terra text-warm-white px-8 py-3.5 rounded-full font-body text-[11px] tracking-[0.3em] uppercase hover:bg-terra-dark transition-all shadow-[0_6px_24px_rgba(184,99,74,0.28)] hover:shadow-[0_8px_32px_rgba(184,99,74,0.42)] group"
+                        className="inline-flex items-center gap-3 bg-terra text-warm-white px-8 py-3.5 rounded-full font-body text-[11px] tracking-[0.3em] uppercase hover:bg-foreground/80 transition-all shadow-[0_6px_24px_rgba(184,99,74,0.28)] hover:shadow-[0_8px_32px_rgba(184,99,74,0.42)] group"
                         style={{ fontWeight: 500 }}
                       >
                         Tout le planning
@@ -892,7 +892,7 @@ const Index = () => {
                       </Link>
                       <Link
                         to="/carte-black"
-                        className="inline-flex items-center gap-2 font-body text-[11px] tracking-[0.25em] uppercase text-terra/70 hover:text-terra transition-colors"
+                        className="inline-flex items-center gap-2 font-body text-[11px] tracking-[0.25em] uppercase text-terra/70 hover:text-foreground transition-colors"
                         style={{ fontWeight: 500 }}
                       >
                         <Ticket size={12} /> Recharger des crédits →

@@ -57,7 +57,7 @@ const DEFAULT_TEMPLATE_2H =
   "Bonjour {prénom} 👋\n\nVotre cours *{cours}* avec {coach} commence dans 2h à *{heure}*.\n\nOn vous attend ! 🏋️\n— The Circle";
 
 const DEFAULT_PUSH_TEMPLATE =
-  "Bonjour {prénom} 👋\n\n[Votre message ici]\n\n— The Circle Studio";
+  "Bonjour {prénom} 👋\n\n[Votre message ici]\n\n— EVØLV Studio";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function applyTemplate(template: string, p: UpcomingParticipant): string {
@@ -77,7 +77,7 @@ function applyPushTemplate(template: string, client: UniqueClient): string {
   return template
     .replace(/{prénom}/g, client.first_name)
     .replace(/{nom}/g, `${client.first_name} ${client.last_name}`.trim())
-    .replace(/{studio}/g, "The Circle Studio")
+    .replace(/{studio}/g, "EVØLV Studio")
     .replace(/{lien_pack}/g, `${window.location.origin}/mon-pack`);
 }
 
@@ -665,7 +665,7 @@ function PushTab() {
             {[
               { v: "{prénom}", desc: "Prénom du client" },
               { v: "{nom}", desc: "Prénom + Nom" },
-              { v: "{studio}", desc: "The Circle Studio" },
+              { v: "{studio}", desc: "EVØLV Studio" },
               { v: "{lien_pack}", desc: "Lien /mon-pack" },
             ].map(({ v, desc }) => (
               <button
@@ -683,7 +683,7 @@ function PushTab() {
           value={template}
           onChange={(e) => setTemplate(e.target.value)}
           className={iCls + " min-h-[140px] resize-none"}
-          placeholder="Bonjour {prénom} 👋&#10;&#10;[Votre message ici]&#10;&#10;— The Circle Studio"
+          placeholder="Bonjour {prénom} 👋&#10;&#10;[Votre message ici]&#10;&#10;— EVØLV Studio"
         />
 
         {/* Preview */}

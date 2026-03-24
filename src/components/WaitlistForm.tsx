@@ -98,7 +98,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
               Liste d'attente
             </p>
             <p className="font-body text-[11px] tracking-[0.3em] uppercase text-muted-foreground mt-1" style={{ fontWeight: 400 }}>
-              The Circle Studio
+              EVØLV Studio
             </p>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
 
       {/* Session info badge */}
       {session && (
-        <div className="bg-terra/8 border border-terra/20 rounded-2xl p-4 flex items-start gap-3">
+        <div className="bg-terra/8 border border-foreground/15 rounded-2xl p-4 flex items-start gap-3">
           <Bell size={16} className="text-terra mt-0.5 shrink-0" />
           <div>
             <p className="font-body text-[13px] text-foreground font-medium">{session.title}</p>
@@ -118,7 +118,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
       )}
 
       {!session && (
-        <div className="bg-terra/8 border border-terra/20 rounded-2xl p-4">
+        <div className="bg-terra/8 border border-foreground/15 rounded-2xl p-4">
           <p className="font-body text-[13px] text-foreground font-medium">Intérêt général</p>
           <p className="font-body text-[11px] text-muted-foreground mt-0.5">
             Laissez vos coordonnées et nous vous contacterons pour votre première séance.
@@ -167,8 +167,8 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-[12px] tracking-[0.25em] uppercase hover:bg-terra-dark transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-        style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 600 }}
+        className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-[12px] tracking-[0.25em] uppercase hover:bg-foreground/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+        style={{ fontFamily: "'DM Sans', Inter, sans-serif", fontWeight: 600 }}
       >
         {loading ? (
           <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>

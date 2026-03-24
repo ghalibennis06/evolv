@@ -80,12 +80,12 @@ const getWaitTime = (iso: string): string => {
 
 const buildNotifyMsg = (entry: WaitlistEntry) =>
   encodeURIComponent(
-    `Bonjour ${entry.client_name} 👋\n\nUne place vient de se libérer pour "${entry.class_name}"${entry.class_day !== "—" ? ` le ${entry.class_day}` : ""}${entry.class_time !== "—" ? ` à ${entry.class_time}` : ""}.\n\nRépondez rapidement pour confirmer votre place sur https://thecirclestudio.vercel.app/planning ✨\n\n— The Circle Studio`
+    `Bonjour ${entry.client_name} 👋\n\nUne place vient de se libérer pour "${entry.class_name}"${entry.class_day !== "—" ? ` le ${entry.class_day}` : ""}${entry.class_time !== "—" ? ` à ${entry.class_time}` : ""}.\n\nRépondez rapidement pour confirmer votre place sur https://thecirclestudio.vercel.app/planning ✨\n\n— EVØLV Studio`
   );
 
 const buildContactMsg = (entry: WaitlistEntry) =>
   encodeURIComponent(
-    `Bonjour ${entry.client_name} 👋 Merci de votre intérêt pour The Circle Studio ! Nous revenons vers vous concernant "${entry.class_name}".`
+    `Bonjour ${entry.client_name} 👋 Merci de votre intérêt pour EVØLV Studio ! Nous revenons vers vous concernant "${entry.class_name}".`
   );
 
 export function AdminWaitlist() {
@@ -246,8 +246,8 @@ export function AdminWaitlist() {
         supabase.functions.invoke("send-email", {
           body: {
             to: entry.client_email,
-            subject: `Réservation confirmée — ${entry.class_name} · The Circle Studio`,
-            html: `<div style="font-family:Montserrat,sans-serif;max-width:520px;margin:0 auto;background:#FBF7F2;padding:0"><div style="background:#B8634A;padding:32px"><p style="color:rgba(251,247,242,0.7);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">The Circle Studio</p><h1 style="color:#FBF7F2;font-size:28px;font-weight:200;margin:0;font-family:Georgia,serif">Réservation confirmée ✓</h1></div><div style="padding:32px"><p style="color:#3D2318;font-size:15px;margin:0 0 20px">Bonjour <strong>${entry.client_name}</strong>,</p><div style="background:#FFF8F5;border:1px solid rgba(184,99,74,0.2);border-radius:12px;padding:20px;margin:0 0 24px"><p style="color:#B8634A;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;margin:0 0 10px">Votre séance</p><p style="color:#3D2318;font-size:22px;font-weight:300;margin:0;font-family:Georgia,serif">${entry.class_name}</p><p style="color:#7A3040;font-size:14px;margin:6px 0 0">${entry.class_day} · ${entry.class_time}</p></div><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 8px">Nous vous attendons ! Pensez à arriver 5 minutes avant.</p><p style="color:#5A4538;font-size:14px;margin:0 0 32px">Annulation gratuite jusqu'à 2h avant le début.</p><p style="color:#9D8070;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">The Circle Studio · El Menzeh, Rabat</p></div></div>`,
+            subject: `Réservation confirmée — ${entry.class_name} · EVØLV Studio`,
+            html: `<div style="font-family:Montserrat,sans-serif;max-width:520px;margin:0 auto;background:#FBF7F2;padding:0"><div style="background:#B8634A;padding:32px"><p style="color:rgba(251,247,242,0.7);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">EVØLV Studio</p><h1 style="color:#FBF7F2;font-size:28px;font-weight:200;margin:0;font-family:Georgia,serif">Réservation confirmée ✓</h1></div><div style="padding:32px"><p style="color:#3D2318;font-size:15px;margin:0 0 20px">Bonjour <strong>${entry.client_name}</strong>,</p><div style="background:#FFF8F5;border:1px solid rgba(184,99,74,0.2);border-radius:12px;padding:20px;margin:0 0 24px"><p style="color:#B8634A;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;margin:0 0 10px">Votre séance</p><p style="color:#3D2318;font-size:22px;font-weight:300;margin:0;font-family:Georgia,serif">${entry.class_name}</p><p style="color:#7A3040;font-size:14px;margin:6px 0 0">${entry.class_day} · ${entry.class_time}</p></div><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 8px">Nous vous attendons ! Pensez à arriver 5 minutes avant.</p><p style="color:#5A4538;font-size:14px;margin:0 0 32px">Annulation gratuite jusqu'à 2h avant le début.</p><p style="color:#9D8070;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">EVØLV Studio · El Menzeh, Rabat</p></div></div>`,
           },
         }).catch(() => {});
       }
@@ -256,7 +256,7 @@ export function AdminWaitlist() {
       if (entry.client_phone) {
         const phone = (entry.client_phone || "").replace(/\D/g, "");
         if (phone) {
-          const waMsg = encodeURIComponent(`Bonjour ${entry.client_name} 👋\n\nVotre réservation pour *${entry.class_name}* est confirmée ✓\n\nNous vous attendons — The Circle Studio 🌿`);
+          const waMsg = encodeURIComponent(`Bonjour ${entry.client_name} 👋\n\nVotre réservation pour *${entry.class_name}* est confirmée ✓\n\nNous vous attendons — EVØLV Studio 🌿`);
           toast("WhatsApp de confirmation", {
             description: `Envoyer à ${entry.client_name}`,
             action: { label: "Envoyer →", onClick: () => window.open(`https://wa.me/${phone}?text=${waMsg}`, "_blank") },
@@ -311,7 +311,7 @@ export function AdminWaitlist() {
         const phone = (entry.client_phone || "").replace(/\D/g, "");
         if (phone) {
           const dayStr = new Date(session.date + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
-          const waMsg = encodeURIComponent(`Bonjour ${entry.client_name} 👋\n\nVotre réservation pour *${session.title}* est confirmée ✓\n📅 ${dayStr} à ${session.time}\n\nNous vous attendons — The Circle Studio 🌿`);
+          const waMsg = encodeURIComponent(`Bonjour ${entry.client_name} 👋\n\nVotre réservation pour *${session.title}* est confirmée ✓\n📅 ${dayStr} à ${session.time}\n\nNous vous attendons — EVØLV Studio 🌿`);
           toast("WhatsApp de confirmation", {
             description: `Envoyer à ${entry.client_name}`,
             action: { label: "Envoyer →", onClick: () => window.open(`https://wa.me/${phone}?text=${waMsg}`, "_blank") },
@@ -821,7 +821,7 @@ export function AdminWaitlist() {
                       </a>
                     )}
                     <a
-                      href={`mailto:${pe.client_email}?subject=Place disponible — The Circle&body=Bonjour ${pe.client_name},%0D%0A%0D%0AUne place vient de se libérer pour "${pe.class_name}". Merci de nous contacter rapidement.%0D%0A%0D%0AThe Circle Studio`}
+                      href={`mailto:${pe.client_email}?subject=Place disponible — The Circle&body=Bonjour ${pe.client_name},%0D%0A%0D%0AUne place vient de se libérer pour "${pe.class_name}". Merci de nous contacter rapidement.%0D%0A%0D%0AEVØLV Studio`}
                       className="flex-1 inline-flex items-center justify-center gap-1.5 bg-secondary text-muted-foreground border border-border px-3 py-2.5 rounded-full font-body text-[10px] tracking-[0.15em] uppercase hover:border-terra/30 hover:text-terra transition-colors"
                       style={{ fontWeight: 500 }}
                     >
@@ -1058,7 +1058,7 @@ export function AdminWaitlist() {
                                 <Send size={10} /> Notifier place libre
                               </a>
                             )}
-                            <a href={`mailto:${e.client_email}?subject=Place disponible — The Circle&body=Bonjour ${e.client_name},%0D%0A%0D%0AUne place vient de se libérer pour "${e.class_name}". Merci de nous contacter rapidement.%0D%0A%0D%0AThe Circle Studio`}
+                            <a href={`mailto:${e.client_email}?subject=Place disponible — The Circle&body=Bonjour ${e.client_name},%0D%0A%0D%0AUne place vient de se libérer pour "${e.class_name}". Merci de nous contacter rapidement.%0D%0A%0D%0AEVØLV Studio`}
                               className="inline-flex items-center gap-1.5 bg-secondary text-muted-foreground border border-border px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.15em] uppercase hover:border-terra/30 hover:text-terra transition-colors"
                               style={{ fontWeight: 500 }}>
                               <Mail size={10} /> Email notif.

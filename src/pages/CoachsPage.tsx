@@ -195,7 +195,7 @@ const CoachBlock = ({ coach, idx }: { coach: Coach; idx: number }) => {
             href={`https://instagram.com/${coach.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative z-10 font-body text-[11px] tracking-[0.2em] uppercase text-terra hover:text-terra-dark transition-colors inline-block"
+            className="relative z-10 font-body text-[11px] tracking-[0.2em] uppercase text-terra hover:text-foreground transition-colors inline-block"
             style={{ fontWeight: 500 }}
           >
             ↗ @{coach.instagram}
@@ -342,7 +342,7 @@ const CoachsPage = () => {
           </h2>
           <a
             href="/planning"
-            className="inline-flex items-center gap-3 bg-terra text-warm-white px-10 py-4 rounded-full font-body text-[11px] tracking-[0.3em] uppercase hover:bg-terra-dark transition-all"
+            className="inline-flex items-center gap-3 bg-terra text-warm-white px-10 py-4 rounded-full font-body text-[11px] tracking-[0.3em] uppercase hover:bg-foreground/80 transition-all"
             style={{ fontWeight: 500 }}
           >
             Voir le planning →

@@ -77,7 +77,7 @@ const PhotoUpload = ({
       {images.length < maxImages && (
         <div
           className={`border-[1.5px] border-dashed p-10 text-center cursor-pointer transition-all ${
-            dragOver ? "border-terra bg-terra/5" : "border-terra/25 bg-terra-wash/30"
+            dragOver ? "border-terra bg-secondary/20" : "border-terra/25 bg-terra-wash/30"
           }`}
           style={{ borderRadius: "3px" }}
           onClick={() => inputRef.current?.click()}
@@ -93,7 +93,7 @@ const PhotoUpload = ({
             <Loader2 size={20} className="mx-auto text-terra animate-spin" />
           ) : (
             <>
-              <Upload size={20} className="mx-auto text-terra/50 mb-2" />
+              <Upload size={20} className="mx-auto text-muted-foreground mb-2" />
               <p className="font-body text-[12px] text-muted-foreground tracking-[0.2em]" style={{ fontWeight: 200 }}>
                 {placeholder}
               </p>

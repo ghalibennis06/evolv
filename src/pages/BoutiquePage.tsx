@@ -75,7 +75,7 @@ const BoutiquePage = () => {
       <section className="pt-28 pb-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
-            <p className="font-body text-sm tracking-[0.25em] uppercase text-primary mb-4">The Circle</p>
+            <p className="font-body text-sm tracking-[0.25em] uppercase text-primary mb-4">EVØLV</p>
             <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
               Boutique
             </h1>

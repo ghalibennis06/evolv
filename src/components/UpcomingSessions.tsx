@@ -87,7 +87,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
             className={`px-4 py-1.5 rounded-full font-body text-[10px] tracking-widest uppercase transition-all ${
               !filterType
                 ? "bg-terra text-warm-white"
-                : "border border-border text-muted-foreground hover:border-terra/30"
+                : "border border-border text-muted-foreground hover:border-foreground/20"
             }`}
             style={{ fontWeight: 500 }}
           >
@@ -100,7 +100,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
               className={`px-4 py-1.5 rounded-full font-body text-[10px] tracking-widest uppercase transition-all ${
                 filterType === t
                   ? "bg-terra text-warm-white"
-                  : "border border-border text-muted-foreground hover:border-terra/30"
+                  : "border border-border text-muted-foreground hover:border-foreground/20"
               }`}
               style={{ fontWeight: 500 }}
             >
@@ -129,7 +129,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     className={`bg-card border p-5 transition-all relative rounded-2xl ${
-                      isNext ? "border-success" : "border-border hover:border-terra/30"
+                      isNext ? "border-success" : "border-border hover:border-foreground/20"
                     }`}
                     style={{
                       animation: isNext ? "next-pulse 3s ease-in-out infinite" : undefined,
@@ -149,7 +149,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
 
                     <div className="flex items-center justify-between flex-wrap gap-3">
                       <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-full bg-terra/10 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-secondary/40 flex items-center justify-center">
                           <span className="font-body text-sm text-terra font-semibold">{session.time}</span>
                         </div>
                         <div>
@@ -190,7 +190,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                           // FIX BUG 6 — Passer l'ID de session dans l'URL
                           <a
                             href={`/planning?session=${session.id}`}
-                            className="border border-terra text-terra px-4 py-2 rounded-full font-body text-[10px] tracking-widest uppercase hover:bg-terra hover:text-warm-white transition-all"
+                            className="border border-terra text-terra px-4 py-2 rounded-full font-body text-[10px] tracking-widest uppercase hover:bg-foreground hover:text-warm-white transition-all"
                             style={{ fontWeight: 500 }}
                           >
                             Réserver

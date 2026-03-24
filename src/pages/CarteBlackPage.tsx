@@ -66,7 +66,7 @@ function BlackCard({ plan, onClick }: { plan: PricingPlan; onClick: () => void }
         {/* Card content */}
         <div className="relative z-10 p-6 flex flex-col justify-between" style={{ minHeight: "220px" }}>
           <div>
-            <p className="font-body text-[9px] tracking-[0.4em] uppercase text-white/30 mb-1">The Circle Studio</p>
+            <p className="font-body text-[9px] tracking-[0.4em] uppercase text-white/30 mb-1">EVØLV Studio</p>
             <p className="font-display text-white/90 text-xl leading-tight" style={{ fontWeight: 200, letterSpacing: "0.06em" }}>
               {plan.name}
             </p>
@@ -101,7 +101,7 @@ function BlackCard({ plan, onClick }: { plan: PricingPlan; onClick: () => void }
 }
 
 function buildPackRequestEmail(name: string, packName: string, credits: number): string {
-  return `<div style="font-family:Montserrat,sans-serif;max-width:520px;margin:0 auto;background:#FBF7F2;padding:0"><div style="background:#B8634A;padding:32px 32px 28px"><p style="color:rgba(251,247,242,0.7);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">The Circle Studio</p><h1 style="color:#FBF7F2;font-size:28px;font-weight:200;letter-spacing:0.06em;margin:0;font-family:Georgia,serif">Demande reçue</h1></div><div style="padding:32px"><p style="color:#3D2318;font-size:15px;line-height:1.9;margin:0 0 20px">Bonjour <strong>${name}</strong>,</p><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 24px">Votre demande pour <strong>${packName}</strong> (${credits} crédit${credits > 1 ? "s" : ""}) a bien été reçue. Notre équipe l'activera après confirmation du paiement.</p><div style="background:#FFF8F5;border:1px solid rgba(184,99,74,0.2);border-radius:12px;padding:20px;margin:0 0 24px"><p style="color:#B8634A;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;margin:0 0 8px">Votre pack</p><p style="color:#3D2318;font-size:18px;font-weight:300;margin:0;font-family:Georgia,serif">${packName}</p><p style="color:#7A3040;font-size:13px;margin:4px 0 0">${credits} crédit${credits > 1 ? "s" : ""}</p></div><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 8px">Vous recevrez votre code d'accès dès validation.</p><p style="color:#5A4538;font-size:14px;margin:0 0 32px">Suivez votre carte : <a href="https://thecirclestudio.vercel.app/mon-pack" style="color:#B8634A">thecircle.ma/mon-pack</a></p><div style="border-top:1px solid rgba(184,99,74,0.15);padding-top:20px"><p style="color:#9D8070;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin:0">The Circle Studio · El Menzeh, Rabat</p></div></div></div>`;
+  return `<div style="font-family:Montserrat,sans-serif;max-width:520px;margin:0 auto;background:#FBF7F2;padding:0"><div style="background:#B8634A;padding:32px 32px 28px"><p style="color:rgba(251,247,242,0.7);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">EVØLV Studio</p><h1 style="color:#FBF7F2;font-size:28px;font-weight:200;letter-spacing:0.06em;margin:0;font-family:Georgia,serif">Demande reçue</h1></div><div style="padding:32px"><p style="color:#3D2318;font-size:15px;line-height:1.9;margin:0 0 20px">Bonjour <strong>${name}</strong>,</p><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 24px">Votre demande pour <strong>${packName}</strong> (${credits} crédit${credits > 1 ? "s" : ""}) a bien été reçue. Notre équipe l'activera après confirmation du paiement.</p><div style="background:#FFF8F5;border:1px solid rgba(184,99,74,0.2);border-radius:12px;padding:20px;margin:0 0 24px"><p style="color:#B8634A;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;margin:0 0 8px">Votre pack</p><p style="color:#3D2318;font-size:18px;font-weight:300;margin:0;font-family:Georgia,serif">${packName}</p><p style="color:#7A3040;font-size:13px;margin:4px 0 0">${credits} crédit${credits > 1 ? "s" : ""}</p></div><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 8px">Vous recevrez votre code d'accès dès validation.</p><p style="color:#5A4538;font-size:14px;margin:0 0 32px">Suivez votre carte : <a href="https://thecirclestudio.vercel.app/mon-pack" style="color:#B8634A">evolv.ma/mon-pack</a></p><div style="border-top:1px solid rgba(184,99,74,0.15);padding-top:20px"><p style="color:#9D8070;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin:0">EVØLV Studio · El Menzeh, Rabat</p></div></div></div>`;
 }
 
 function buildAdminPackEmail(name: string, email: string, phone: string, packName: string, credits: number): string {
@@ -122,7 +122,7 @@ const fallbackPlans: PricingPlan[] = [
     features: ["Accès à tous les cours", "Tapis inclus", "Réservation en ligne"],
     is_popular: false,
     cta_text: "Créer mon code",
-    cta_link: "/carte-black",
+    cta_link: "/carte-signature",
     description: "Pour découvrir ou pour les occasionnels",
   },
   {
@@ -134,12 +134,12 @@ const fallbackPlans: PricingPlan[] = [
     features: ["Accès à tous les cours", "Boisson offerte", "Validité 2 mois", "Économisez 150 DH"],
     is_popular: false,
     cta_text: "Créer mon code",
-    cta_link: "/carte-black",
+    cta_link: "/carte-signature",
     description: "Idéal pour commencer en douceur",
   },
   {
     id: "3",
-    name: "Carte Black × 10",
+    name: "Carte Signature × 10",
     price: 2800,
     original_price: 3500,
     sessions_included: 10,
@@ -151,8 +151,8 @@ const fallbackPlans: PricingPlan[] = [
       "Économisez 700 DH",
     ],
     is_popular: true,
-    cta_text: "Créer ma Carte Black",
-    cta_link: "/carte-black",
+    cta_text: "Créer ma Carte Signature",
+    cta_link: "/carte-signature",
     description: "La formule la plus avantageuse",
   },
 ];
@@ -240,7 +240,7 @@ const CarteBlackPage = () => {
               payment_status: "pending",
               request_source: "frontend",
               request_status: "pending",
-              metadata: { created_from: "carte-black-page" },
+              metadata: { created_from: "carte-signature-page" },
             })
             .select("id")
             .single();
@@ -249,7 +249,7 @@ const CarteBlackPage = () => {
 
         // Auto-send emails (non-blocking)
         supabase.functions.invoke("send-email", {
-          body: { to: email, subject: `Demande reçue — ${selected.name} · The Circle Studio`, html: buildPackRequestEmail(name, selected.name, selectedCredits) },
+          body: { to: email, subject: `Demande reçue — ${selected.name} · EVØLV Studio`, html: buildPackRequestEmail(name, selected.name, selectedCredits) },
         }).catch(() => {});
         supabase.functions.invoke("send-email", {
           body: { to: "ghali.bennis06@gmail.com", subject: `[Admin] Nouvelle demande pack — ${name}`, html: buildAdminPackEmail(name, email, phone, selected.name, selectedCredits) },
@@ -262,7 +262,7 @@ const CarteBlackPage = () => {
       const safeOfferId = isUuid(selected.id) ? selected.id : undefined;
       const session = await createPayzoneSession({
         amount: selected.price,
-        description: `${selected.name} — The Circle Studio`,
+        description: `${selected.name} — EVØLV Studio`,
         customerName: name,
         customerEmail: email,
         customerPhone: phone,
@@ -297,7 +297,7 @@ const CarteBlackPage = () => {
             </div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 text-center md:text-left md:max-w-[54%]">
-              <p className="font-body text-[10px] tracking-[0.4em] uppercase text-terra/80 mb-4">Code instantané</p>
+              <p className="font-body text-[10px] tracking-[0.4em] uppercase text-foreground/50 mb-4">Code instantané</p>
               <h1 className="font-display text-4xl md:text-6xl text-foreground mb-4" style={{ fontWeight: 200, letterSpacing: "0.1em" }}>
                 Votre <em className="italic text-terra">Carte</em>
               </h1>
@@ -328,7 +328,7 @@ const CarteBlackPage = () => {
                   <ul className="mt-4 space-y-1.5 px-1">
                     {plan.features.slice(0, 3).map((f) => (
                       <li key={f} className="flex items-start gap-2 font-body text-[11px] text-muted-foreground" style={{ fontWeight: 300 }}>
-                        <Check size={11} className="mt-0.5 text-terra/60 shrink-0" /> {f}
+                        <Check size={11} className="mt-0.5 text-muted-foreground shrink-0" /> {f}
                       </li>
                     ))}
                   </ul>
@@ -374,7 +374,7 @@ const CarteBlackPage = () => {
             >
               {step === "confirmed" ? (
                 <div className="p-10 text-center">
-                  <div className="w-16 h-16 rounded-full bg-terra/15 border border-terra/30 flex items-center justify-center mx-auto mb-5">
+                  <div className="w-16 h-16 rounded-full bg-terra/15 border border-foreground/20 flex items-center justify-center mx-auto mb-5">
                     <Check size={28} className="text-terra" />
                   </div>
                   <h3 className="font-display text-2xl text-foreground mb-2" style={{ fontWeight: 200 }}>Demande envoyée</h3>
@@ -387,13 +387,13 @@ const CarteBlackPage = () => {
                   <div className="flex flex-col gap-3">
                     <a
                       href="/mon-pack"
-                      className="w-full rounded-full bg-terra py-3 text-white text-xs tracking-[0.28em] uppercase flex items-center justify-center gap-2 hover:bg-terra-dark transition-all"
+                      className="w-full rounded-full bg-terra py-3 text-white text-xs tracking-[0.28em] uppercase flex items-center justify-center gap-2 hover:bg-foreground/80 transition-all"
                     >
                       <Ticket size={13} /> Suivre ma carte
                     </a>
                     <button
                       onClick={() => setStep("plans")}
-                      className="w-full rounded-full border border-border py-3 text-muted-foreground text-xs tracking-[0.28em] uppercase hover:border-terra/30 transition-all"
+                      className="w-full rounded-full border border-border py-3 text-muted-foreground text-xs tracking-[0.28em] uppercase hover:border-foreground/20 transition-all"
                     >
                       Fermer
                     </button>
@@ -439,7 +439,7 @@ const CarteBlackPage = () => {
                     <button
                       onClick={handleBuy}
                       disabled={!name || !email}
-                      className="w-full rounded-full bg-terra py-4 text-white text-xs tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-terra-dark transition-all"
+                      className="w-full rounded-full bg-terra py-4 text-white text-xs tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-foreground/80 transition-all"
                     >
                       <Sparkles size={14} /> {paymentMethod === "online" ? "Payer & générer" : "Créer une demande"}
                     </button>

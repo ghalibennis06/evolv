@@ -86,7 +86,7 @@ const getStatusConfig = (pack: Pack) => {
     return { label: "Expiré", color: "text-muted-foreground", bg: "bg-muted border-border", icon: AlertCircle };
   if (creditsLeft <= 0)
     return { label: "Épuisé", color: "text-muted-foreground", bg: "bg-muted border-border", icon: CheckCircle };
-  return { label: "Actif", color: "text-terra", bg: "bg-terra/10 border-terra/20", icon: CheckCircle };
+  return { label: "Actif", color: "text-terra", bg: "bg-secondary/40 border-foreground/15", icon: CheckCircle };
 };
 
 // Step enum
@@ -325,7 +325,7 @@ const MonPackPage = () => {
                       transition={{ delay: 0.1 + i * 0.07 }}
                       className="bg-card border border-border rounded-2xl p-4"
                     >
-                      <div className="w-8 h-8 rounded-xl bg-terra/10 flex items-center justify-center mb-3">
+                      <div className="w-8 h-8 rounded-xl bg-secondary/40 flex items-center justify-center mb-3">
                         <Icon size={15} className="text-terra" />
                       </div>
                       <p className="font-body text-[12px] text-foreground mb-1" style={{ fontWeight: 500 }}>{title}</p>
@@ -337,7 +337,7 @@ const MonPackPage = () => {
                 {/* Code input */}
                 <form onSubmit={handleCodeSubmit} className="flex gap-3 mb-6">
                   <div className="relative flex-1">
-                    <Ticket size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-terra/50" />
+                    <Ticket size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input
                       value={codeInput}
                       onChange={(e) => setCodeInput(formatCode(e.target.value))}
@@ -351,7 +351,7 @@ const MonPackPage = () => {
                     type="submit"
                     disabled={loading || codeInput.length < 3}
                     whileTap={{ scale: 0.96 }}
-                    className="px-6 py-3.5 bg-terra text-white rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-terra/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    className="px-6 py-3.5 bg-terra text-white rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-foreground/85 transition-colors disabled:opacity-50 flex items-center gap-2"
                     style={{ fontWeight: 500 }}
                   >
                     {loading ? (
@@ -386,7 +386,7 @@ const MonPackPage = () => {
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Link
                       to="/planning"
-                      className="flex items-center justify-center gap-2 bg-terra/8 text-terra border border-terra/20 px-4 py-2.5 rounded-xl font-body text-[11px] tracking-[0.15em] uppercase hover:bg-terra/15 transition-colors"
+                      className="flex items-center justify-center gap-2 bg-terra/8 text-terra border border-foreground/15 px-4 py-2.5 rounded-xl font-body text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/15 transition-colors"
                       style={{ fontWeight: 500 }}
                     >
                       Voir le planning <ChevronRight size={13} />
@@ -396,7 +396,7 @@ const MonPackPage = () => {
                       className="flex items-center justify-center gap-2 bg-secondary border border-border px-4 py-2.5 rounded-xl font-body text-[11px] tracking-[0.15em] uppercase hover:bg-border transition-colors text-foreground"
                       style={{ fontWeight: 400 }}
                     >
-                      Découvrir la Carte Black <ChevronRight size={13} />
+                      Découvrir la Carte Signature <ChevronRight size={13} />
                     </Link>
                     <a
                       href="https://wa.me/33668710966?text=Bonjour%2C%20je%20voudrais%20retrouver%20mon%20code%20carte%20Circler."
@@ -423,7 +423,7 @@ const MonPackPage = () => {
               >
                 <div className="bg-card border border-border rounded-3xl overflow-hidden mb-6">
                   <div className="px-6 py-5 border-b border-border flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-terra/10 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-secondary/40 flex items-center justify-center">
                       <Mail size={14} className="text-terra" />
                     </div>
                     <div>
@@ -455,7 +455,7 @@ const MonPackPage = () => {
 
                     <form onSubmit={handleEmailSubmit} className="space-y-3">
                       <div className="relative">
-                        <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-terra/50" />
+                        <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
                           type="email"
                           value={emailInput}
@@ -481,7 +481,7 @@ const MonPackPage = () => {
                         type="submit"
                         disabled={loading || !emailInput}
                         whileTap={{ scale: 0.97 }}
-                        className="w-full py-3.5 bg-terra text-white rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-terra/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full py-3.5 bg-terra text-white rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-foreground/85 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                         style={{ fontWeight: 500 }}
                       >
                         {loading ? (
@@ -607,9 +607,9 @@ const MonPackPage = () => {
                         <div className="flex items-start justify-between mb-6">
                           <div>
                             <p className="font-body text-[9px] tracking-[0.5em] uppercase text-terra/70 mb-0.5" style={{ fontWeight: 300 }}>
-                              The Circle
+                              EVØLV
                             </p>
-                            <p className="font-display text-warm-white/90 text-lg" style={{ fontWeight: 200, letterSpacing: "0.12em" }}>
+                            <p className="font-display text-white/90 text-lg" style={{ fontWeight: 200, letterSpacing: "0.12em" }}>
                               {pack.pack_type?.replace(/_/g, " ") || "Carte Séances"}
                             </p>
                           </div>
@@ -624,11 +624,11 @@ const MonPackPage = () => {
                             <span className="font-display text-5xl md:text-6xl text-warm-white" style={{ fontWeight: 200 }}>
                               {creditsLeft}
                             </span>
-                            <span className="font-body text-warm-white/40 text-base" style={{ fontWeight: 200 }}>
+                            <span className="font-body text-white/40 text-base" style={{ fontWeight: 200 }}>
                               / {pack.credits_total} séances
                             </span>
                           </div>
-                          <div className="h-1 bg-warm-white/10 rounded-full overflow-hidden">
+                          <div className="h-1 bg-white/10 rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${progressPct}%` }}
@@ -645,29 +645,29 @@ const MonPackPage = () => {
                         </div>
 
                         {/* Client & code */}
-                        <div className="border-t border-warm-white/8 pt-4 flex items-end justify-between gap-4">
+                        <div className="border-t border-white/8 pt-4 flex items-end justify-between gap-4">
                           <div>
-                            <p className="font-body text-[10px] tracking-[0.2em] uppercase text-warm-white/30 mb-0.5" style={{ fontWeight: 300 }}>
+                            <p className="font-body text-[10px] tracking-[0.2em] uppercase text-white/30 mb-0.5" style={{ fontWeight: 300 }}>
                               Titulaire
                             </p>
-                            <p className="font-body text-warm-white/80 text-sm" style={{ fontWeight: 300 }}>
+                            <p className="font-body text-white/80 text-sm" style={{ fontWeight: 300 }}>
                               {pack.client_name}
                             </p>
-                            <p className="font-body text-warm-white/30 text-[11px] mt-0.5">
+                            <p className="font-body text-white/30 text-[11px] mt-0.5">
                               {maskEmail(pack.client_email)}
                             </p>
                           </div>
                           <button
                             onClick={copyCode}
-                            className="flex items-center gap-2 bg-warm-white/5 hover:bg-warm-white/10 border border-warm-white/10 px-3 py-2 rounded-xl transition-colors group"
+                            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-2 rounded-xl transition-colors group"
                           >
-                            <span className="font-body text-warm-white/70 text-[12px] tracking-[0.15em] font-mono group-hover:text-warm-white transition-colors">
+                            <span className="font-body text-white/70 text-[12px] tracking-[0.15em] font-mono group-hover:text-warm-white transition-colors">
                               {pack.pack_code}
                             </span>
                             {copied ? (
                               <CheckCircle size={13} className="text-terra shrink-0" />
                             ) : (
-                              <Copy size={13} className="text-warm-white/30 group-hover:text-warm-white/60 shrink-0 transition-colors" />
+                              <Copy size={13} className="text-white/30 group-hover:text-white/60 shrink-0 transition-colors" />
                             )}
                           </button>
                         </div>
@@ -729,14 +729,14 @@ const MonPackPage = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <Link
                         to="/planning"
-                        className="flex items-center justify-center gap-2 bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.2em] uppercase hover:bg-terra/90 transition-colors"
+                        className="flex items-center justify-center gap-2 bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.2em] uppercase hover:bg-foreground/85 transition-colors"
                         style={{ fontWeight: 500 }}
                       >
                         Réserver une séance <ArrowRight size={14} />
                       </Link>
                       <button
                         onClick={openRecharger}
-                        className="flex items-center justify-center gap-2 bg-terra/10 text-terra border border-terra/20 py-3.5 rounded-2xl font-body text-[11px] tracking-[0.2em] uppercase hover:bg-terra/20 transition-colors"
+                        className="flex items-center justify-center gap-2 bg-secondary/40 text-terra border border-foreground/15 py-3.5 rounded-2xl font-body text-[11px] tracking-[0.2em] uppercase hover:bg-foreground/20 transition-colors"
                         style={{ fontWeight: 500 }}
                       >
                         <Zap size={14} /> Recharger
@@ -816,7 +816,7 @@ const MonPackPage = () => {
             <div className="px-6 py-5 border-b border-border flex items-center gap-3">
               <MeridianLogo size={28} variant="sand" animate spinDuration={16} />
               <div>
-                <p className="font-display text-base text-foreground" style={{ fontWeight: 300, letterSpacing: "0.08em" }}>The Circle</p>
+                <p className="font-display text-base text-foreground" style={{ fontWeight: 300, letterSpacing: "0.08em" }}>EVØLV</p>
                 <p className="font-body text-[10px] tracking-[0.25em] uppercase text-terra" style={{ fontWeight: 300 }}>Studio · Rabat</p>
               </div>
             </div>
@@ -830,7 +830,7 @@ const MonPackPage = () => {
                 <MapPin size={15} className="text-terra mt-0.5 shrink-0" />
                 <div>
                   <p className="font-body text-[12px] text-foreground" style={{ fontWeight: 400 }}>El Menzeh · Rabat</p>
-                  <p className="font-body text-[11px] text-muted-foreground group-hover:text-terra transition-colors">Voir sur la carte →</p>
+                  <p className="font-body text-[11px] text-muted-foreground group-hover:text-foreground transition-colors">Voir sur la carte →</p>
                 </div>
               </a>
               <a
@@ -856,20 +856,20 @@ const MonPackPage = () => {
                 </div>
               </a>
               <a
-                href="mailto:contact@thecircle.ma"
+                href="mailto:contact@evolv.ma"
                 className="flex items-start gap-3 p-4 rounded-2xl bg-secondary hover:bg-secondary/80 transition-colors"
               >
                 <Mail size={15} className="text-terra mt-0.5 shrink-0" />
                 <div>
                   <p className="font-body text-[12px] text-foreground" style={{ fontWeight: 400 }}>Email</p>
-                  <p className="font-body text-[11px] text-muted-foreground">contact@thecircle.ma</p>
+                  <p className="font-body text-[11px] text-muted-foreground">contact@evolv.ma</p>
                 </div>
               </a>
             </div>
             <div className="px-6 pb-6">
               <Link
                 to="/planning"
-                className="w-full flex items-center justify-center gap-2 bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-terra/90 transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-foreground/85 transition-colors"
                 style={{ fontWeight: 500 }}
               >
                 Voir le planning & réserver <ArrowRight size={14} />
@@ -946,7 +946,7 @@ const MonPackPage = () => {
                       className={`w-full text-left p-4 rounded-2xl border transition-all ${
                         selectedOffer?.id === offer.id
                           ? "border-terra bg-terra/8 ring-1 ring-terra/30"
-                          : "border-border hover:border-terra/30 bg-secondary/50"
+                          : "border-border hover:border-foreground/20 bg-secondary/50"
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -983,7 +983,7 @@ const MonPackPage = () => {
                   <button
                     onClick={handleRecharge}
                     disabled={!selectedOffer || rechargeLoading}
-                    className="w-full bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-terra/90 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
+                    className="w-full bg-terra text-white py-3.5 rounded-2xl font-body text-[11px] tracking-[0.25em] uppercase hover:bg-foreground/85 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
                     style={{ fontWeight: 500 }}
                   >
                     {rechargeLoading ? (

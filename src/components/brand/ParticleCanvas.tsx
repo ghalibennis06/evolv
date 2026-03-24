@@ -49,7 +49,7 @@ const ParticleCanvas = ({ className = "" }: ParticleCanvasProps) => {
 
         ctx.beginPath();
         ctx.arc(x, y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(184, 99, 74, ${p.opacity})`;
+        ctx.fillStyle = `rgba(249, 246, 241, ${p.opacity})`;
         ctx.fill();
       });
 
