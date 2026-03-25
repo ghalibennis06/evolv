@@ -6,7 +6,7 @@ import {
   MessageCircle, Clock, Send, Trash2, FileText, Ticket,
   Activity, UserPlus,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { adminCall } from "./AdminLayout";
 import { toast } from "sonner";
 
@@ -632,11 +632,11 @@ export function AdminContacts() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const [{ data: bookings }, { data: participants }, { data: packs }, { data: orders }] = await Promise.all([
-        supabase.from("bookings").select("*").order("created_at", { ascending: false }),
-        supabase.from("session_participants").select("*, sessions(title, date, time, price, instructor)").order("registered_at", { ascending: false }),
-        supabase.from("packs").select("*"),
-        supabase.from("orders").select("*"),
+      const [bookings, participants, packs, orders] = await Promise.all([
+        api.admin.contacts.list().catch(() => [] as any[]),
+        api.admin.planning.list().catch(() => [] as any[]),
+        api.admin.packs.list().catch(() => [] as any[]),
+        Promise.resolve([] as any[]),
       ]);
 
       const map = new Map<string, Contact>();

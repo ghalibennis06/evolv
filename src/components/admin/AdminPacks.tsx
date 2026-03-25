@@ -4,7 +4,7 @@ import {
   Copy, Minus, Plus, RefreshCw, Search, Ticket, Trash2, X, Zap,
 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
 import { adminCall } from "./AdminLayout";
 import { useClientProfile } from "./ClientProfileModal";
@@ -85,17 +85,10 @@ export function AdminPacks() {
   const fetchRequests = async () => {
     setReqLoading(true);
     try {
-      // Try via adminCall first (uses service role → sees everything)
-      const res = await adminCall({ type: "blackcard_requests" });
-      const data = res?.data || [];
-      setRequests(data);
+      const data = await api.admin.packs.list();
+      setRequests(data || []);
     } catch {
-      // Fallback: direct anon query
-      const { data } = await supabase
-        .from("code_creation_requests")
-        .select("*")
-        .order("created_at", { ascending: false });
-      setRequests((data || []) as Request[]);
+      setRequests([]);
     }
     setReqLoading(false);
   };
@@ -103,23 +96,20 @@ export function AdminPacks() {
   const fetchPacks = async () => {
     setLoading(true);
     try {
-      const res = await adminCall({ type: "packs" });
-      setPacks(res?.data || []);
-    } catch {
-      const { data } = await supabase.from("packs").select("*").order("created_at", { ascending: false });
+      const data = await api.admin.packs.list();
       setPacks((data || []) as Pack[]);
+    } catch {
+      setPacks([]);
     }
     setLoading(false);
   };
 
   const fetchPricing = async () => {
     try {
-      const res = await adminCall({ type: "pricing" });
-      const plans = ((res?.data || []) as PricingPlan[]).filter(p => (p.sessions_included || 0) > 0);
-      setPricing(plans);
-    } catch {
-      const { data } = await supabase.from("pricing").select("*").eq("is_active", true);
+      const data = await api.admin.pricing.list();
       setPricing(((data || []) as PricingPlan[]).filter(p => (p.sessions_included || 0) > 0));
+    } catch {
+      setPricing([]);
     }
   };
 
@@ -129,28 +119,8 @@ export function AdminPacks() {
     fetchPricing();
   }, []);
 
-  // ── Realtime: listen for new code_creation_requests ─────────────────────────
-  useEffect(() => {
-    if (realtimeRef.current) return;
-    realtimeRef.current = true;
-
-    const ch = supabase
-      .channel("admin-packs-requests")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "code_creation_requests" }, (payload) => {
-        const r = payload.new as Request;
-        setRequests(prev => [r, ...prev]);
-        toast.warning(`🎫 Nouvelle demande — ${r.client_name || "Client"} · ${r.offer_name || "Pack"}`, {
-          duration: 15000,
-          action: { label: "Voir", onClick: () => {} },
-        });
-      })
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "packs" }, () => {
-        fetchPacks();
-      })
-      .subscribe();
-
-    return () => { realtimeRef.current = false; supabase.removeChannel(ch); };
-  }, []);
+  // Realtime subscriptions removed — use manual refresh instead
+  useEffect(() => { realtimeRef.current = false; }, []);
 
   // ── Pending requests ─────────────────────────────────────────────────────────
   const pending = useMemo(() => requests.filter(r => r.request_status === "pending"), [requests]);
@@ -456,15 +426,10 @@ function UseCreditSection({ packs, onUsed }: { packs: Pack[]; onUsed: () => void
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    supabase
-      .from("sessions")
-      .select("id,title,date,time,instructor,capacity,enrolled")
-      .eq("is_active", true)
-      .gte("date", new Date().toISOString().split("T")[0])
-      .order("date", { ascending: true })
-      .order("time", { ascending: true })
-      .limit(40)
-      .then(({ data }) => setSessions((data || []) as SessionSlot[]));
+    const todayStr = new Date().toISOString().split("T")[0];
+    api.sessions.list({ activeOnly: true }).then((data) => {
+      setSessions(((data || []).filter((s: any) => s.date >= todayStr).slice(0, 40)) as SessionSlot[]);
+    }).catch(() => {});
   }, []);
 
   const activePacks = useMemo(() =>
@@ -510,36 +475,15 @@ function UseCreditSection({ packs, onUsed }: { packs: Pack[]; onUsed: () => void
         session_time: selectedSession.time,
       });
 
-      // 2. Create a booking for this session
-      await supabase.from("bookings").insert({
-        session_id: selectedSession.id,
+      // 2. Register participant for this session
+      await api.sessions.registerParticipant(selectedSession.id, {
         client_name: selectedPack.client_name,
         client_email: selectedPack.client_email || "",
         client_phone: selectedPack.client_phone || null,
         pack_code: selectedPack.pack_code,
         payment_method: "pack",
-        payment_status: "paid",
-        status: "confirmed",
-        notes: `Crédit consommé via admin · Pack ${selectedPack.pack_code}`,
-      });
-
-      // 3. Also insert into session_participants
-      await supabase.from("session_participants").insert({
-        session_id: selectedSession.id,
-        first_name: selectedPack.client_name.split(" ")[0] || selectedPack.client_name,
-        last_name: selectedPack.client_name.split(" ").slice(1).join(" ") || "",
-        email: selectedPack.client_email || "",
-        phone: selectedPack.client_phone || null,
         payment_status: "Payé",
-        notes: `Pack ${selectedPack.pack_code} · Crédit consommé via admin`,
-      });
-
-      // 4. Increment enrolled count on session
-      await supabase.rpc("increment_session_enrolled", { session_id_param: selectedSession.id }).catch(() => {
-        supabase.from("sessions").select("enrolled").eq("id", selectedSession.id).single()
-          .then(({ data }) => {
-            if (data) supabase.from("sessions").update({ enrolled: (data.enrolled || 0) + 1 }).eq("id", selectedSession.id);
-          });
+        notes: `Crédit consommé via admin · Pack ${selectedPack.pack_code}`,
       });
 
       toast.success(`✅ Crédit déduit & inscription créée`, {

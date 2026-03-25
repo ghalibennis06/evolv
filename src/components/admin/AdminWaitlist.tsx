@@ -7,7 +7,7 @@ import {
   Send, Timer, Filter, X,
   ExternalLink, User, CalendarCheck, Loader2,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 interface WaitlistEntry {
@@ -122,11 +122,7 @@ export function AdminWaitlist() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("waitlist")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
+      const data = await api.admin.waitlist.list();
       setEntries(data || []);
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
@@ -135,55 +131,26 @@ export function AdminWaitlist() {
   useEffect(() => { load(); }, [load]);
 
   useEffect(() => {
-    supabase
-      .from("coaches")
-      .select("id,name,is_active")
-      .eq("is_active", true)
-      .order("display_order", { ascending: true })
-      .then(({ data }) => setCoachesOptions((data as CoachOption[]) || []));
+    api.coaches.list().then((data) => setCoachesOptions((data as CoachOption[]) || [])).catch(() => {});
 
-    supabase
-      .from("sessions")
-      .select("id,title,date,time,instructor,capacity,is_active")
-      .eq("is_active", true)
-      .gte("date", new Date().toISOString().split("T")[0])
-      .order("date", { ascending: true })
-      .order("time", { ascending: true })
-      .then(async ({ data: sesData }) => {
-        if (!sesData) return;
-        // Get enrollment counts
-        const ids = sesData.map((s: any) => s.id);
-        const { data: partData } = await supabase
-          .from("session_participants")
-          .select("session_id")
-          .in("session_id", ids)
-          .eq("status", "confirmed");
-        const countMap: Record<string, number> = {};
-        (partData || []).forEach((p: any) => {
-          countMap[p.session_id] = (countMap[p.session_id] || 0) + 1;
-        });
-        setSessionsOptions(
-          sesData.map((s: any) => ({ ...s, enrolled: countMap[s.id] || 0 })) as SessionOption[]
-        );
-      });
+    const todayStr = new Date().toISOString().split("T")[0];
+    api.sessions.list({ activeOnly: true }).then((sesData) => {
+      if (!sesData) return;
+      setSessionsOptions(
+        sesData.filter((s: any) => s.date >= todayStr).map((s: any) => ({ ...s, enrolled: s.enrolled || 0 })) as SessionOption[]
+      );
+    }).catch(() => {});
   }, []);
 
-  // Realtime
-  useEffect(() => {
-    const ch = supabase.channel("waitlist-admin")
-      .on("postgres_changes", { event: "*", schema: "public", table: "waitlist" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
-  }, [load]);
-
+  // Realtime removed — use manual refresh
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from("waitlist").update({ status }).eq("id", id);
+    await api.admin.contacts.update(id, { status });
     setEntries(p => p.map(e => e.id === id ? { ...e, status } : e));
   };
 
   const bulkUpdateStatus = async (status: string) => {
     for (const id of selected) {
-      await supabase.from("waitlist").update({ status }).eq("id", id);
+      await api.admin.contacts.update(id, { status });
     }
     setEntries(p => p.map(e => selected.includes(e.id) ? { ...e, status } : e));
     setSelected([]);
@@ -191,7 +158,7 @@ export function AdminWaitlist() {
 
   const deleteEntry = async (id: string) => {
     if (!confirm("Supprimer cette entrée ?")) return;
-    await supabase.from("waitlist").delete().eq("id", id);
+    await api.admin.contacts.delete(id);
     setEntries(p => p.filter(e => e.id !== id));
   };
 
@@ -199,58 +166,33 @@ export function AdminWaitlist() {
     if (!entry.original_session_id) return;
     setBookingLoading(true);
     try {
-      // 1. Insert into session_participants
+      // 1. Register participant via API
       const nameParts = entry.client_name.trim().split(" ");
       const firstName = nameParts[0] ?? entry.client_name;
       const lastName = nameParts.slice(1).join(" ") || "—";
-      // Map waitlist payment_status to session_participants vocabulary
       const mapPayment = (ps: string | null) => {
         if (!ps) return "En attente";
         if (ps === "paid" || ps === "Payé") return "Payé";
         if (ps === "pack") return "Pack";
         return "En attente";
       };
-      const { error: insertError } = await supabase
-        .from("session_participants")
-        .insert({
-          session_id: entry.original_session_id,
-          first_name: firstName,
-          last_name: lastName,
-          email: entry.client_email,
-          phone: entry.client_phone ?? "",
-          payment_status: mapPayment(entry.payment_status),
-          notes: `Converti depuis liste d'attente${entry.notes ? ` — ${entry.notes}` : ""}`,
-          registered_at: new Date().toISOString(),
-        });
-      if (insertError) throw insertError;
+      await api.sessions.registerParticipant(entry.original_session_id, {
+        first_name: firstName,
+        last_name: lastName,
+        email: entry.client_email,
+        phone: entry.client_phone ?? "",
+        payment_status: mapPayment(entry.payment_status),
+        notes: `Converti depuis liste d'attente${entry.notes ? ` — ${entry.notes}` : ""}`,
+      });
 
-      // 2. Increment sessions.enrolled
-      const { data: sesRow } = await supabase
-        .from("sessions")
-        .select("enrolled")
-        .eq("id", entry.original_session_id)
-        .single();
-      await supabase
-        .from("sessions")
-        .update({ enrolled: (sesRow?.enrolled ?? 0) + 1 })
-        .eq("id", entry.original_session_id);
-
-      // 3. Mark waitlist entry as confirmed
-      await supabase.from("waitlist").update({ status: "confirmed" }).eq("id", entry.id);
+      // 2. Mark waitlist entry as confirmed
+      await api.admin.contacts.update(entry.id, { status: "confirmed" });
       setEntries(p => p.map(e => e.id === entry.id ? { ...e, status: "confirmed" } : e));
       setBookingDone(entry.id);
       setBookingEntry(null);
 
-      // Send confirmation email (non-blocking)
-      if (entry.client_email) {
-        supabase.functions.invoke("send-email", {
-          body: {
-            to: entry.client_email,
-            subject: `Réservation confirmée — ${entry.class_name} · EVØLV Studio`,
-            html: `<div style="font-family:Montserrat,sans-serif;max-width:520px;margin:0 auto;background:#FBF7F2;padding:0"><div style="background:#B8634A;padding:32px"><p style="color:rgba(251,247,242,0.7);font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">EVØLV Studio</p><h1 style="color:#FBF7F2;font-size:28px;font-weight:200;margin:0;font-family:Georgia,serif">Réservation confirmée ✓</h1></div><div style="padding:32px"><p style="color:#3D2318;font-size:15px;margin:0 0 20px">Bonjour <strong>${entry.client_name}</strong>,</p><div style="background:#FFF8F5;border:1px solid rgba(184,99,74,0.2);border-radius:12px;padding:20px;margin:0 0 24px"><p style="color:#B8634A;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;margin:0 0 10px">Votre séance</p><p style="color:#3D2318;font-size:22px;font-weight:300;margin:0;font-family:Georgia,serif">${entry.class_name}</p><p style="color:#7A3040;font-size:14px;margin:6px 0 0">${entry.class_day} · ${entry.class_time}</p></div><p style="color:#5A4538;font-size:14px;line-height:1.9;margin:0 0 8px">Nous vous attendons ! Pensez à arriver 5 minutes avant.</p><p style="color:#5A4538;font-size:14px;margin:0 0 32px">Annulation gratuite jusqu'à 2h avant le début.</p><p style="color:#9D8070;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">EVØLV Studio · El Menzeh, Rabat</p></div></div>`,
-          },
-        }).catch(() => {});
-      }
+      // Email confirmation removed — no email service yet
+      console.log("Booking confirmed for:", entry.client_email, entry.class_name);
 
       // WhatsApp quick-send toast action
       if (entry.client_phone) {
@@ -283,24 +225,16 @@ export function AdminWaitlist() {
         if (ps === "pack") return "Pack";
         return "En attente";
       };
-      const { error: insertError } = await supabase
-        .from("session_participants")
-        .insert({
-          session_id: session.id,
-          first_name: firstName,
-          last_name: lastName,
-          email: entry.client_email,
-          phone: entry.client_phone ?? "",
-          payment_status: mapPayment(entry.payment_status),
-          notes: `Reprogrammé depuis liste d'attente (${entry.class_name})${entry.notes ? ` — ${entry.notes}` : ""}`,
-          registered_at: new Date().toISOString(),
-        });
-      if (insertError) throw insertError;
+      await api.sessions.registerParticipant(session.id, {
+        first_name: firstName,
+        last_name: lastName,
+        email: entry.client_email,
+        phone: entry.client_phone ?? "",
+        payment_status: mapPayment(entry.payment_status),
+        notes: `Reprogrammé depuis liste d'attente (${entry.class_name})${entry.notes ? ` — ${entry.notes}` : ""}`,
+      });
 
-      const { data: sesRow } = await supabase.from("sessions").select("enrolled").eq("id", session.id).single();
-      await supabase.from("sessions").update({ enrolled: (sesRow?.enrolled ?? 0) + 1 }).eq("id", session.id);
-
-      await supabase.from("waitlist").update({ status: "confirmed" }).eq("id", entry.id);
+      await api.admin.contacts.update(entry.id, { status: "confirmed" });
       setEntries(p => p.map(e => e.id === entry.id ? { ...e, status: "confirmed" } : e));
       setBookingDone(entry.id);
       setProfileEntry(null);
@@ -327,7 +261,7 @@ export function AdminWaitlist() {
   };
 
   const updatePaymentStatus = async (id: string, payment_status: string) => {
-    await supabase.from("waitlist").update({ payment_status }).eq("id", id);
+    await api.admin.contacts.update(id, { payment_status });
     setEntries(p => p.map(e => e.id === id ? { ...e, payment_status } : e));
   };
 
@@ -340,7 +274,7 @@ export function AdminWaitlist() {
       original_session_id: session.id,
       status: "contacted",
     };
-    await supabase.from("waitlist").update(update).eq("id", entry.id);
+    await api.admin.contacts.update(entry.id, update);
     setEntries(p => p.map(e => e.id === entry.id ? { ...e, ...update } : e));
   };
 
@@ -356,8 +290,12 @@ export function AdminWaitlist() {
       notes: manual.notes || "Ajouté manuellement depuis l'admin",
       status: "pending",
     };
-    const { data, error } = await supabase.from("waitlist").insert(payload).select("*").single();
-    if (error) return alert("Erreur lors de l'ajout.");
+    let data: any;
+    try {
+      data = await api.waitlist.join(payload);
+    } catch {
+      return alert("Erreur lors de l'ajout.");
+    }
     setEntries((p) => [data as WaitlistEntry, ...p]);
     setManual({ client_name: "", client_email: "", client_phone: "", selected_date: "", selected_session_id: "", class_name: "Intérêt général", class_day: "—", class_time: "—", coach: "", notes: "" });
     setShowAddForm(false);

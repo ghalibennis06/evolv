@@ -9,7 +9,7 @@ import { SplineScene } from "@/components/SplineScene";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 import PageBackgroundMeridian from "@/components/brand/PageBackgroundMeridian";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { createPayzoneSession } from "@/lib/payzone";
 
 interface PricingPlan {
@@ -172,21 +172,21 @@ const CarteBlackPage = () => {
   const [loadingPlans, setLoadingPlans] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("pricing")
-      .select("*")
-      .eq("is_active", true)
-      .order("sort_order")
-      .then(({ data }) => {
-        const available = (data && data.length > 0 ? data : fallbackPlans) as PricingPlan[];
-        const onlyCodePlans = available.filter(isCodeGeneratingOffer);
-        const source = onlyCodePlans.length ? onlyCodePlans : available;
-        setPlans(source);
-        const wanted = (searchParams.get("plan") || "").toLowerCase();
-        const byQuery = wanted ? source.find((x) => x.name.toLowerCase() === wanted) : null;
-        setSelected(byQuery || source.find((x) => x.is_popular) || source[0] || null);
-        setLoadingPlans(false);
-      });
+    api.pricing.list().then((data) => {
+      const available = (data && data.length > 0 ? data : fallbackPlans) as PricingPlan[];
+      const onlyCodePlans = available.filter(isCodeGeneratingOffer);
+      const source = onlyCodePlans.length ? onlyCodePlans : available;
+      setPlans(source);
+      const wanted = (searchParams.get("plan") || "").toLowerCase();
+      const byQuery = wanted ? source.find((x) => x.name.toLowerCase() === wanted) : null;
+      setSelected(byQuery || source.find((x) => x.is_popular) || source[0] || null);
+      setLoadingPlans(false);
+    }).catch(() => {
+      const source = fallbackPlans.filter(isCodeGeneratingOffer).length ? fallbackPlans.filter(isCodeGeneratingOffer) : fallbackPlans;
+      setPlans(source);
+      setSelected(source.find((x) => x.is_popular) || source[0] || null);
+      setLoadingPlans(false);
+    });
   }, [searchParams]);
 
   const selectedCredits = useMemo(() => selected?.sessions_included || 1, [selected]);
@@ -209,51 +209,28 @@ const CarteBlackPage = () => {
 
         let requestId: string | undefined;
 
-        // 1. Try edge function
+        // Submit pack request via API
         try {
-          const { data: efData, error: efErr } = await supabase.functions.invoke("create-blackcard-request", {
-            body: {
-              client_name: name,
-              client_email: email,
-              client_phone: phone,
-              offer_id: safeOfferId,
-              offer_name: selected.name,
-              credits_total: selectedCredits,
-              payment_method: "cash_on_site",
-            },
+          const efData = await api.admin.packs.create({
+            client_name: name,
+            client_email: email || null,
+            client_phone: phone || null,
+            offer_id: safeOfferId,
+            offer_name: selected.name,
+            credits_total: selectedCredits,
+            payment_method: "cash_on_site",
+            payment_status: "pending",
+            request_source: "frontend",
+            request_status: "pending",
+            metadata: { created_from: "carte-signature-page" },
           });
-          if (!efErr && efData?.request_id) requestId = efData.request_id;
-        } catch (_) { /* fallthrough to direct insert */ }
+          if (efData?.request_id) requestId = efData.request_id;
+          if (efData?.id) requestId = efData.id;
+        } catch (_) { /* non-blocking */ }
 
-        // 2. Fallback: direct insert into code_creation_requests (anon, no service key needed)
-        if (!requestId) {
-          const { data: directData } = await supabase
-            .from("code_creation_requests")
-            .insert({
-              client_name: name,
-              client_email: email || null,
-              client_phone: phone || null,
-              offer_id: safeOfferId,
-              offer_name: selected.name,
-              credits_total: selectedCredits,
-              payment_method: "cash_on_site",
-              payment_status: "pending",
-              request_source: "frontend",
-              request_status: "pending",
-              metadata: { created_from: "carte-signature-page" },
-            })
-            .select("id")
-            .single();
-          if (directData?.id) requestId = directData.id;
-        }
 
-        // Auto-send emails (non-blocking)
-        supabase.functions.invoke("send-email", {
-          body: { to: email, subject: `Demande reçue — ${selected.name} · EVØLV Studio`, html: buildPackRequestEmail(name, selected.name, selectedCredits) },
-        }).catch(() => {});
-        supabase.functions.invoke("send-email", {
-          body: { to: "ghali.bennis06@gmail.com", subject: `[Admin] Nouvelle demande pack — ${name}`, html: buildAdminPackEmail(name, email, phone, selected.name, selectedCredits) },
-        }).catch(() => {});
+        // Email notifications removed — no email service yet
+        console.log("Pack request created for:", name, selected.name);
 
         setStep("confirmed");
         return;

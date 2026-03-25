@@ -107,20 +107,16 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
   const [visibleTabs, setVisibleTabs] = useState<string[]>(tabs.map((t) => t.id));
 
   useEffect(() => {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase
-        .from("site_content")
-        .select("content")
-        .eq("section", "disciplines_visibility")
-        .single()
-        .then(({ data }) => {
-          if (data?.content) {
-            const vis = data.content as any;
-            const list = vis[context];
-            if (Array.isArray(list) && list.length > 0) setVisibleTabs(list);
-          }
-        });
-    });
+    fetch("/api/site-content?section=disciplines_visibility")
+      .then(r => r.json())
+      .then(data => {
+        if (data?.content) {
+          const vis = data.content as any;
+          const list = vis[context];
+          if (Array.isArray(list) && list.length > 0) setVisibleTabs(list);
+        }
+      })
+      .catch(() => {});
   }, [context]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -26,12 +26,10 @@ const BoutiquePage = () => {
   const [buyForm, setBuyForm] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await supabase.from("products").select("*").eq("in_stock", true);
+    api.boutique.list().then((data) => {
       setProducts(data || []);
       setLoading(false);
-    };
-    fetchProducts();
+    }).catch(() => setLoading(false));
   }, []);
 
   const handleBuy = async (product: Product) => {
@@ -51,16 +49,13 @@ const BoutiquePage = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          priceId: product.stripe_price_id,
-          mode: "payment",
-          clientName: buyForm.name,
-          clientEmail: buyForm.email,
-        },
+      const data = await api.payment.createSession({
+        priceId: product.stripe_price_id,
+        mode: "payment",
+        clientName: buyForm.name,
+        clientEmail: buyForm.email,
       });
 
-      if (error) throw error;
       if (data?.url) window.location.href = data.url;
     } catch (err) {
       alert("Erreur lors de la commande.");

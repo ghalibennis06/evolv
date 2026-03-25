@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 
 interface PhotoUploadProps {
   images: string[];
@@ -22,14 +21,8 @@ const PhotoUpload = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile = useCallback(async (file: File) => {
-    const ext = file.name.split(".").pop();
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-    const { error } = await supabase.storage.from("uploads").upload(path, file);
-    if (error) throw error;
-
-    const { data } = supabase.storage.from("uploads").getPublicUrl(path);
-    return data.publicUrl;
+    // Upload not yet implemented — return a local object URL as a stub
+    return URL.createObjectURL(file);
   }, []);
 
   const handleFiles = useCallback(async (files: FileList | File[]) => {

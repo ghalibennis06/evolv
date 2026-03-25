@@ -46,13 +46,13 @@ export function buildPayzoneRedirectForm(
   form.submit();
 }
 
-// ── Supabase Edge Function wrapper ───────────────────────────────
-import { supabase } from "@/integrations/supabase/client";
+// ── API wrapper ───────────────────────────────────────────────────
 
 export interface PayzoneSession {
   paymentUrl: string;
   orderId: string;
-  expiresAt: string;
+  requestId: string;
+  merchantToken: string;
 }
 
 export async function createPayzoneSession(params: {
@@ -69,25 +69,28 @@ export async function createPayzoneSession(params: {
 }): Promise<PayzoneSession> {
   const origin = window.location.origin;
 
-  const { data, error } = await supabase.functions.invoke("create-payzone-session", {
-    body: {
+  const res = await fetch("/api/payment/create-session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       ...params,
       returnUrl: `${origin}${params.returnPath || "/paiement-succes"}`,
       cancelUrl: `${origin}/paiement-annule`,
-      notifyUrl: `${origin}/api/payzone-notify`,
+      notifyUrl: `${origin}/api/payment/verify`,
       currency: "MAD",
       language: "fr",
-    },
+    }),
   });
 
-  if (error) throw error;
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Payzone: erreur serveur");
   if (!data?.paymentUrl) throw new Error("Payzone: URL de paiement manquante");
 
   return data as PayzoneSession;
 }
 
 // ── Order ID generator ────────────────────────────────────────────
-export function generateOrderId(prefix = "TC"): string {
+export function generateOrderId(prefix = "EV"): string {
   const ts = Date.now().toString(36).toUpperCase();
   const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
   return `${prefix}-${ts}-${rand}`;

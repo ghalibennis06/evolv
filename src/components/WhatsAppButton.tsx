@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 // WhatsApp SVG official icon
 const WaIcon = () => (
@@ -19,19 +19,14 @@ const WhatsAppButton = () => {
   const [topPx, setTopPx] = useState(32);
 
   useEffect(() => {
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("section", "contact")
-      .maybeSingle()
-      .then(({ data }) => {
-        const c = data?.content as any;
-        if (!c) return;
-        if (c.whatsapp) setWaNumber(String(c.whatsapp));
-        if (c.button_side) setSide(c.button_side);
-        if (c.button_edge !== undefined) setEdgePx(Number(c.button_edge));
-        if (c.button_top !== undefined) setTopPx(Number(c.button_top));
-      });
+    api.siteContent.get("contact").then((data) => {
+      const c = data?.content as any;
+      if (!c) return;
+      if (c.whatsapp) setWaNumber(String(c.whatsapp));
+      if (c.button_side) setSide(c.button_side);
+      if (c.button_edge !== undefined) setEdgePx(Number(c.button_edge));
+      if (c.button_top !== undefined) setTopPx(Number(c.button_top));
+    }).catch(() => {});
   }, []);
 
   // Superman spring — très haute masse, très faible raideur

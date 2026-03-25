@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useSessions, SessionData } from "@/hooks/useSessions";
 import { useNextSession } from "@/hooks/useNextSession";
 import { getTypeColor } from "@/lib/schedule";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 const DAY_LABELS_FULL = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -112,14 +112,9 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
   const [coaches, setCoaches] = useState<{id: string; name: string}[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("coaches")
-      .select("id, name")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data }) => {
-        if (data && data.length > 0) setCoaches(data);
-      });
+    api.coaches.list().then((data) => {
+      if (data && data.length > 0) setCoaches(data.map((c: any) => ({ id: c.id, name: c.name })));
+    }).catch(() => {});
   }, []);
 
   const { sessions, loading } = useSessions({ fromToday: false });

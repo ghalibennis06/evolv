@@ -10,7 +10,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import MeridianLogo from "@/components/brand/MeridianLogo";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 interface Pack {
@@ -128,11 +128,7 @@ const MonPackPage = () => {
     setPendingRequest(null);
     setNotFound(false);
 
-    const { data: packData } = await supabase
-      .from("packs")
-      .select("*")
-      .eq("pack_code", code)
-      .maybeSingle();
+    const packData = await api.packs.lookup(code).catch(() => null);
 
     setLoading(false);
 
@@ -162,24 +158,14 @@ const MonPackPage = () => {
         setError("L'adresse email ne correspond pas à ce code. Vérifiez votre email de confirmation.");
         return;
       }
-      // Email matches — load usage
-      const { data: usageData } = await supabase
-        .from("pack_usage_log")
-        .select("id, session_title, session_date, session_time, used_at, cancelled_at, credit_refunded")
-        .eq("pack_id", pack.id)
-        .order("used_at", { ascending: false });
-      setUsage((usageData || []) as UsageEntry[]);
+      // Email matches — load usage (fetched as part of pack lookup, or fetch separately)
+      const usageData = await fetch(`/api/packs/usage?pack_id=${pack.id}`).then(r => r.json()).catch(() => []);
+      setUsage((Array.isArray(usageData) ? usageData : []) as UsageEntry[]);
       setLoading(false);
       setStep("result");
     } else {
       // No pack found — check pending requests by email
-      const { data: reqData } = await supabase
-        .from("pack_purchase_requests")
-        .select("*")
-        .eq("client_email", email)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const reqData = await fetch(`/api/packs/pending?email=${encodeURIComponent(email)}`).then(r => r.ok ? r.json() : null).catch(() => null);
 
       if (reqData) {
         setPendingRequest(reqData as PendingRequest);
@@ -215,11 +201,7 @@ const MonPackPage = () => {
     setSelectedOffer(null);
     if (pricing.length > 0) return;
     setPricingLoading(true);
-    const { data } = await supabase
-      .from("pricing")
-      .select("*")
-      .eq("is_active", true)
-      .order("price", { ascending: true });
+    const data = await api.pricing.list().catch(() => []);
     setPricing((data as PricingOption[]) || []);
     setPricingLoading(false);
   };
@@ -228,18 +210,16 @@ const MonPackPage = () => {
     if (!selectedOffer || !pack) return;
     setRechargeLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("create-payzone-session", {
-        body: {
-          amount: selectedOffer.price,
-          pack_type: selectedOffer.name,
-          client_name: pack.client_name,
-          client_email: pack.client_email,
-          existing_pack_code: pack.pack_code,
-          sessions: selectedOffer.sessions,
-        },
+      const data = await api.payment.createSession({
+        amount: selectedOffer.price,
+        description: selectedOffer.name,
+        customerName: pack.client_name,
+        customerEmail: pack.client_email,
+        packType: selectedOffer.name,
+        packCredits: selectedOffer.sessions,
       });
-      if (error || !data?.payment_url) throw new Error(error?.message || "Erreur Payzone");
-      window.location.href = data.payment_url;
+      if (!data?.paymentUrl) throw new Error("Erreur Payzone");
+      window.location.href = data.paymentUrl;
     } catch {
       const msg = encodeURIComponent(
         `Bonjour 👋 Je souhaite recharger ma carte ${pack.pack_code} (${pack.client_name}) avec l'offre "${selectedOffer.name}" (${selectedOffer.sessions} séances — ${selectedOffer.price} MAD).`

@@ -1,100 +1,75 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import type { User, Session } from "@supabase/supabase-js";
+import { useState, useCallback, useEffect } from "react";
 
-interface AuthState {
-  user: User | null;
-  session: Session | null;
-  isAdmin: boolean;
-  loading: boolean;
+const TOKEN_KEY = "evolv_admin_token";
+
+interface AdminUser {
+  id: string;
+  email: string;
+  name: string | null;
+  role: string;
 }
 
-async function checkAdmin(userId: string): Promise<boolean> {
-  try {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    return !!data;
-  } catch {
-    return false;
-  }
+interface AuthState {
+  user: AdminUser | null;
+  isAdmin: boolean;
+  loading: boolean;
+  token: string | null;
 }
 
 export function useAuth() {
   const [state, setState] = useState<AuthState>({
     user: null,
-    session: null,
     isAdmin: false,
     loading: true,
+    token: null,
   });
 
-  // Track last userId so we don't re-check admin on every token refresh
-  const lastUserIdRef = useRef<string | null>(null);
-  const mountedRef = useRef(true);
-
-  const handleSession = useCallback(async (session: Session | null) => {
-    const user = session?.user ?? null;
-    const userId = user?.id ?? null;
-
-    // If same user, skip re-checking admin (prevents loop on token refresh)
-    if (userId === lastUserIdRef.current && lastUserIdRef.current !== null) {
-      // Just update session in case token refreshed
-      if (mountedRef.current) setState((s) => ({ ...s, session, loading: false }));
+  useEffect(() => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      setState({ user: null, isAdmin: false, loading: false, token: null });
       return;
     }
-
-    lastUserIdRef.current = userId;
-
-    const isAdmin = user ? await checkAdmin(user.id) : false;
-
-    if (mountedRef.current) {
-      setState({ user, session, isAdmin, loading: false });
-    }
+    fetch("/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.id) {
+          setState({ user: data, isAdmin: true, loading: false, token });
+        } else {
+          localStorage.removeItem(TOKEN_KEY);
+          setState({ user: null, isAdmin: false, loading: false, token: null });
+        }
+      })
+      .catch(() => setState({ user: null, isAdmin: false, loading: false, token: null }));
   }, []);
 
-  useEffect(() => {
-    mountedRef.current = true;
-
-    // Subscribe to auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      handleSession(session);
-    });
-
-    // Fallback: if onAuthStateChange hasn't fired in 4s, force via getSession
-    const fallback = setTimeout(async () => {
-      if (!mountedRef.current) return;
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        await handleSession(session);
-      } catch {
-        if (mountedRef.current) setState((s) => ({ ...s, loading: false }));
-      }
-    }, 4000);
-
-    return () => {
-      mountedRef.current = false;
-      clearTimeout(fallback);
-      subscription.unsubscribe();
-    };
-  }, [handleSession]);
-
   const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) return { error: new Error(data.error || "Login failed") };
+      localStorage.setItem(TOKEN_KEY, data.token);
+      setState({ user: data.user, isAdmin: true, loading: false, token: data.token });
+      return { error: null };
+    } catch (err: any) {
+      return { error: err };
+    }
   }, []);
 
   const signOut = useCallback(async () => {
-    lastUserIdRef.current = null;
-    await supabase.auth.signOut();
-    setState({ user: null, session: null, isAdmin: false, loading: false });
+    localStorage.removeItem(TOKEN_KEY);
+    setState({ user: null, isAdmin: false, loading: false, token: null });
   }, []);
 
   return { ...state, signIn, signOut };
+}
+
+export function getAdminToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY);
 }

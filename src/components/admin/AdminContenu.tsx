@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Save, RefreshCw } from "lucide-react";
 import { adminCall } from "./AdminLayout";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 const iCls =
@@ -134,24 +134,17 @@ export function AdminContenu() {
   }, []);
 
   useEffect(() => {
-    supabase.from("site_content")
-      .select("key,value")
-      .eq("section", "notifications")
-      .then(({ data }) => {
-        if (data) {
-          const fromName = (data as any[]).find((r: any) => r.key === "from_name")?.value;
-          const fromEmail = (data as any[]).find((r: any) => r.key === "from_email")?.value;
-          if (fromName) setEmailFrom(e => ({ ...e, name: fromName }));
-          if (fromEmail) setEmailFrom(e => ({ ...e, email: fromEmail }));
-        }
-      });
+    api.siteContent.get("notifications").then((data) => {
+      if (data?.content) {
+        const c = data.content as any;
+        if (c.from_name) setEmailFrom(e => ({ ...e, name: c.from_name }));
+        if (c.from_email) setEmailFrom(e => ({ ...e, email: c.from_email }));
+      }
+    }).catch(() => {});
   }, []);
 
   const saveEmailConfig = async () => {
-    await supabase.from("site_content").upsert([
-      { section: "notifications", key: "from_name", value: emailFrom.name },
-      { section: "notifications", key: "from_email", value: emailFrom.email },
-    ], { onConflict: "section,key" });
+    await api.admin.siteContent.upsert("notifications", { from_name: emailFrom.name, from_email: emailFrom.email });
     toast.success("Configuration email sauvegardée");
   };
 

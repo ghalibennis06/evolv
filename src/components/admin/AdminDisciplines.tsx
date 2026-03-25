@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Save, RefreshCw, Plus, Trash2, Pencil, X, Check, ChevronDown, ChevronUp, Upload } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 const lCls = "font-body text-[11px] tracking-[0.25em] uppercase text-foreground/70 mb-1.5 block font-medium";
@@ -57,22 +57,12 @@ export function AdminDisciplines() {
   const newFileRef = useRef<HTMLInputElement>(null);
   const editFileRef = useRef<HTMLInputElement>(null);
 
-  const uploadPhoto = async (file: File, id: string): Promise<string | null> => {
+  const uploadPhoto = async (file: File, _id: string): Promise<string | null> => {
+    // Storage upload not yet implemented — return a local object URL as a stub
     try {
-      const BUCKET = "discipline-photos";
-      // Try to create bucket if it doesn't exist (no-op if already exists)
-      await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
-
-      const ext = file.name.split(".").pop() || "jpg";
-      const path = `${id}-${Date.now()}.${ext}`;
-      const { data, error } = await supabase.storage
-        .from(BUCKET)
-        .upload(path, file, { upsert: true, contentType: file.type });
-      if (error) throw error;
-      const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
-      return urlData.publicUrl;
-    } catch (err: any) {
-      toast.error(`Upload échoué : ${err.message || "Erreur inconnue"}. Collez une URL à la place.`);
+      return URL.createObjectURL(file);
+    } catch {
+      toast.error("Upload non disponible. Collez une URL à la place.");
       return null;
     }
   };
@@ -105,21 +95,14 @@ export function AdminDisciplines() {
   useEffect(() => {
     const load = async () => {
       try {
-        const { data: configData } = await supabase
-          .from("site_content")
-          .select("content")
-          .eq("section", "disciplines_config")
-          .single();
+        const [configData, visData] = await Promise.all([
+          api.siteContent.get("disciplines_config").catch(() => null),
+          api.siteContent.get("disciplines_visibility").catch(() => null),
+        ]);
 
         if (configData?.content && Array.isArray((configData.content as any).disciplines)) {
           setDisciplines((configData.content as any).disciplines);
         }
-
-        const { data: visData } = await supabase
-          .from("site_content")
-          .select("content")
-          .eq("section", "disciplines_visibility")
-          .single();
 
         if (visData?.content && typeof visData.content === "object") {
           const raw = visData.content as any;
@@ -220,14 +203,10 @@ export function AdminDisciplines() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await supabase.from("site_content").upsert(
-        { section: "disciplines_config", content: { disciplines } },
-        { onConflict: "section" }
-      );
-      await supabase.from("site_content").upsert(
-        { section: "disciplines_visibility", content: { index: visibility.index, studio: visibility.studio } },
-        { onConflict: "section" }
-      );
+      await Promise.all([
+        api.admin.siteContent.upsert("disciplines_config", { disciplines }),
+        api.admin.siteContent.upsert("disciplines_visibility", { index: visibility.index, studio: visibility.studio }),
+      ]);
       toast.success("Disciplines sauvegardées !");
     } catch (err: any) {
       toast.error(err.message || "Erreur lors de la sauvegarde");

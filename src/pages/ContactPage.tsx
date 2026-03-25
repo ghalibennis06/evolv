@@ -7,7 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import AdminFab from "@/components/AdminFab";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 const iCls = "w-full bg-secondary/30 border border-border px-4 py-4 font-body text-[13px] text-foreground focus:border-foreground outline-none transition-colors placeholder:text-muted-foreground/50 rounded-none";
@@ -61,31 +61,12 @@ const ContactPage = () => {
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
     setSending(true);
     try {
-      // Fetch studio destination email from studio_config
-      const { data: cfgRow } = await supabase
-        .from("site_content")
-        .select("value")
-        .eq("section", "studio_config")
-        .eq("key", "config")
-        .maybeSingle();
-      const studioEmail = (cfgRow?.value as any)?.email_studio || "ghali.bennis06@gmail.com";
-
-      // Notification to studio
-      await supabase.functions.invoke("send-email", {
-        body: {
-          to: studioEmail,
-          replyTo: form.email,
-          subject: `[Contact] ${form.subject} — ${form.name}`,
-          html: buildContactEmailHtml(form.name, form.email, form.phone, form.subject, form.message),
-        },
-      });
-      // Confirmation to sender
-      await supabase.functions.invoke("send-email", {
-        body: {
-          to: form.email,
-          subject: "Message reçu — EVØLV Studio",
-          html: buildConfirmHtml(form.name),
-        },
+      await api.contact.submit({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        message: form.message,
+        subject: form.subject,
       });
       setSent(true);
     } catch (err: any) {

@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { adminCall } from "./AdminLayout";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -185,44 +185,20 @@ export function AdminDashboard({ onTabChange }: { onTabChange?: (tab: string) =>
     const todayStr = new Date().toISOString().split("T")[0];
 
     // Sessions query is fully independent — runs immediately, not blocked by other queries
-    supabase
-      .from("sessions")
-      .select("*")
-      .eq("is_active", true)
-      .gte("date", todayStr)
-      .order("date").order("time")
-      .limit(20)
-      .then(({ data, error }) => {
-        if (error) console.warn("Sessions query error:", error);
-        const rows = (data || []) as QuickSession[];
-        setQuickSessions(rows);
-        setDashSessions(rows);
-      });
+    api.sessions.list({ activeOnly: true }).then((data) => {
+      const rows = ((data || []).filter((s: any) => s.date >= todayStr).slice(0, 20)) as QuickSession[];
+      setQuickSessions(rows);
+      setDashSessions(rows);
+    }).catch((err) => console.warn("Sessions query error:", err));
 
-    // Other priority data — errors in one don't block others
+    // Other priority data via admin API
     Promise.allSettled([
-      supabase
-        .from("code_creation_requests")
-        .select("id,client_name,client_email,client_phone,offer_name,credits_total,payment_method,created_at")
-        .eq("request_status", "pending")
-        .order("created_at", { ascending: false })
-        .limit(10),
-      supabase
-        .from("waitlist")
-        .select("id,client_name,client_email,client_phone,class_name,class_day,class_time,status,created_at")
-        .in("status", ["pending", "contacted"])
-        .order("created_at", { ascending: false })
-        .limit(10),
-      supabase
-        .from("session_participants")
-        .select("id,first_name,last_name,email,phone,payment_status,registered_at,session_id")
-        .not("payment_status", "eq", "Payé")
-        .order("registered_at", { ascending: false })
-        .limit(15),
-    ]).then(([requestsRes, waitlistRes, unpaidRes]) => {
-      if (requestsRes.status === "fulfilled") setPendingRequests(requestsRes.value.data || []);
-      if (waitlistRes.status === "fulfilled") setWaitlistPending(waitlistRes.value.data || []);
-      if (unpaidRes.status === "fulfilled") setUnpaidParticipants(unpaidRes.value.data || []);
+      api.admin.packs.list({ status: "pending", limit: 10 }),
+      api.admin.waitlist.list(),
+      api.admin.contacts.list(),
+    ]).then(([requestsRes, waitlistRes]) => {
+      if (requestsRes.status === "fulfilled") setPendingRequests(requestsRes.value || []);
+      if (waitlistRes.status === "fulfilled") setWaitlistPending((waitlistRes.value || []).filter((w: any) => ["pending", "contacted"].includes(w.status)).slice(0, 10));
     });
   }, []);
 
@@ -259,7 +235,7 @@ export function AdminDashboard({ onTabChange }: { onTabChange?: (tab: string) =>
             if (b.created_at > ex.lastSeen) { ex.lastSeen = b.created_at; ex.name = b.client_name; }
           }
         }
-        const { data: sp } = await supabase.from("session_participants").select("*").order("registered_at", { ascending: false });
+        const sp = await api.admin.contacts.list().catch(() => [] as any[]);
         for (const p of sp || []) {
           const key = p.email?.toLowerCase().trim();
           if (!key) continue;
@@ -273,16 +249,17 @@ export function AdminDashboard({ onTabChange }: { onTabChange?: (tab: string) =>
         // 3. Ops view
         const todayStr = new Date().toISOString().split("T")[0];
         const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split("T")[0];
-        const { data: sessions } = await supabase.from("sessions").select("*").in("date", [todayStr, tomorrowStr]).eq("is_active", true).order("time");
+        const allSessions = await api.sessions.list({ activeOnly: true }).catch(() => [] as any[]);
+        const sessions = (allSessions || []).filter((s: any) => s.date === todayStr || s.date === tomorrowStr);
 
         const buildOps = async (dateStr: string): Promise<TodaySession[]> => {
-          const daySessions = (sessions || []).filter((s) => s.date === dateStr);
+          const daySessions = (sessions || []).filter((s: any) => s.date === dateStr);
           return Promise.all(
-            daySessions.map(async (s) => {
-              const { data: parts } = await supabase.from("session_participants").select("*").eq("session_id", s.id);
+            daySessions.map(async (s: any) => {
+              const parts = await api.admin.planning.participants(s.id).catch(() => [] as any[]);
               return {
                 id: s.id, title: s.title, time: s.time, date: s.date, capacity: s.capacity, instructor: s.instructor,
-                participants: (parts || []).map((p) => ({ id: p.id, name: `${p.first_name} ${p.last_name}`.trim(), email: p.email, phone: p.phone || null, payment_status: p.payment_status })),
+                participants: (parts || []).map((p: any) => ({ id: p.id, name: `${p.first_name} ${p.last_name}`.trim(), email: p.email, phone: p.phone || null, payment_status: p.payment_status })),
               };
             }),
           );
@@ -406,20 +383,15 @@ export function AdminDashboard({ onTabChange }: { onTabChange?: (tab: string) =>
     setInlineLoading(true);
     try {
       const nameParts = (entry.client_name || "").trim().split(" ");
-      const { error } = await supabase.from("session_participants").insert({
-        session_id: session.id,
+      await api.sessions.registerParticipant(session.id, {
         first_name: nameParts[0] || entry.client_name,
         last_name: nameParts.slice(1).join(" ") || "—",
         email: entry.client_email,
         phone: entry.client_phone || null,
         payment_status: "En attente",
         notes: `Reprogrammé depuis liste d'attente (${entry.class_name})`,
-        registered_at: new Date().toISOString(),
       });
-      if (error) throw error;
-      const { data: sesRow } = await supabase.from("sessions").select("enrolled").eq("id", session.id).single();
-      await supabase.from("sessions").update({ enrolled: (sesRow?.enrolled ?? 0) + 1 }).eq("id", session.id);
-      await supabase.from("waitlist").update({ status: "confirmed" }).eq("id", entry.id);
+      await api.admin.contacts.update(entry.id, { status: "confirmed" });
       setWaitlistPending(p => p.filter(w => w.id !== entry.id));
       setWlExpandedId(null);
       toast.success(`${entry.client_name} inscrit à "${session.title}" ✓`);
@@ -431,14 +403,14 @@ export function AdminDashboard({ onTabChange }: { onTabChange?: (tab: string) =>
   };
 
   const updateParticipantPayment = async (pid: string, status: string) => {
-    await supabase.from("session_participants").update({ payment_status: status }).eq("id", pid);
+    await api.admin.contacts.update(pid, { payment_status: status });
     setUnpaidParticipants(p =>
       status === "Payé" ? p.filter(x => x.id !== pid) : p.map(x => x.id === pid ? { ...x, payment_status: status } : x)
     );
   };
 
   const approveCodeRequest = async (rid: string) => {
-    await supabase.from("code_creation_requests").update({ request_status: "processing" }).eq("id", rid);
+    await api.admin.packs.update(rid, { request_status: "processing" });
     setPendingRequests(p => p.filter(r => r.id !== rid));
     toast.success("Demande marquée en traitement — finalisez dans l'onglet Packs.");
     if (typeof onTabChange === "function") onTabChange("packs");

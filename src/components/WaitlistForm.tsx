@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, Check, X, Mail, Phone, User, Clock } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 
 interface SessionInfo {
@@ -38,7 +38,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
     if (!name.trim() || !email.trim()) { setError("Nom et email requis"); return; }
     setLoading(true); setError("");
     try {
-      const { error: e } = await supabase.from("waitlist").insert({
+      await api.waitlist.join({
         client_name:  name.trim(),
         client_email: email.trim().toLowerCase(),
         client_phone: phone.trim() || null,
@@ -48,7 +48,6 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
         coach:        session?.instructor ?? "—",
         status:       "pending",
       });
-      if (e) throw e;
       setDone(true);
       setTimeout(() => { onSuccess?.(); }, 2800);
     } catch (e: any) {

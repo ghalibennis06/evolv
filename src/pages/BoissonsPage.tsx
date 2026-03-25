@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Coffee } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -23,16 +23,10 @@ const BoissonsPage = () => {
   const [filterCat, setFilterCat] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("admin_drinks")
-        .select("*")
-        .eq("is_available", true)
-        .order("sort_order", { ascending: true });
+    api.drinks.list().then((data) => {
       setDrinks(data || []);
       setLoading(false);
-    };
-    fetch();
+    }).catch(() => setLoading(false));
   }, []);
 
   const categories = [...new Set(drinks.map(d => d.category))];

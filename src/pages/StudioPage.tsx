@@ -4,7 +4,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -93,15 +93,14 @@ const StudioPage = () => {
   const [visibleDisciplines, setVisibleDisciplines] = useState(ALL_DISCIPLINES);
 
   useEffect(() => {
-    supabase.from("site_content").select("content").eq("section", "disciplines_visibility").single()
-      .then(({ data }) => {
-        if (data?.content) {
-          const vis = (data.content as any)?.studio;
-          if (Array.isArray(vis) && vis.length > 0) {
-            setVisibleDisciplines(ALL_DISCIPLINES.filter(d => vis.includes(d.id)));
-          }
+    api.siteContent.get("disciplines_visibility").then((data) => {
+      if (data?.content) {
+        const vis = (data.content as any)?.studio;
+        if (Array.isArray(vis) && vis.length > 0) {
+          setVisibleDisciplines(ALL_DISCIPLINES.filter(d => vis.includes(d.id)));
         }
-      });
+      }
+    }).catch(() => {});
   }, []);
 
   return (

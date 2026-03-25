@@ -169,21 +169,13 @@ export function AdminPlanning() {
     fetchSessions();
     fetchCoaches();
 
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase
-        .from("waitlist")
-        .select("id,client_name,client_email,client_phone,class_name,class_day,class_time,coach,status,created_at")
-        .in("status", ["pending", "contacted"])
-        .order("created_at", { ascending: false })
-        .then(({ data }) => setWaitlistCandidates((data as WaitlistCandidate[]) || []));
+    import("@/lib/api").then(({ api }) => {
+      api.admin.waitlist.list().then((data) => {
+        setWaitlistCandidates(((data || []).filter((w: any) => ["pending", "contacted"].includes(w.status))) as WaitlistCandidate[]);
+      }).catch(() => {});
 
       // Load discipline pricing for auto-fill
-      supabase
-        .from("site_content")
-        .select("content")
-        .eq("section", "disciplines_config")
-        .single()
-        .then(({ data }) => {
+      api.siteContent.get("disciplines_config").then((data) => {
           if (data?.content && Array.isArray((data.content as any).disciplines)) {
             const pricing: Record<string, number> = {};
             for (const disc of (data.content as any).disciplines) {
@@ -311,13 +303,9 @@ export function AdminPlanning() {
     setProfilePart(part);
     setHistLoading(true);
     try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const { data } = await supabase
-        .from("bookings")
-        .select("*")
-        .eq("client_email", part.email)
-        .order("created_at", { ascending: false });
-      setPartHistory(data || []);
+      const { api } = await import("@/lib/api");
+      const data = await api.admin.contacts.list().catch(() => [] as any[]);
+      setPartHistory((data || []).filter((b: any) => b.client_email === part.email || b.email === part.email));
     } catch {
       setPartHistory([]);
     } finally {

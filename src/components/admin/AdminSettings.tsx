@@ -32,7 +32,7 @@ import {
   Phone,
   Save,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { adminCall } from "./AdminLayout";
 import { toast } from "sonner";
 import MeridianLogo from "@/components/brand/MeridianLogo";
@@ -141,8 +141,9 @@ export function AdminSettings() {
 
   const loadUsers = useCallback(async () => {
     try {
-      const { data } = await supabase.from("user_roles").select("*").order("created_at", { ascending: false });
-      setUsers(data || []);
+      // Users managed via backend — use admin call
+      const res = await adminCall({ action: "get_users" }).catch(() => ({ data: [] }));
+      setUsers(res?.data || []);
     } catch (e) {
       console.error(e);
     }
@@ -160,13 +161,8 @@ export function AdminSettings() {
 
   const loadConfig = useCallback(async () => {
     try {
-      const { data } = await supabase
-        .from("site_content")
-        .select("value")
-        .eq("section", "studio_config")
-        .eq("key", "config")
-        .maybeSingle();
-      if (data?.value) setConfig({ ...defaultConfig, ...(data.value as Partial<StudioConfig>) });
+      const data = await api.siteContent.get("studio_config").catch(() => null);
+      if (data?.content) setConfig({ ...defaultConfig, ...(data.content as Partial<StudioConfig>) });
     } catch (e) {
       console.error(e);
     }
@@ -175,10 +171,7 @@ export function AdminSettings() {
   const saveConfig = async () => {
     setConfigSaving(true);
     try {
-      const { error } = await supabase
-        .from("site_content")
-        .upsert({ section: "studio_config", key: "config", value: config as any }, { onConflict: "section,key" });
-      if (error) throw error;
+      await api.admin.siteContent.upsert("studio_config", config);
       toast.success("Paramètres sauvegardés");
     } catch (e: any) {
       toast.error(e.message || "Erreur de sauvegarde");
@@ -195,7 +188,7 @@ export function AdminSettings() {
     if (!invEmail.trim()) return;
     setSending(true);
     try {
-      const { error } = (await supabase.auth.admin?.inviteUserByEmail?.(invEmail.trim())) ?? { error: null };
+      await adminCall({ action: "invite_user", email: invEmail.trim(), role: invRole });
       toast.success(`Invitation envoyée à ${invEmail}`);
       setInvEmail("");
     } catch (e: any) {
@@ -207,7 +200,7 @@ export function AdminSettings() {
 
   const removeUser = async (userId: string) => {
     if (!confirm("Révoquer l'accès ?")) return;
-    await supabase.from("user_roles").delete().eq("user_id", userId);
+    await adminCall({ action: "remove_user", user_id: userId }).catch(() => {});
     loadUsers();
   };
 

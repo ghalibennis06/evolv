@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 import { Link } from "react-router-dom";
 import coachAndy from "@/assets/coach-andy.jpg";
@@ -136,15 +136,10 @@ const CoachesSection = () => {
   const [hoveredIdx, setHoveredIdx] = useState(0);
 
   useEffect(() => {
-    supabase
-      .from("coaches")
-      .select("*")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data }) => {
-        setCoaches(data && data.length > 0 ? (data as Coach[]) : fallbackCoaches);
-        setLoading(false);
-      });
+    api.coaches.list().then((data) => {
+      setCoaches(data && data.length > 0 ? (data as Coach[]) : fallbackCoaches);
+      setLoading(false);
+    }).catch(() => { setCoaches(fallbackCoaches); setLoading(false); });
   }, []);
 
   const displayCoaches = coaches.slice(0, 4);

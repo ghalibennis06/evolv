@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import MeridianLogo from "@/components/brand/MeridianLogo";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -36,12 +36,10 @@ const TarifsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase.from("pricing").select("*").eq("is_active", true).order("sort_order", { ascending: true });
+    api.pricing.list().then((data) => {
       setPlans(data && data.length > 0 ? data as PricingPlan[] : fallbackPricing);
       setLoading(false);
-    };
-    fetch();
+    }).catch(() => { setPlans(fallbackPricing); setLoading(false); });
   }, []);
 
   const formatPrice = (p: number) => {

@@ -14,7 +14,7 @@ import StarfieldCanvas from "@/components/brand/StarfieldCanvas";
 import { useNavigate, Link } from "react-router-dom";
 import { useSessions } from "@/hooks/useSessions";
 import { getTypeColor } from "@/lib/schedule";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import {
   motion,
   useScroll,
@@ -154,15 +154,10 @@ const CarnetsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    supabase
-      .from("pricing")
-      .select("id,name,price,original_price,sessions_included,features,is_popular")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data }) => {
-        const list = (data || []) as PricingPlan[];
-        setPlans(list.length ? list : [fallbackBlack]);
-      });
+    api.pricing.list().then((data) => {
+      const list = (data || []) as PricingPlan[];
+      setPlans(list.length ? list : [fallbackBlack]);
+    }).catch(() => setPlans([fallbackBlack]));
   }, []);
 
   const openModal = (plan: PricingPlan) => {
@@ -179,31 +174,18 @@ const CarnetsSection = () => {
     const safeId = isUuid(selected.id) ? selected.id : undefined;
     try {
       if (method === "cash_on_site") {
-        let requestId: string | undefined;
+        // Submit pack request via API
         try {
-          const { data: ef } = await supabase.functions.invoke("create-blackcard-request", {
-            body: { client_name: name, client_email: email, client_phone: phone,
-              offer_id: safeId, offer_name: selected.name, credits_total: credits, payment_method: "cash_on_site" },
-          });
-          if (ef?.request_id) requestId = ef.request_id;
-        } catch (_) {}
-        if (!requestId) {
-          const { data: d } = await supabase.from("code_creation_requests").insert({
+          await api.admin.packs.create({
             client_name: name, client_email: email, client_phone: phone || null,
             offer_id: safeId || null, offer_name: selected.name, credits_total: credits,
             payment_method: "cash_on_site", payment_status: "pending",
             request_source: "frontend", request_status: "pending",
             metadata: { created_from: "index-carnets" },
-          }).select("id").single();
-          if (d?.id) requestId = d.id;
-        }
-        // Auto-send emails (non-blocking)
-        supabase.functions.invoke("send-email", {
-          body: { to: email, subject: `Demande reçue — ${selected.name} · EVØLV Studio`, html: `<div style="font-family:Montserrat,sans-serif;padding:32px;background:#FBF7F2;max-width:520px"><h2 style="color:#B8634A;font-weight:200;font-size:24px">Demande reçue ✓</h2><p style="color:#3D2318">Bonjour ${name},</p><p style="color:#5A4538">Votre demande pour <strong>${selected.name}</strong> (${credits} crédit${credits > 1 ? 's' : ''}) a bien été reçue. L'équipe The Circle vous contactera pour confirmer.</p><p style="color:#9D8070;font-size:11px;text-transform:uppercase;letter-spacing:0.2em">EVØLV Studio · El Menzeh, Rabat</p></div>` },
-        }).catch(() => {});
-        supabase.functions.invoke("send-email", {
-          body: { to: "ghali.bennis06@gmail.com", subject: `[Admin] Nouvelle demande pack — ${name}`, html: `<div style="font-family:Montserrat,sans-serif;padding:28px;background:#FBF7F2;max-width:480px"><h2 style="color:#7A3040;font-weight:200">Nouvelle demande</h2><p><b>Client:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Pack:</b> ${selected.name}</p><p><b>Crédits:</b> ${credits}</p><a href="https://thecirclestudio.vercel.app/admin" style="background:#B8634A;color:#FBF7F2;padding:10px 20px;border-radius:20px;text-decoration:none;font-size:11px">Voir admin →</a></div>` },
-        }).catch(() => {});
+          });
+        } catch (_) { /* non-blocking */ }
+        // Email notifications removed — no email service yet
+        console.log("Pack request created for:", name, selected.name);
         setStep("confirmed");
         return;
       }

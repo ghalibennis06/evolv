@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Coffee, Dumbbell, ArrowRight, AlertCircle, Users, Clock, Bell, CreditCard, Ticket, X, Sparkles, ShieldCheck, Zap } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { SessionData } from "@/hooks/useSessions";
 import { STRIPE_PRICES, isReformer } from "@/lib/schedule";
 import { generateWhatsAppUrl, buildBookingConfirmationMessage } from "@/lib/whatsapp";
@@ -39,26 +39,16 @@ const PlanningPage = () => {
   const [alternativeSessions, setAlternativeSessions] = useState<SessionData[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("admin_drinks")
-      .select("name")
-      .eq("is_available", true)
-      .order("sort_order")
-      .then(({ data }) => setDrinksList((data || []).map((d: any) => d.name)));
+    api.drinks.list().then((data) => setDrinksList((data || []).map((d: any) => d.name))).catch(() => {});
   }, []);
 
   // Auto-open booking from ?session=ID URL param
   useEffect(() => {
     const sessionId = searchParams.get("session");
     if (!sessionId) return;
-    supabase
-      .from("sessions")
-      .select("*")
-      .eq("id", sessionId)
-      .single()
-      .then(({ data }) => {
-        if (data) handleSelectSession({ ...data, enrolled: 0 } as SessionData);
-      });
+    api.sessions.get(sessionId).then((data) => {
+      if (data) handleSelectSession({ ...data, enrolled: data.enrolled ?? 0 } as SessionData);
+    }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -92,19 +82,17 @@ const PlanningPage = () => {
     const end = new Date(sessionDate);
     end.setDate(end.getDate() + 3);
 
-    const { data } = await supabase
-      .from("sessions")
-      .select("*")
-      .eq("is_active", true)
-      .eq("type", session.type)
-      .gte("date", start.toISOString().slice(0, 10))
-      .lte("date", end.toISOString().slice(0, 10))
-      .order("date")
-      .order("time");
+    const data = await api.sessions.list({ activeOnly: true }).catch(() => [] as any[]);
 
     const alternatives = (data || [])
       .map((s: any) => ({ ...s, enrolled: s.enrolled ?? 0 }))
-      .filter((s: SessionData) => s.id !== session.id && s.capacity - s.enrolled > 0)
+      .filter((s: SessionData) => {
+        if (s.id === session.id) return false;
+        if (s.type !== session.type) return false;
+        if (s.capacity - s.enrolled <= 0) return false;
+        const d = s.date;
+        return d >= start.toISOString().slice(0, 10) && d <= end.toISOString().slice(0, 10);
+      })
       .sort((a: SessionData, b: SessionData) => {
         const da = Math.abs(new Date(`${a.date}T${a.time}`).getTime() - sessionDate.getTime());
         const db = Math.abs(new Date(`${b.date}T${b.time}`).getTime() - sessionDate.getTime());
@@ -139,7 +127,7 @@ const PlanningPage = () => {
     }
     setLoading(true);
     try {
-      const { error } = await supabase.from("waitlist").insert({
+      await api.waitlist.join({
         client_name: name,
         client_email: email,
         client_phone: phone || null,
@@ -177,8 +165,8 @@ const PlanningPage = () => {
       if (usePackCode && packCode) {
         setPackValidating(true);
         setPackError("");
-        const { data: packData, error: packErr } = await supabase.functions.invoke("use-pack-credit", {
-          body: {
+        try {
+          const packData = await api.packs.useCredit({
             packCode,
             clientEmail: email,
             session_id: selectedSession.id,
@@ -187,19 +175,19 @@ const PlanningPage = () => {
             session_time: selectedSession.time,
             client_name: name,
             client_phone: phone || null,
-          },
-        });
-        if (packErr || packData?.error) {
-          setPackError(packData?.error || "Erreur de validation du pack.");
+          });
+          packResult = { creditsRemaining: packData.creditsRemaining, creditsTotal: packData.creditsTotal };
+        } catch (packErr: any) {
+          setPackError(packErr?.message || "Erreur de validation du pack.");
           setPackValidating(false);
           setLoading(false);
           return;
         }
-        packResult = { creditsRemaining: packData.creditsRemaining, creditsTotal: packData.creditsTotal };
         setPackValidating(false);
       }
       const dayLabel = formatDay(selectedSession.date);
-      const { error } = await supabase.from("bookings").insert({
+      // Register participant via API
+      await api.sessions.registerParticipant(selectedSession.id, {
         client_name: name,
         client_email: email,
         client_phone: phone || null,
@@ -211,18 +199,8 @@ const PlanningPage = () => {
         drink_type: wantsDrink ? selectedDrink : null,
         wants_mat: wantsMat,
         notes: bookingNotes || null,
-        status: "booked",
         payment_status: usePackCode ? "pack" : payOnSite ? "pay_on_site" : "pending",
         pack_id: usePackCode ? packCode : null,
-      });
-      if (error) throw error;
-      await supabase.from("session_participants").insert({
-        session_id: selectedSession.id,
-        first_name: name.split(" ")[0],
-        last_name: name.split(" ").slice(1).join(" ") || "",
-        email,
-        phone: phone || null,
-        payment_status: usePackCode ? "Payé" : "En attente",
       });
       const whatsappMsg = buildBookingConfirmationMessage({
         name,
@@ -235,52 +213,30 @@ const PlanningPage = () => {
         creditsTotal: packResult.creditsTotal,
         paymentMethod: usePackCode ? "pack" : payOnSite ? "on_site" : "online",
       });
-      // Email de confirmation via Resend (fire-and-forget)
-      supabase.functions.invoke("send-email", {
-        body: {
-          to: email,
-          subject: `✅ Réservation confirmée — ${selectedSession.title}`,
-          html: `
-            <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#FAF6F1;border-radius:16px">
-              <h1 style="font-size:22px;font-weight:300;letter-spacing:0.08em;color:#1A1714;margin:0 0 8px">EVØLV</h1>
-              <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#B8634A;margin:0 0 28px">Confirmation de réservation</p>
-              <p style="color:#3D3530;font-size:15px;margin:0 0 20px">Bonjour <strong>${name}</strong>,</p>
-              <div style="background:#fff;border:1px solid #E8E0D8;border-radius:12px;padding:20px;margin:0 0 20px">
-                <p style="margin:0 0 8px;font-size:14px;color:#3D3530">📅 <strong>${dayLabel}</strong> à <strong>${selectedSession.time}</strong></p>
-                <p style="margin:0 0 8px;font-size:14px;color:#3D3530">🏋️ <strong>${selectedSession.title}</strong> avec ${selectedSession.instructor}</p>
-                ${wantsDrink && selectedDrink ? `<p style="margin:0 0 8px;font-size:14px;color:#3D3530">☕ Boisson : ${selectedDrink}</p>` : ""}
-                ${usePackCode ? `<p style="margin:0;font-size:14px;color:#B8634A">🎫 Pack : <strong>${packCode}</strong> · ${packResult.creditsRemaining}/${packResult.creditsTotal} crédits restants</p>` : ""}
-              </div>
-              <p style="font-size:12px;color:#6B605A;line-height:1.6;margin:0 0 24px">📌 Annulation gratuite jusqu'à 2h avant le cours.</p>
-              <a href="https://thecirclestudio.vercel.app/planning" style="display:inline-block;background:#B8634A;color:#fff;text-decoration:none;padding:12px 28px;border-radius:50px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">Voir le planning</a>
-            </div>`,
-        },
-      }).catch(() => {}); // silent fail — ne bloque pas la réservation
+      // Email confirmation removed — no email service yet
+      console.log("Booking confirmed for:", email, selectedSession.title);
 
       if (usePackCode || payOnSite) {
         window.open(generateWhatsAppUrl(whatsappMsg), "_blank");
         window.location.href = `/payment-success?method=${usePackCode ? "pack" : "on_site"}`;
         return;
       }
-      const { data, error: fnError } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          priceId: STRIPE_PRICES.SINGLE_SESSION,
-          mode: "payment",
-          clientName: name,
-          clientEmail: email,
-          clientPhone: phone,
-          bookingData: {
-            day: dayLabel,
-            time: selectedSession.time,
-            class: selectedSession.title,
-            coach: selectedSession.instructor,
-            drink: wantsDrink ? selectedDrink : null,
-            mat: wantsMat,
-            equipment: equipmentChoice,
-          },
+      const data = await api.payment.createSession({
+        priceId: STRIPE_PRICES.SINGLE_SESSION,
+        mode: "payment",
+        clientName: name,
+        clientEmail: email,
+        clientPhone: phone,
+        bookingData: {
+          day: dayLabel,
+          time: selectedSession.time,
+          class: selectedSession.title,
+          coach: selectedSession.instructor,
+          drink: wantsDrink ? selectedDrink : null,
+          mat: wantsMat,
+          equipment: equipmentChoice,
         },
       });
-      if (fnError) throw fnError;
       if (data?.url) window.location.href = data.url;
     } catch {
       alert("Erreur lors de la réservation. Veuillez réessayer.");

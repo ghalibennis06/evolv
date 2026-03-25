@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowLeft, MessageCircle, Loader2, Ticket } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { generateWhatsAppUrl } from "@/lib/whatsapp";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import MeridianLogo from "@/components/brand/MeridianLogo";
@@ -32,46 +32,15 @@ const PaymentSuccess = () => {
     
     const verify = async () => {
       try {
-        const { data, error } = await supabase.functions.invoke("verify-payment", {
-          body: {
-            session_id: sessionId,
-            pack_code: packCode,
-            method,
-            order_id: orderId,
-            request_id: requestId,
-          },
+        const data = await api.payment.verify({
+          request_id: requestId ?? undefined,
+          order_id: orderId ?? undefined,
         });
-        if (!error && data?.verified) {
+        if (data?.verified) {
           setVerified(true);
           const finalCode = data?.pack_code ?? packCode;
           if (finalCode) setGeneratedPackCode(finalCode);
-
-          // Send confirmation email if we have client info from verify-payment
-          if (data?.client_email) {
-            supabase.functions.invoke("send-email", {
-              body: {
-                to: data.client_email,
-                subject: finalCode ? "🎫 Votre Carte EVØLV est activée !" : "✅ Réservation confirmée — EVØLV",
-                html: `
-                  <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#FAF6F1;border-radius:16px">
-                    <p style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#B8634A;margin:0 0 6px">EVØLV</p>
-                    <h1 style="font-size:22px;font-weight:300;letter-spacing:0.08em;color:#1A1714;margin:0 0 24px">
-                      ${finalCode ? "Votre carte est activée" : "Réservation confirmée"}
-                    </h1>
-                    <p style="color:#3D3530;font-size:15px;margin:0 0 16px">Bonjour ${data.client_name ?? ""},</p>
-                    ${finalCode ? `
-                    <div style="background:#1A1714;border-radius:12px;padding:20px;margin:0 0 20px;text-align:center">
-                      <p style="color:rgba(250,246,241,0.4);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;margin:0 0 8px">Votre code</p>
-                      <p style="color:#FAF6F1;font-size:24px;font-family:monospace;letter-spacing:0.15em;margin:0;font-weight:300">${finalCode}</p>
-                    </div>
-                    <p style="font-size:13px;color:#3D3530;margin:0 0 16px">Conservez ce code précieusement — il vous servira pour chaque réservation sur <a href="https://thecirclestudio.vercel.app/planning" style="color:#B8634A">evolv.ma/reserver</a>.</p>
-                    ` : ""}
-                    <p style="font-size:12px;color:#6B605A;line-height:1.6;margin:0 0 24px">📌 Annulation gratuite jusqu'à 2h avant chaque cours.</p>
-                    <a href="https://thecirclestudio.vercel.app/planning" style="display:inline-block;background:#B8634A;color:#fff;text-decoration:none;padding:12px 28px;border-radius:50px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">Réserver une séance</a>
-                  </div>`,
-              },
-            }).catch(() => {});
-          }
+          // Email confirmation removed — no email service yet
         }
       } catch (err) {
         console.error("Payment verification error:", err);

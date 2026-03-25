@@ -21,7 +21,7 @@ import {
   Bell,
   AlertCircle,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 interface UpcomingParticipant {
@@ -84,22 +84,14 @@ export function AdminReminders() {
   const [sentIds, setSentIds] = useState<Set<string>>(new Set());
 
   const loadTemplates = useCallback(async () => {
-    const { data } = await supabase
-      .from("site_content")
-      .select("content")
-      .eq("section", "whatsapp_reminders")
-      .maybeSingle();
-    if (data?.content) {
-      const c = data.content as any;
-      if (c.template24h) {
-        setTemplate24h(c.template24h);
-        setEditTemplate24h(c.template24h);
+    try {
+      const data = await api.siteContent.get("whatsapp_reminders");
+      if (data?.content) {
+        const c = data.content as any;
+        if (c.template24h) { setTemplate24h(c.template24h); setEditTemplate24h(c.template24h); }
+        if (c.template2h) { setTemplate2h(c.template2h); setEditTemplate2h(c.template2h); }
       }
-      if (c.template2h) {
-        setTemplate2h(c.template2h);
-        setEditTemplate2h(c.template2h);
-      }
-    }
+    } catch {}
   }, []);
 
   const loadParticipants = useCallback(async () => {
@@ -113,11 +105,8 @@ export function AdminReminders() {
       const tomorrow = in24h.toISOString().slice(0, 10);
 
       // Fetch sessions for today and tomorrow
-      const { data: sessions } = await supabase
-        .from("sessions")
-        .select("id, date, time, title, instructor")
-        .in("date", [...new Set([today, tomorrow])])
-        .eq("is_active", true);
+      const allSessions = await api.admin.planning.list({ from: today, to: tomorrow });
+      const sessions = (allSessions || []).filter((s: any) => s.is_active);
 
       if (!sessions || sessions.length === 0) {
         setParticipants24h([]);
@@ -127,11 +116,11 @@ export function AdminReminders() {
 
       // Filter to sessions within 24h
       const sessions24h = sessions.filter((s: any) => {
-        const dt = new Date(`${s.date}T${s.time}`);
+        const dt = new Date(`${s.session_date}T${s.session_time}`);
         return dt > now && dt <= in24h;
       });
       const sessions2h = sessions.filter((s: any) => {
-        const dt = new Date(`${s.date}T${s.time}`);
+        const dt = new Date(`${s.session_date}T${s.session_time}`);
         return dt > now && dt <= in2h;
       });
 
@@ -139,15 +128,15 @@ export function AdminReminders() {
         filteredSessions: typeof sessions,
       ): Promise<UpcomingParticipant[]> => {
         if (filteredSessions.length === 0) return [];
-        const ids = filteredSessions.map((s: any) => s.id);
-        const { data: parts } = await supabase
-          .from("session_participants")
-          .select("id, first_name, last_name, email, phone, session_id")
-          .in("session_id", ids);
+        const parts: any[] = [];
+        for (const s of filteredSessions) {
+          const p = await api.admin.planning.participants(s.id).catch(() => []);
+          parts.push(...p.map((pp: any) => ({ ...pp, _session: s })));
+        }
 
-        return (parts || []).map((p: any) => {
-          const s = filteredSessions.find((ss: any) => ss.id === p.session_id)!;
-          const dt = new Date(`${s.date}T${s.time}`);
+        return parts.map((p: any) => {
+          const s = p._session || filteredSessions.find((ss: any) => ss.id === p.session_id)!;
+          const dt = new Date(`${s.session_date}T${s.session_time}`);
           const minutesUntil = Math.round((dt.getTime() - now.getTime()) / 60000);
           return {
             id: p.id,
@@ -157,8 +146,8 @@ export function AdminReminders() {
             phone: p.phone || null,
             session_id: p.session_id,
             session_title: s.title,
-            session_date: s.date,
-            session_time: s.time,
+            session_date: s.session_date,
+            session_time: s.session_time,
             session_instructor: s.instructor || "",
             minutesUntil,
           };
@@ -188,20 +177,7 @@ export function AdminReminders() {
   const saveTemplates = async () => {
     setSavingTemplates(true);
     try {
-      const { data: existing } = await supabase
-        .from("site_content")
-        .select("id")
-        .eq("section", "whatsapp_reminders")
-        .maybeSingle();
-
-      const payload = { template24h: editTemplate24h, template2h: editTemplate2h };
-
-      if (existing?.id) {
-        await supabase.from("site_content").update({ content: payload }).eq("id", existing.id);
-      } else {
-        await supabase.from("site_content").insert({ section: "whatsapp_reminders", content: payload });
-      }
-
+      await api.siteContent.upsert("whatsapp_reminders", { template24h: editTemplate24h, template2h: editTemplate2h });
       setTemplate24h(editTemplate24h);
       setTemplate2h(editTemplate2h);
       setShowTemplateEditor(false);

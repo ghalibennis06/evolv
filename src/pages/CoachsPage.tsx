@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -211,15 +211,10 @@ const CoachsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("coaches")
-      .select("*")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data }) => {
-        setCoaches(data && data.length > 0 ? (data as Coach[]) : fallbackCoaches);
-        setLoading(false);
-      });
+    api.coaches.list().then((data) => {
+      setCoaches(data && data.length > 0 ? (data as Coach[]) : fallbackCoaches);
+      setLoading(false);
+    }).catch(() => { setCoaches(fallbackCoaches); setLoading(false); });
   }, []);
 
   return (

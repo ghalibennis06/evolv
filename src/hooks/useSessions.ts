@@ -1,15 +1,12 @@
-// src/hooks/useSessions.ts
-// FIX BUG 13 — Stale closure corrigé avec valeurs stables
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 export interface SessionData {
   id: string;
   title: string;
   type: string;
   level: string;
-  date: string;
-  time: string;
+  session_date: string;
+  session_time: string;
   duration: number;
   capacity: number;
   instructor: string;
@@ -17,6 +14,9 @@ export interface SessionData {
   is_active: boolean;
   notes: string | null;
   enrolled: number;
+  // Legacy aliases for backward compat
+  date?: string;
+  time?: string;
 }
 
 export function useSessions(options?: { limit?: number; fromToday?: boolean; activeOnly?: boolean }) {
@@ -29,41 +29,30 @@ export function useSessions(options?: { limit?: number; fromToday?: boolean; act
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
 
-    async function load() {
-      setLoading(true);
-      let query = supabase
-        .from("sessions")
-        .select("*, session_participants(count)")
-        .order("date", { ascending: true })
-        .order("time", { ascending: true });
+    const params = new URLSearchParams();
+    if (fromToday) params.set("fromToday", "1");
+    if (activeOnly) params.set("activeOnly", "1");
+    if (limit) params.set("limit", String(limit));
 
-      if (activeOnly) {
-        query = query.eq("is_active", true);
-      }
-      if (fromToday) {
-        query = query.gte("date", new Date().toISOString().split("T")[0]);
-      }
-      if (limit) {
-        query = query.limit(limit);
-      }
-
-      const { data } = await query;
-      if (!cancelled) {
-        setSessions(
-          (data || []).map((s: any) => ({
+    fetch(`/api/sessions?${params}`)
+      .then(r => r.json())
+      .then(data => {
+        if (!cancelled) {
+          setSessions((data || []).map((s: any) => ({
             ...s,
-            enrolled: s.session_participants?.[0]?.count ?? 0,
-          })),
-        );
-        setLoading(false);
-      }
-    }
+            date: s.session_date,
+            time: s.session_time,
+          })));
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [limit, fromToday, activeOnly]);
 
   return { sessions, loading };

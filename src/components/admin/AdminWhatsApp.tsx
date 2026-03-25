@@ -9,7 +9,7 @@ import {
   Calendar, Check, X, Bell, AlertCircle, Save, Smartphone,
   AlignLeft, AlignRight, Users, ChevronDown, Eye, Zap,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -105,12 +105,8 @@ function ConfigTab() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("section", "contact")
-      .maybeSingle()
-      .then(({ data }) => {
+    api.siteContent.get("contact")
+      .then(data => {
         if (data?.content) {
           const c = data.content as any;
           setCfg({
@@ -121,25 +117,16 @@ function ConfigTab() {
           });
         }
         setLoaded(true);
-      });
+      })
+      .catch(() => setLoaded(true));
   }, []);
 
   const save = async () => {
     setSaving(true);
     try {
-      const { data: existing } = await supabase
-        .from("site_content")
-        .select("id, content")
-        .eq("section", "contact")
-        .maybeSingle();
-
-      const merged = { ...(existing?.content as any || {}), ...cfg };
-
-      if (existing?.id) {
-        await supabase.from("site_content").update({ content: merged }).eq("id", existing.id);
-      } else {
-        await supabase.from("site_content").insert({ section: "contact", content: merged });
-      }
+      const existing = await api.siteContent.get("contact").catch(() => null);
+      const merged = { ...(existing?.content || {}), ...cfg };
+      await api.siteContent.upsert("contact", merged);
       toast.success("Configuration WhatsApp sauvegardée");
     } catch (err: any) {
       toast.error(err.message || "Erreur de sauvegarde");
@@ -294,16 +281,14 @@ function RappelsTab() {
   const [sentIds, setSentIds] = useState<Set<string>>(new Set());
 
   const loadTemplates = useCallback(async () => {
-    const { data } = await supabase
-      .from("site_content")
-      .select("content")
-      .eq("section", "whatsapp_reminders")
-      .maybeSingle();
-    if (data?.content) {
-      const c = data.content as any;
-      if (c.template24h) { setTemplate24h(c.template24h); setEditTemplate24h(c.template24h); }
-      if (c.template2h) { setTemplate2h(c.template2h); setEditTemplate2h(c.template2h); }
-    }
+    try {
+      const data = await api.siteContent.get("whatsapp_reminders");
+      if (data?.content) {
+        const c = data.content as any;
+        if (c.template24h) { setTemplate24h(c.template24h); setEditTemplate24h(c.template24h); }
+        if (c.template2h) { setTemplate2h(c.template2h); setEditTemplate2h(c.template2h); }
+      }
+    } catch {}
   }, []);
 
   const loadParticipants = useCallback(async () => {
@@ -315,35 +300,32 @@ function RappelsTab() {
       const today = now.toISOString().slice(0, 10);
       const tomorrow = in24h.toISOString().slice(0, 10);
 
-      const { data: sessions } = await supabase
-        .from("sessions")
-        .select("id, date, time, title, instructor")
-        .in("date", [...new Set([today, tomorrow])])
-        .eq("is_active", true);
+      const allSessions = await api.admin.planning.list({ from: today, to: tomorrow });
+      const sessions = (allSessions || []).filter((s: any) => s.is_active);
 
       if (!sessions || sessions.length === 0) {
         setParticipants24h([]); setParticipants2h([]); return;
       }
 
       const sessions24h = sessions.filter((s: any) => {
-        const dt = new Date(`${s.date}T${s.time}`);
+        const dt = new Date(`${s.session_date}T${s.session_time}`);
         return dt > now && dt <= in24h;
       });
       const sessions2h = sessions.filter((s: any) => {
-        const dt = new Date(`${s.date}T${s.time}`);
+        const dt = new Date(`${s.session_date}T${s.session_time}`);
         return dt > now && dt <= in2h;
       });
 
       const fetchFor = async (list: typeof sessions): Promise<UpcomingParticipant[]> => {
         if (list.length === 0) return [];
-        const ids = list.map((s: any) => s.id);
-        const { data: parts } = await supabase
-          .from("session_participants")
-          .select("id, first_name, last_name, email, phone, session_id")
-          .in("session_id", ids);
-        return (parts || []).map((p: any) => {
-          const s = list.find((ss: any) => ss.id === p.session_id)!;
-          const dt = new Date(`${s.date}T${s.time}`);
+        const collected: any[] = [];
+        for (const s of list) {
+          const parts = await api.admin.planning.participants(s.id).catch(() => []);
+          parts.forEach((p: any) => collected.push({ ...p, _session: s }));
+        }
+        return collected.map((p: any) => {
+          const s = p._session;
+          const dt = new Date(`${s.session_date}T${s.session_time}`);
           return {
             id: p.id,
             first_name: p.first_name || "",
@@ -352,8 +334,8 @@ function RappelsTab() {
             phone: p.phone || null,
             session_id: p.session_id,
             session_title: s.title,
-            session_date: s.date,
-            session_time: s.time,
+            session_date: s.session_date,
+            session_time: s.session_time,
             session_instructor: s.instructor || "",
             minutesUntil: Math.round((dt.getTime() - now.getTime()) / 60000),
           };
@@ -378,14 +360,7 @@ function RappelsTab() {
   const saveTemplates = async () => {
     setSavingTemplates(true);
     try {
-      const { data: existing } = await supabase
-        .from("site_content").select("id").eq("section", "whatsapp_reminders").maybeSingle();
-      const payload = { template24h: editTemplate24h, template2h: editTemplate2h };
-      if (existing?.id) {
-        await supabase.from("site_content").update({ content: payload }).eq("id", existing.id);
-      } else {
-        await supabase.from("site_content").insert({ section: "whatsapp_reminders", content: payload });
-      }
+      await api.siteContent.upsert("whatsapp_reminders", { template24h: editTemplate24h, template2h: editTemplate2h });
       setTemplate24h(editTemplate24h);
       setTemplate2h(editTemplate2h);
       setShowTemplateEditor(false);
@@ -595,10 +570,13 @@ function PushTab() {
 
   useEffect(() => {
     // Load unique clients from session_participants (grouped by phone or email)
-    supabase
-      .from("session_participants")
-      .select("first_name, last_name, phone, email")
-      .then(({ data }) => {
+    fetch("/api/admin/planning?all=1", { headers: { Authorization: `Bearer ${localStorage.getItem("evolv_admin_token") || ""}` } })
+      .then(r => r.json())
+      .then((sessions: any[]) => Promise.all((sessions || []).map((s: any) =>
+        fetch(`/api/admin/planning?session_id=${s.id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("evolv_admin_token") || ""}` } }).then(r => r.json()).catch(() => [])
+      )))
+      .then(allParts => {
+        const data = allParts.flat();
         const seen = new Map<string, UniqueClient>();
         (data || []).forEach((p: any) => {
           const key = p.phone ? p.phone.replace(/\D/g, "") : p.email;

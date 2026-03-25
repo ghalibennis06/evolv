@@ -10,7 +10,6 @@ import {
   MessageCircle, Trash2, Activity, Ticket, RefreshCw, User,
   TrendingUp, Check, FileText,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { adminCall } from "./AdminLayout";
 import { toast } from "sonner";
 

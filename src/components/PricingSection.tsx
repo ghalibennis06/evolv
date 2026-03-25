@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 interface PricingSectionProps {
   onBookClick: () => void;
@@ -63,12 +63,10 @@ const PricingSection = ({ onBookClick }: PricingSectionProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase.from("pricing").select("*").eq("is_active", true).order("sort_order", { ascending: true });
+    api.pricing.list().then((data) => {
       setPlans(data && data.length > 0 ? (data as PricingPlan[]) : fallbackPricing);
       setLoading(false);
-    };
-    load();
+    }).catch(() => { setPlans(fallbackPricing); setLoading(false); });
   }, []);
 
   if (loading) return null;
