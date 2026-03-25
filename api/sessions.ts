@@ -18,8 +18,8 @@ export default async function handler(req: Request) {
       .select({
         id: sessions.id,
         title: sessions.title,
-        date: sessions.date,
-        time: sessions.time,
+        session_date: sessions.session_date,
+        session_time: sessions.session_time,
         duration: sessions.duration,
         capacity: sessions.capacity,
         instructor: sessions.instructor,
@@ -32,11 +32,11 @@ export default async function handler(req: Request) {
         enrolled: sql<number>`(select count(*) from session_participants where session_id = sessions.id)::int`,
       })
       .from(sessions)
-      .orderBy(asc(sessions.date), asc(sessions.time)) as any;
+      .orderBy(asc(sessions.session_date), asc(sessions.session_time)) as any;
 
     const conditions = [];
     if (activeOnly) conditions.push(eq(sessions.is_active, true));
-    if (fromToday) conditions.push(gte(sessions.date, new Date().toISOString().split("T")[0]));
+    if (fromToday) conditions.push(gte(sessions.session_date, new Date().toISOString().split("T")[0]));
 
     if (conditions.length) query = query.where(conditions.length === 1 ? conditions[0] : sql`${conditions[0]} AND ${conditions[1]}`);
     if (limit > 0) query = query.limit(limit);

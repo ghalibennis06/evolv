@@ -9,10 +9,10 @@ export default async function handler(req: Request) {
   if (req.method === "OPTIONS") return optionsResponse();
   try {
     const payload = await requireAdmin(req);
-    const [user] = await db.select({ id: adminUsers.id, email: adminUsers.email, role: adminUsers.role, full_name: adminUsers.full_name })
+    const [user] = await db.select({ id: adminUsers.id, email: adminUsers.email, role: adminUsers.role, name: adminUsers.name })
       .from(adminUsers).where(eq(adminUsers.id, payload.sub)).limit(1);
     if (!user) return corsError("User not found", 404);
-    return withCors({ user });
+    return withCors({ ...user });
   } catch {
     return corsError("Unauthorized", 401);
   }

@@ -11,6 +11,7 @@ import {
 import { eq, desc, asc, inArray, sql } from "drizzle-orm";
 import { withCors, corsError, optionsResponse } from "../_lib/cors.js";
 import { requireAdmin } from "../_lib/auth.js";
+import { hashPassword } from "../_lib/crypto.js";
 
 export const config = { runtime: "edge" };
 
@@ -405,9 +406,8 @@ export default async function handler(req: Request) {
 
     if (action === "invite_user") {
       // Create a new admin user with a temporary password
-      const { bcrypt } = await import("bcryptjs").then(m => ({ bcrypt: m.default || m }));
       const tempPassword = Math.random().toString(36).slice(2, 12);
-      const passwordHash = await bcrypt.hash(tempPassword, 10);
+      const passwordHash = await hashPassword(tempPassword);
       const [created] = await db.insert(adminUsers).values({
         email: body.email, name: body.email.split("@")[0],
         password_hash: passwordHash, role: body.role || "admin",

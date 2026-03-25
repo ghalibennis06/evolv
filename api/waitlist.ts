@@ -14,7 +14,9 @@ export default async function handler(req: Request) {
       if (!name || !email) return corsError("name and email required", 400);
 
       const [entry] = await db.insert(waitlist).values({
-        name, email, phone: phone || null,
+        name: name || body.client_name || "",
+        email: email || body.client_email || "",
+        phone: phone || body.client_phone || null,
         session_id: session_id || null,
         session_title: session_title || null,
         notes: notes || null,
