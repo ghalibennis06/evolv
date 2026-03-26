@@ -142,6 +142,11 @@
     @apply border-border;
   }
 
+  /* ── Smooth dark/light transitions ── */
+  html {
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
@@ -150,6 +155,14 @@
     cursor: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  /* Transitioning cards, borders, backgrounds */
+  section, header, footer, nav, aside, article,
+  .bg-background, .bg-card, .bg-muted,
+  [class*="bg-"] {
+    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
   }
 
   h1,
