@@ -29,12 +29,6 @@ type SidebarContext = {
   toggleSidebar: () => void;
 };
 
-import MeridianLogo from "@/components/brand/MeridianLogo";
-
-// Dans le brand header de la sidebar :
-<MeridianLogo size={32} variant="dark" animate spinDuration={14} />;
-// À côté du texte "The Circle" / "Studio"
-// Ajouter "Studio" en dessous du nom si pas déjà présent
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
 

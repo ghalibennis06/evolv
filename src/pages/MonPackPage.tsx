@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -255,7 +256,7 @@ const MonPackPage = () => {
             className="text-center mb-10"
           >
             <div className="flex justify-center mb-6">
-              <MeridianLogo size={72} variant="sand" animate spinDuration={12} glowAnimation />
+              <VertebraLogo size={60} variant="theme" animate showWordmark />
             </div>
             <p className="font-body text-[11px] tracking-[0.35em] uppercase text-terra mb-3" style={{ fontWeight: 200 }}>
               Mon espace
@@ -579,7 +580,7 @@ const MonPackPage = () => {
                       <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full border border-terra/8 pointer-events-none" />
                       <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full border border-terra/6 pointer-events-none" />
                       <div className="absolute bottom-0 right-0 pointer-events-none">
-                        <MeridianLogo size={180} variant="dark" animate={false} className="opacity-[0.04]" spinDuration={999} />
+                        <SpineWatermark size={180} opacity={0.04} />
                       </div>
 
                       <div className="relative z-10 p-7 md:p-8">
@@ -794,7 +795,7 @@ const MonPackPage = () => {
             className="mt-12 bg-card border border-border rounded-3xl overflow-hidden"
           >
             <div className="px-6 py-5 border-b border-border flex items-center gap-3">
-              <MeridianLogo size={28} variant="sand" animate spinDuration={16} />
+              <VertebraLogo size={24} variant="theme" animate showWordmark={false} />
               <div>
                 <p className="font-display text-base text-foreground" style={{ fontWeight: 300, letterSpacing: "0.08em" }}>EVØLV</p>
                 <p className="font-body text-[10px] tracking-[0.25em] uppercase text-terra" style={{ fontWeight: 300 }}>Studio · Rabat</p>

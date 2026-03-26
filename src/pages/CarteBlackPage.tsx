@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { SplineScene } from "@/components/SplineScene";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 import PageBackgroundMeridian from "@/components/brand/PageBackgroundMeridian";
 import { api } from "@/lib/api";
 import { createPayzoneSession } from "@/lib/payzone";
@@ -52,8 +52,8 @@ function BlackCard({ plan, onClick }: { plan: PricingPlan; onClick: () => void }
           style={{ background: "linear-gradient(120deg, transparent 30%, rgba(196,130,60,0.06) 50%, transparent 70%)" }}
         />
         {/* Meridian watermark */}
-        <div className="absolute -bottom-8 -right-8 opacity-[0.07]">
-          <MeridianLogo size={160} variant="sand" />
+        <div className="absolute -bottom-8 -right-8">
+          <VertebraLogo size={100} variant="ink" animate showWordmark />
         </div>
         {/* Popular badge */}
         {plan.is_popular && (
@@ -286,7 +286,7 @@ const CarteBlackPage = () => {
 
           {loadingPlans ? (
             <div className="flex justify-center py-20">
-              <MeridianLogo size={48} variant="sand" animate spinDuration={6} />
+              <VertebraLogo size={40} variant="ink" animate showWordmark={false} />
             </div>
           ) : (
             <div className={`grid gap-6 ${plans.length === 4 ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-3"}`}>
@@ -378,7 +378,7 @@ const CarteBlackPage = () => {
                 </div>
               ) : step === "loading" ? (
                 <div className="p-10 text-center">
-                  <MeridianLogo size={64} variant="theme" animate floatAnimation spinDuration={5} className="mx-auto mb-5" />
+                  <VertebraLogo size={48} variant="theme" animate showWordmark={false} className="mx-auto mb-5" />
                   <p className="text-lg text-muted-foreground">Initialisation du paiement…</p>
                 </div>
               ) : (

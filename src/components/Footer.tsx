@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import MeridianLogo from "./brand/MeridianLogo";
+import VertebraLogo from "./brand/VertebraLogo";
 import { motion } from "framer-motion";
 import { Instagram, MapPin, Phone } from "lucide-react";
 
@@ -13,13 +13,8 @@ const Footer = () => {
           {/* Brand column */}
           <div className="flex flex-col items-start md:items-center gap-5">
             <motion.div whileHover={{ scale: 1.04 }} transition={{ type: "spring", stiffness: 300 }}>
-              <MeridianLogo size={56} variant="terra" animate floatAnimation glowAnimation spinDuration={16} />
+              <VertebraLogo size={56} variant="ink" animate showWordmark />
             </motion.div>
-            <div className="text-center">
-              <p className="font-body text-[9px] tracking-[0.45em] uppercase text-white/30 mt-1" style={{ fontWeight: 400 }}>
-                Pilates Studio
-              </p>
-            </div>
           </div>
 
           {/* Links */}

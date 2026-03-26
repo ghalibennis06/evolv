@@ -5,7 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/api";
 import { generateWhatsAppUrl } from "@/lib/whatsapp";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -67,13 +67,13 @@ const PaymentSuccess = () => {
       >
         {verifying ? (
           <div className="py-8">
-            <MeridianLogo size={56} variant="sand" animate spinDuration={4} className="mx-auto mb-4" />
+            <VertebraLogo size={48} variant="theme" animate showWordmark className="mx-auto mb-4" />
             <p className="font-body text-muted-foreground text-sm">Vérification du paiement...</p>
           </div>
         ) : (
           <>
             <div className="flex justify-center mb-4">
-              <MeridianLogo size={64} variant="sand" animate spinDuration={10} glowAnimation />
+              <VertebraLogo size={56} variant="theme" animate showWordmark />
             </div>
             <CheckCircle size={32} className="text-terra mx-auto mb-4" />
             <h1 className="font-display text-3xl text-foreground mb-3" style={{ fontWeight: 400 }}>

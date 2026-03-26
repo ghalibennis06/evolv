@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
 
 interface ClassesSectionProps {
   onBookClick: () => void;
@@ -138,7 +138,7 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
           style={{ background: "radial-gradient(ellipse at 50% 50%, hsl(var(--stone)/0.06) 0%, transparent 65%)" }}
         />
         <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/3 pointer-events-none" style={{ opacity: 0.12 }}>
-          <MeridianLogo size={380} variant="theme" animate spinDuration={120} />
+          <SpineWatermark size={380} opacity={0.06} />
         </div>
 
         <motion.div

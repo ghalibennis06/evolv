@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AdminFab from "@/components/AdminFab";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
@@ -83,10 +83,8 @@ const ContactPage = () => {
       {/* Hero */}
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 60% 30%, rgba(184,99,74,0.10) 0%, transparent 55%), radial-gradient(ellipse at 20% 70%, rgba(122,48,64,0.08) 0%, transparent 50%)" }} />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.07, zIndex: 0 }}>
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }}>
-            <MeridianLogo size={500} variant="theme" animate={false} />
-          </motion.div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 0 }}>
+          <SpineWatermark size={500} opacity={0.05} />
         </div>
         <div className="container mx-auto max-w-4xl relative z-10">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const }}>

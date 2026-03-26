@@ -1,9 +1,8 @@
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
 
 /**
- * Fixed, full-viewport background meridian — used on all main pages.
- * Sits behind all content (z-0), never overlaps text.
- * Simpler than the Index scroll-reactive version: always in center, low opacity.
+ * Fixed, full-viewport background watermark — used on all main pages.
+ * Sits behind all content (z=-1), never overlaps text.
  */
 const PageBackgroundMeridian = () => (
   <div
@@ -11,9 +10,7 @@ const PageBackgroundMeridian = () => (
     style={{ zIndex: -1 }}
     aria-hidden
   >
-    <div style={{ opacity: 0.05 }}>
-      <MeridianLogo size={900} variant="theme" animate spinDuration={180} />
-    </div>
+    <SpineWatermark size={600} opacity={0.04} />
   </div>
 );
 

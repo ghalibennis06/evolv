@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
 import { Link } from "react-router-dom";
 import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
@@ -52,13 +52,8 @@ const TarifsPage = () => {
       <Navbar onBookClick={() => {}} />
       <section className="pt-28 pb-24 px-6 relative overflow-hidden">
         {/* Hero meridian — decorative, behind title */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.07, zIndex: 0 }}>
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-          >
-            <MeridianLogo size={500} variant="theme" animate={false} />
-          </motion.div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 0 }}>
+          <SpineWatermark size={500} opacity={0.05} />
         </div>
         <div className="container mx-auto max-w-5xl relative z-10">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
@@ -135,10 +130,8 @@ const TarifsPage = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="bg-burgundy/10 border border-burgundy/20 p-8 md:p-10 relative overflow-hidden" style={{ borderRadius: "2px" }}>
             {/* Meridian in dark section */}
-            <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden" style={{ opacity: 0.30 }}>
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }}>
-                <MeridianLogo size={380} variant="dark" animate={false} />
-              </motion.div>
+            <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+              <SpineWatermark size={380} opacity={0.06} />
             </div>
             <h3 className="font-display text-2xl text-warm-white mb-8 relative z-10" style={{ fontWeight: 200, letterSpacing: "0.08em" }}>Comment ça marche ?</h3>
             <div className="grid md:grid-cols-4 gap-6 relative z-10">

@@ -1,4 +1,4 @@
-import MeridianLogo from "./MeridianLogo";
+import VertebraLogo from "./VertebraLogo";
 import { motion } from "framer-motion";
 
 interface LogoDividerProps {
@@ -17,7 +17,7 @@ const LogoDivider = ({ variant = "sand", label, size = 32 }: LogoDividerProps) =
   >
     <div className="flex items-center gap-8 w-full max-w-sm">
       <div className="flex-1 h-px bg-foreground/10" />
-      <MeridianLogo size={size} variant={variant} animate floatAnimation spinDuration={16} />
+      <VertebraLogo size={size} variant="fog" animate showWordmark={false} />
       <div className="flex-1 h-px bg-foreground/10" />
     </div>
     {label && (

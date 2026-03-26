@@ -10,7 +10,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WeekPlanning from "@/components/WeekPlanning";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 import PageBackgroundMeridian from "@/components/brand/PageBackgroundMeridian";
 
 const PlanningPage = () => {
@@ -265,7 +265,7 @@ const PlanningPage = () => {
 
             <div className="relative z-10 text-center">
               <div className="flex justify-center mb-5">
-                <MeridianLogo size={48} variant="theme" animate floatAnimation spinDuration={13} />
+                <VertebraLogo size={40} variant="theme" animate showWordmark={false} />
               </div>
 
               <p className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase text-terra mb-4 px-3 py-1 rounded-full border border-foreground/20 bg-secondary/20" style={{ fontWeight: 400 }}>

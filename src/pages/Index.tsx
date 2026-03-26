@@ -9,7 +9,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import UpcomingSessions from "@/components/UpcomingSessions";
 import FloatingCircles from "@/components/brand/FloatingCircles";
 import LogoDivider from "@/components/brand/LogoDivider";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 import StarfieldCanvas from "@/components/brand/StarfieldCanvas";
 import { useNavigate, Link } from "react-router-dom";
 import { useSessions } from "@/hooks/useSessions";
@@ -105,7 +106,7 @@ const MeridianScrollAnchor = () => {
       />
       <motion.div style={{ rotate, opacity, scale, y: ySpring }}>
         <motion.div style={{ y: smoothVelocityY }}>
-          <MeridianLogo size={1500} variant="theme" animate spinDuration={200} />
+          <SpineWatermark size={800} opacity={0.04} />
         </motion.div>
       </motion.div>
     </div>
@@ -442,7 +443,7 @@ const CarnetsSection = () => {
                 </div>
               ) : step === "loading" ? (
                 <div className="p-10 text-center">
-                  <MeridianLogo size={56} variant="theme" animate spinDuration={4} className="mx-auto mb-5" />
+                  <VertebraLogo size={48} variant="theme" animate showWordmark={false} className="mx-auto mb-5" />
                   <p className="font-body text-muted-foreground">Initialisation du paiement…</p>
                 </div>
               ) : (
@@ -571,7 +572,7 @@ const WhySection = () => {
                     animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
                     transition={{ duration: 80 + i * 15, repeat: Infinity, ease: "linear" }}
                   >
-                    <MeridianLogo size={500} variant="theme" animate={false} />
+                    <SpineWatermark size={500} opacity={0.05} />
                   </motion.div>
                 </div>
 
@@ -594,7 +595,7 @@ const WhySection = () => {
                     {/* Accent label with mini spinning meridian */}
                     <div className="flex items-center gap-3 mb-8">
                       <motion.div style={{ opacity: 0.45 }} animate={{ rotate: 360 }} transition={{ duration: 12, repeat: Infinity, ease: "linear" }}>
-                        <MeridianLogo size={18} variant="theme" animate={false} />
+                        <VertebraLogo size={18} variant="theme" animate={false} showWordmark={false} />
                       </motion.div>
                       <p className="font-body text-[10px] tracking-[0.6em] uppercase" style={{ fontWeight: 500, color: accentColor }}>
                         {item.num} — {item.accent}
@@ -828,7 +829,7 @@ const Index = () => {
                     <div>
                       <div className="flex items-center gap-3 mb-5">
                         <div style={{ opacity: 0.3 }}>
-                          <MeridianLogo size={22} variant="theme" animate spinDuration={10} />
+                          <VertebraLogo size={22} variant="theme" animate showWordmark={false} />
                         </div>
                         <p className="font-body text-[10px] tracking-[0.45em] uppercase text-terra" style={{ fontWeight: 500 }}>
                           Prochaines séances

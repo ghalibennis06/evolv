@@ -4,7 +4,8 @@ import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import SpineWatermark from "@/components/brand/SpineWatermark";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 import PageBackgroundMeridian from "@/components/brand/PageBackgroundMeridian";
 import coachAndy from "@/assets/coach-andy.jpg";
 import coachMayssae from "@/assets/coach-mayssae.jpg";
@@ -82,9 +83,7 @@ const ParallaxPhoto = ({ src, name, idx }: { src: string | null; name: string; i
               : "linear-gradient(145deg, hsl(var(--secondary)) 0%, hsl(var(--card)) 50%, hsl(var(--muted)) 100%)",
           }}
         >
-          <div style={{ opacity: 0.32 }}>
-            <MeridianLogo size={260} variant="theme" animate spinDuration={60} />
-          </div>
+          <SpineWatermark size={260} opacity={0.07} />
           <span
             className="absolute font-display text-terra/15 select-none"
             style={{ fontWeight: 200, fontSize: "clamp(80px, 14vw, 140px)", top: "50%", left: "50%", transform: "translate(-50%, -50%)", lineHeight: 1 }}
@@ -227,13 +226,8 @@ const CoachsPage = () => {
         {/* Warm espresso background */}
         <div className="absolute inset-0 bg-background" />
         {/* Hero meridian — decorative, behind title */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.07 }}>
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          >
-            <MeridianLogo size={520} variant="theme" animate={false} />
-          </motion.div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <SpineWatermark size={520} opacity={0.05} />
         </div>
         {/* Terra radial glow */}
         <div
@@ -296,7 +290,7 @@ const CoachsPage = () => {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             className="inline-block"
           >
-            <MeridianLogo size={40} variant="theme" />
+            <VertebraLogo size={36} variant="theme" animate showWordmark={false} />
           </motion.div>
         </div>
       ) : (

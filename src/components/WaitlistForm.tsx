@@ -6,7 +6,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, Check, X, Mail, Phone, User, Clock } from "lucide-react";
 import { api } from "@/lib/api";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 
 interface SessionInfo {
   title: string;
@@ -66,7 +66,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
       className={`flex flex-col items-center justify-center gap-4 text-center ${compact ? "py-8" : "py-16"}`}
     >
       <div className="relative">
-        <MeridianLogo size={compact ? 56 : 80} variant="sand" animate floatAnimation spinDuration={8} />
+        <VertebraLogo size={compact ? 40 : 52} variant="fog" animate showWordmark />
         <motion.div
           initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}
           className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#4E9E7A] rounded-full flex items-center justify-center"
@@ -91,7 +91,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
       {/* Header */}
       {!compact && (
         <div className="flex flex-col items-center gap-3 text-center pb-2">
-          <MeridianLogo size={64} variant="sand" animate floatAnimation spinDuration={10} />
+          <VertebraLogo size={48} variant="fog" animate showWordmark />
           <div>
             <p className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>
               Liste d'attente
