@@ -3,7 +3,7 @@ import { Menu, X, Ticket, Sun, Moon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
-import MeridianLogo from "./brand/MeridianLogo";
+import VertebraLogo from "./brand/VertebraLogo";
 
 interface NavbarProps {
   onBookClick: () => void;
@@ -51,7 +51,6 @@ const Navbar = ({ onBookClick }: NavbarProps) => {
   const isDarkBg = isHome && !scrolled;
   const textColor = isDarkBg ? "text-white/60" : "text-foreground/55";
   const brandTxt = isDarkBg ? "text-white" : "text-foreground";
-  const logoVar = isDarkBg ? "terra" : "dark";
 
   const navBg = scrolled
     ? "bg-background/95 backdrop-blur-md border-b border-border/60 shadow-sm"
@@ -71,7 +70,12 @@ const Navbar = ({ onBookClick }: NavbarProps) => {
           onMouseLeave={onLogoLeave}
         >
           <div ref={logoRef} className="transition-transform duration-300 ease-out">
-            <MeridianLogo size={42} variant={logoVar} animate spinDuration={14} glowAnimation />
+            <VertebraLogo
+              size={42}
+              variant={isDarkBg ? "ink" : "fog"}
+              animate
+              showWordmark
+            />
           </div>
         </Link>
 
@@ -153,7 +157,7 @@ const Navbar = ({ onBookClick }: NavbarProps) => {
           >
             <div className="px-6 py-8 space-y-1">
               <div className="flex justify-center mb-8">
-                <MeridianLogo size={56} variant="dark" animate floatAnimation spinDuration={16} />
+                <VertebraLogo size={56} variant="fog" animate showWordmark />
               </div>
               {links.map((link, i) => (
                 <motion.div

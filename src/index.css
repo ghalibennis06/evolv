@@ -54,6 +54,17 @@
     --gold-dark: 36 44% 45%;
     --warm-white: 36 30% 98%;
 
+    /* ── BRAND IDENTITY PALETTE (fog, sage, moss, clay) ── */
+    --brand-fog:        240 14% 94%;    /* #F0EDE8 warm off-white */
+    --brand-bone:       36 16% 87%;    /* #E5DFD5 warm bone */
+    --brand-sage:       90 10% 44%;    /* #6B7A5C muted sage green */
+    --brand-sage-light: 90 12% 57%;    /* #8A9A78 lighter sage */
+    --brand-moss:       122 9% 27%;    /* #3D4A3E deep moss */
+    --brand-clay:       20 33% 53%;    /* #B5785A warm clay terracotta */
+    --brand-ink:        60 2% 11%;     /* #1C1C1A near-black warm */
+    --brand-dusk:       60 2% 18%;     /* #2E2E2B dark dusk */
+    --brand-silver:     40 5% 65%;     /* #A8A49E warm silver */
+
     --font-display: "Playfair Display", Georgia, serif;
     --font-body: "DM Sans", Inter, sans-serif;
 

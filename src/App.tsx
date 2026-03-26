@@ -9,7 +9,7 @@ import GrainOverlay from "@/components/brand/GrainOverlay";
 import CustomCursor from "@/components/brand/CustomCursor";
 import CookieBanner from "@/components/CookieBanner";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
-import MeridianLogo from "@/components/brand/MeridianLogo";
+import VertebraLogo from "@/components/brand/VertebraLogo";
 
 // Code-split: lazy load all pages
 const Index = lazy(() => import("./pages/Index"));
@@ -32,7 +32,7 @@ const queryClient = new QueryClient();
 
 const PageLoader = () => (
   <div className="min-h-screen bg-background flex items-center justify-center">
-    <MeridianLogo size={56} variant="sand" animate spinDuration={4} />
+    <VertebraLogo size={52} variant="theme" animate showWordmark={false} />
   </div>
 );
 
