@@ -105,7 +105,7 @@ const PhotoPanel = ({ coach }: PhotoPanelProps) => (
             <SpineWatermark size={240} opacity={0.06} />
           </div>
           <span
-            className="font-display text-foreground/15 select-none relative z-10"
+            className="font-display text-foreground/40 select-none relative z-10"
             style={{ fontSize: "clamp(80px, 14vw, 130px)", fontWeight: 300 }}
           >
             {coach.name[0]}

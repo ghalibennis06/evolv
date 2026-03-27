@@ -94,7 +94,7 @@ const HeroSection = ({ onBookClick }: HeroSectionProps) => {
             fontWeight: 400,
             letterSpacing: "0.38em",
             color: "rgba(242,239,233,0.28)",
-            fontFamily: "'DM Sans', Inter, sans-serif",
+            fontFamily: "'Outfit', Inter, sans-serif",
           }}
         >
           {content.location as string}
@@ -111,21 +111,21 @@ const HeroSection = ({ onBookClick }: HeroSectionProps) => {
           <Link
             to="/planning"
             className="relative overflow-hidden bg-white text-foreground px-10 py-4 text-[10px] tracking-[0.3em] uppercase hover:bg-white/90 transition-all btn-shimmer"
-            style={{ fontWeight: 500, fontFamily: "'DM Sans', Inter, sans-serif" }}
+            style={{ fontWeight: 500, fontFamily: "'Outfit', Inter, sans-serif" }}
           >
             <span className="relative z-10">Réserver une séance</span>
           </Link>
           <Link
             to="/mon-pack"
             className="border border-white/20 text-white/70 px-10 py-4 text-[10px] tracking-[0.3em] uppercase hover:border-white/45 hover:text-white transition-all"
-            style={{ fontWeight: 400, fontFamily: "'DM Sans', Inter, sans-serif" }}
+            style={{ fontWeight: 400, fontFamily: "'Outfit', Inter, sans-serif" }}
           >
             Mon Abonnement
           </Link>
           <Link
             to="/studio"
             className="border border-white/10 text-white/35 px-10 py-4 text-[10px] tracking-[0.3em] uppercase hover:border-white/22 hover:text-white/55 transition-all"
-            style={{ fontWeight: 400, fontFamily: "'DM Sans', Inter, sans-serif" }}
+            style={{ fontWeight: 400, fontFamily: "'Outfit', Inter, sans-serif" }}
           >
             Le Studio
           </Link>

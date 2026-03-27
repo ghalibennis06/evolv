@@ -1,65 +1,44 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface EvolvWordmarkProps {
-  /** Color of the mark and letters (default: fog/ivory) */
   color?: string;
-  /** Color of subline text and rules */
   subColor?: string;
-  /** Font size base in px for the wordmark letters */
   fontSize?: number;
-  /** Run the draw+reveal animation on mount */
   animate?: boolean;
   className?: string;
 }
 
-// ── Stroke lengths ────────────────────────────────────────────────
-// The Ø SVG viewbox is 90×110, ellipse at (45,55) rx=31 ry=40
-// Perimeter ≈ 2π√((31²+40²)/2) ≈ 248
-// Slash (22,22)→(68,88): length ≈ √(46²+66²) ≈ 80
+// The Ø SVG: viewBox "0 0 90 110", ellipse at (45,55) rx=31 ry=40
+// Slash (22,22)→(68,88) — its midpoint is (45,55) = same as ellipse center
 const ELLIPSE_LEN = 252;
 const SLASH_LEN   = 82;
 
-/**
- * EvolvWordmark — the full animated E·V·Ø·L·V wordmark.
- * Matches the animation from evolv-logo-animation.html exactly.
- * Use in the hero section or loading screens.
- */
 const EvolvWordmark = ({
   color    = "rgba(242,239,233,0.95)",
-  subColor = "rgba(242,239,233,0.42)",
+  subColor = "rgba(242,239,233,0.55)",
   fontSize = 96,
   animate  = true,
   className = "",
 }: EvolvWordmarkProps) => {
-  // Animation phases
   const [phase, setPhase] = useState<"idle" | "slash" | "circle" | "letters" | "subline" | "done">(
     animate ? "idle" : "done"
   );
-
-  // Letter visibility
   const [lettersVisible, setLettersVisible] = useState(!animate);
-  const [sublineVisible, setSublineVisible] = useState(!animate);
+  const [sublineVisible,  setSublineVisible]  = useState(!animate);
 
   useEffect(() => {
     if (!animate) return;
     let cancelled = false;
     const seq = async () => {
-      await delay(350);
-      if (cancelled) return;
-      setPhase("slash");    // slash draws
-      await delay(750);
-      if (cancelled) return;
-      setPhase("circle");   // circle draws
-      await delay(950);
-      if (cancelled) return;
-      setPhase("letters");  // letters reveal
-      setLettersVisible(true);
-      await delay(850);
-      if (cancelled) return;
-      setSublineVisible(true);
-      setPhase("subline");
-      await delay(600);
-      if (cancelled) return;
+      await wait(350);  if (cancelled) return;
+      setPhase("slash");
+      await wait(750);  if (cancelled) return;
+      setPhase("circle");
+      await wait(950);  if (cancelled) return;
+      setPhase("letters"); setLettersVisible(true);
+      await wait(850);  if (cancelled) return;
+      setSublineVisible(true); setPhase("subline");
+      await wait(600);  if (cancelled) return;
       setPhase("done");
     };
     seq();
@@ -67,33 +46,31 @@ const EvolvWordmark = ({
   }, [animate]);
 
   const slashReady  = phase !== "idle";
-  const circleReady = phase === "circle" || phase === "letters" || phase === "subline" || phase === "done";
+  const circleReady = ["circle","letters","subline","done"].includes(phase);
+  const orbiting    = phase === "done"; // only after intro settles
 
-  // ── Letter positions (left/right of the Ø) ───────────────────
-  const h = fontSize;
-  const gap = fontSize * 0.04; // tight kerning
+  const gap = fontSize * 0.04;
 
   return (
-    <div className={`flex flex-col items-center select-none ${className}`} style={{ gap: fontSize * 0.22 }}>
-
-      {/* ── WORDMARK ROW ─────────────────────────────────────── */}
+    <div
+      className={`flex flex-col items-center select-none ${className}`}
+      style={{ gap: fontSize * 0.22 }}
+    >
+      {/* ── WORDMARK ROW ── */}
       <div style={{ display: "flex", alignItems: "center", gap, lineHeight: 1 }}>
 
-        {/* E */}
-        <Letter char="E" visible={lettersVisible} delay={80} fontSize={fontSize} color={color} />
-
-        {/* V */}
+        <Letter char="E" visible={lettersVisible} delay={80}  fontSize={fontSize} color={color} />
         <Letter char="V" visible={lettersVisible} delay={220} fontSize={fontSize} color={color} />
 
-        {/* Ø — SVG drawn */}
+        {/* Ø — SVG drawn, then continuously animated */}
         <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", margin: `0 ${gap * 0.5}px` }}>
           <svg
             viewBox="0 0 90 110"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ height: h, width: "auto", overflow: "visible", display: "block" }}
+            style={{ height: fontSize, width: "auto", overflow: "visible", display: "block" }}
           >
-            {/* Ellipse body */}
+            {/* Ellipse — draws on intro, then gently breathes */}
             <ellipse
               cx="45" cy="55" rx="31" ry="40"
               fill="none"
@@ -103,38 +80,40 @@ const EvolvWordmark = ({
               strokeDasharray={ELLIPSE_LEN}
               strokeDashoffset={circleReady ? 0 : ELLIPSE_LEN}
               style={{
-                transition: circleReady
-                  ? `stroke-dashoffset 0.88s cubic-bezier(0.4,0,0.2,1)`
-                  : "none",
+                transition: circleReady ? "stroke-dashoffset 0.88s cubic-bezier(0.4,0,0.2,1)" : "none",
+                animation: orbiting ? "ellipse-breathe 5s ease-in-out infinite 0.5s" : "none",
               }}
             />
 
-            {/* Slash */}
-            <line
-              x1="22" y1="22" x2="68" y2="88"
-              stroke={color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray={SLASH_LEN}
-              strokeDashoffset={slashReady ? 0 : SLASH_LEN}
+            {/* Slash — draws on intro, then orbits continuously */}
+            <g
               style={{
-                transition: slashReady
-                  ? `stroke-dashoffset 0.65s cubic-bezier(0.4,0,0.2,1)`
-                  : "none",
+                transformBox: "fill-box",
+                transformOrigin: "center",
+                animation: orbiting ? "slash-orbit 14s linear infinite" : "none",
               }}
-            />
+            >
+              <line
+                x1="22" y1="22" x2="68" y2="88"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray={SLASH_LEN}
+                strokeDashoffset={slashReady ? 0 : SLASH_LEN}
+                style={{
+                  transition: slashReady ? "stroke-dashoffset 0.65s cubic-bezier(0.4,0,0.2,1)" : "none",
+                }}
+              />
+            </g>
           </svg>
         </span>
 
-        {/* L */}
         <Letter char="L" visible={lettersVisible} delay={220} fontSize={fontSize} color={color} />
-
-        {/* V (second) */}
-        <Letter char="V" visible={lettersVisible} delay={80} fontSize={fontSize} color={color} />
+        <Letter char="V" visible={lettersVisible} delay={80}  fontSize={fontSize} color={color} />
 
       </div>
 
-      {/* ── SUBLINE ─────────────────────────────────────────── */}
+      {/* ── SUBLINE ── */}
       <div
         style={{
           display: "flex",
@@ -147,10 +126,10 @@ const EvolvWordmark = ({
         <Rule visible={sublineVisible} color={subColor} width={fontSize * 0.75} />
         <span
           style={{
-            fontFamily: "'DM Sans', Inter, sans-serif",
-            fontWeight: 300,
+            fontFamily: "'Outfit', Inter, sans-serif",
+            fontWeight: 200,
             fontSize: Math.max(10, fontSize * 0.115),
-            letterSpacing: "0.24em",
+            letterSpacing: "0.28em",
             color: subColor,
             whiteSpace: "nowrap",
             opacity: sublineVisible ? 1 : 0,
@@ -161,16 +140,13 @@ const EvolvWordmark = ({
         </span>
         <Rule visible={sublineVisible} color={subColor} width={fontSize * 0.75} />
       </div>
-
     </div>
   );
 };
 
-// ── Sub-components ───────────────────────────────────────────────
+// ── Sub-components ──
 
-function Letter({
-  char, visible, delay: delayMs, fontSize, color,
-}: {
+function Letter({ char, visible, delay: ms, fontSize, color }: {
   char: string; visible: boolean; delay: number; fontSize: number; color: string;
 }) {
   return (
@@ -186,7 +162,7 @@ function Letter({
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(14px)",
         transition: visible
-          ? `opacity 0.62s cubic-bezier(0.22,1,0.36,1) ${delayMs}ms, transform 0.62s cubic-bezier(0.22,1,0.36,1) ${delayMs}ms`
+          ? `opacity 0.62s cubic-bezier(0.22,1,0.36,1) ${ms}ms, transform 0.62s cubic-bezier(0.22,1,0.36,1) ${ms}ms`
           : "none",
       }}
     >
@@ -203,13 +179,13 @@ function Rule({ visible, color, width }: { visible: boolean; color: string; widt
         background: color,
         width: visible ? width : 0,
         transition: visible ? "width 0.5s cubic-bezier(0.4,0,0.2,1)" : "none",
-        opacity: 0.65,
+        opacity: 0.7,
       }}
     />
   );
 }
 
-function delay(ms: number) {
+function wait(ms: number) {
   return new Promise<void>(r => setTimeout(r, ms));
 }
 

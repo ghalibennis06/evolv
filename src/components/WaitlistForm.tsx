@@ -167,7 +167,7 @@ export default function WaitlistForm({ session, onClose, onSuccess, compact = fa
         onClick={handleSubmit}
         disabled={loading}
         className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-[12px] tracking-[0.25em] uppercase hover:bg-foreground/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-        style={{ fontFamily: "'DM Sans', Inter, sans-serif", fontWeight: 600 }}
+        style={{ fontFamily: "'Outfit', Inter, sans-serif", fontWeight: 600 }}
       >
         {loading ? (
           <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>

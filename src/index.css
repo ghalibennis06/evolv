@@ -65,6 +65,10 @@
     --brand-dusk:       60 2% 18%;     /* #2E2E2B dark dusk */
     --brand-silver:     40 5% 65%;     /* #A8A49E warm silver */
 
+    /* ── SEMANTIC ALIASES — terra = clay, burgundy = deep moss ── */
+    --terra:    20 33% 53%;            /* #B5785A — EVOLV clay (warm accent) */
+    --burgundy: 122 9% 22%;            /* #31402F — EVOLV deep moss (NOT purple) */
+
     --font-display: "Playfair Display", Georgia, serif;
     --font-body: "Outfit", Inter, sans-serif;
 
@@ -136,6 +140,10 @@
     --success-light: 158 38% 48% / 0.15;
     --warning: 36 44% 68%;
     --danger: 0 52% 50%;
+
+    /* ── BRAND overrides for dark mode ── */
+    --terra:    20 30% 62%;            /* lighter clay on dark */
+    --burgundy: 122 10% 35%;           /* lighter moss on dark */
 
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 36 28% 94%;
@@ -285,39 +293,48 @@
 /* ── CUSTOM CURSOR ── */
 #custom-cursor {
   position: fixed;
-  width: 6px;
-  height: 6px;
-  background: hsl(0 0% 11%);
+  width: 8px;
+  height: 8px;
+  background: hsl(122 9% 27%);        /* moss dot — visible on both bg tones */
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  transition: width 0.25s, height 0.25s, opacity 0.3s, background 0.3s;
   opacity: 0;
+  mix-blend-mode: normal;
 }
 
 #custom-cursor-ring {
   position: fixed;
-  width: 36px;
-  height: 36px;
-  border: 1px solid hsl(0 0% 11% / 0.4);
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid hsl(122 9% 27% / 0.55);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
-  transition: width 0.15s ease-out, height 0.15s ease-out;
+  transition: width 0.15s ease-out, height 0.15s ease-out, border-color 0.3s;
 }
 
 .dark #custom-cursor {
-  background: hsl(36 28% 94%);
+  background: hsl(90 12% 57%);        /* sage-light on dark */
 }
 
 .dark #custom-cursor-ring {
-  border-color: hsl(36 28% 94% / 0.4);
+  border-color: hsl(90 12% 57% / 0.5);
 }
 
+/* Show cursor once mouse enters window */
 body:hover #custom-cursor {
   opacity: 1;
+}
+
+/* Hover state — expand ring */
+body:has(a:hover) #custom-cursor-ring,
+body:has(button:hover) #custom-cursor-ring {
+  width: 46px;
+  height: 46px;
 }
 
 @media (pointer: coarse) {
@@ -330,6 +347,18 @@ body:hover #custom-cursor {
 /* ── ORBIT ANIMATION ── */
 @keyframes orbit {
   to { transform: rotate(360deg); }
+}
+
+/* ── Ø SLASH CONTINUOUS ORBIT ── */
+@keyframes slash-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Ø ELLIPSE BREATHE ── */
+@keyframes ellipse-breathe {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1;   }
 }
 
 @keyframes ring-breathe {

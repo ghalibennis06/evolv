@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         display: ["Playfair Display", "Georgia", "serif"],
-        body: ["DM Sans", "Inter", "sans-serif"],
+        body: ["Outfit", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -73,6 +73,13 @@ export default {
           dark: "hsl(var(--gold-dark))",
         },
         "warm-white": "hsl(var(--warm-white))",
+        // EVOLV brand identity palette
+        terra: "hsl(var(--terra))",
+        burgundy: "hsl(var(--burgundy))",
+        sage: "hsl(var(--brand-sage))",
+        moss: "hsl(var(--brand-moss))",
+        clay: "hsl(var(--brand-clay))",
+        fog: "hsl(var(--brand-fog))",
         success: {
           DEFAULT: "hsl(var(--success))",
           light: "hsl(var(--success-light))",

@@ -19,7 +19,7 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex flex-col gap-3">
-            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/30 mb-3" style={{ fontWeight: 400 }}>
+            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/55 mb-3" style={{ fontWeight: 400 }}>
               Navigation
             </p>
             {[
@@ -43,11 +43,11 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="flex flex-col gap-4">
-            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/30 mb-3" style={{ fontWeight: 400 }}>
+            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/55 mb-3" style={{ fontWeight: 400 }}>
               Contact
             </p>
             <div className="flex items-start gap-3 text-white/50">
-              <MapPin size={13} className="shrink-0 text-white/30 mt-0.5" />
+              <MapPin size={13} className="shrink-0 text-white/55 mt-0.5" />
               <p className="font-body text-[12px] leading-relaxed" style={{ fontWeight: 300 }}>
                 Casablanca, Maroc
               </p>
@@ -56,7 +56,7 @@ const Footer = () => {
               href="https://wa.me/212600000000"
               className="flex items-center gap-3 text-white/50 hover:text-white transition-colors group"
             >
-              <Phone size={13} className="shrink-0 text-white/30" />
+              <Phone size={13} className="shrink-0 text-white/55" />
               <p className="font-body text-[12px]" style={{ fontWeight: 300 }}>
                 WhatsApp Studio
               </p>
@@ -67,7 +67,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-white/50 hover:text-white transition-colors"
             >
-              <Instagram size={13} className="shrink-0 text-white/30" />
+              <Instagram size={13} className="shrink-0 text-white/55" />
               <p className="font-body text-[12px]" style={{ fontWeight: 300 }}>
                 @evolv.studio
               </p>
@@ -78,7 +78,7 @@ const Footer = () => {
         {/* Contact CTA */}
         <div className="mb-12 flex flex-col sm:flex-row items-center justify-between gap-6 py-8 px-8 border border-white/10">
           <div>
-            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/30 mb-1" style={{ fontWeight: 400 }}>Venez nous découvrir</p>
+            <p className="font-body text-[9px] tracking-[0.35em] uppercase text-white/55 mb-1" style={{ fontWeight: 400 }}>Venez nous découvrir</p>
             <p className="font-display text-white text-xl" style={{ fontWeight: 400, letterSpacing: "0.02em" }}>Casablanca · Maroc</p>
           </div>
           {isContactPage ? (
@@ -100,17 +100,17 @@ const Footer = () => {
           )}
         </div>
 
-        <div className="w-full h-px bg-white/8 mb-8" />
+        <div className="w-full h-px bg-white/12 mb-8" />
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-body text-[10px] tracking-[0.2em] uppercase text-white/20 text-center" style={{ fontWeight: 300 }}>
+          <p className="font-body text-[10px] tracking-[0.2em] uppercase text-white/45 text-center" style={{ fontWeight: 300 }}>
             © 2026 EVØLV Studio · Tous droits réservés
           </p>
           <div className="flex gap-6">
-            <Link to="/contact" className="font-body text-[10px] tracking-[0.15em] uppercase text-white/20 hover:text-white/50 transition-colors" style={{ fontWeight: 300 }}>
+            <Link to="/contact" className="font-body text-[10px] tracking-[0.15em] uppercase text-white/45 hover:text-white/50 transition-colors" style={{ fontWeight: 300 }}>
               Contact
             </Link>
-            <Link to="/studio" className="font-body text-[10px] tracking-[0.15em] uppercase text-white/20 hover:text-white/50 transition-colors" style={{ fontWeight: 300 }}>
+            <Link to="/studio" className="font-body text-[10px] tracking-[0.15em] uppercase text-white/45 hover:text-white/50 transition-colors" style={{ fontWeight: 300 }}>
               À propos
             </Link>
           </div>
