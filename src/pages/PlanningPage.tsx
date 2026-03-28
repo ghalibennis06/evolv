@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WeekPlanning from "@/components/WeekPlanning";
 import VertebraLogo from "@/components/brand/VertebraLogo";
-import PageBackgroundMeridian from "@/components/brand/PageBackgroundMeridian";
+
 
 const PlanningPage = () => {
   const [searchParams] = useSearchParams();
@@ -246,68 +246,51 @@ const PlanningPage = () => {
   };
 
   const inputCls =
-    "w-full bg-card border border-border px-4 py-3 rounded-xl font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-terra transition-colors";
+    "w-full bg-card border border-border px-4 py-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-terra transition-colors";
 
   return (
     <main className="bg-background min-h-screen">
-      <PageBackgroundMeridian />
+
       <Navbar onBookClick={() => {}} />
       <section className="pt-24 pb-20 px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative overflow-hidden border border-border bg-card/80 backdrop-blur-sm rounded-3xl p-6 md:p-10 mb-10"
+            transition={{ duration: 0.7 }}
+            className="border border-border bg-card p-6 md:p-10 mb-8"
           >
-            <div className="absolute -top-16 -right-12 w-52 h-52 rounded-full bg-secondary/40 blur-3xl" />
-            <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-secondary/40 blur-2xl" />
-
-            <div className="relative z-10 text-center">
-              <div className="flex justify-center mb-5">
-                <VertebraLogo size={40} variant="theme" animate showWordmark={false} />
-              </div>
-
-              <p className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase text-terra mb-4 px-3 py-1 rounded-full border border-foreground/20 bg-secondary/20" style={{ fontWeight: 400 }}>
-                <Sparkles size={12} /> Places limitées chaque semaine
-              </p>
-
-              <h1 className="font-display text-4xl md:text-6xl text-foreground" style={{ fontWeight: 400, letterSpacing: "0.1em" }}>
-                Réservez votre <em className="italic text-terra">prochaine séance</em>
+            <div className="text-center">
+              <p className="brand-label justify-center mb-6">Planning EVØLV</p>
+              <h1 className="font-display text-4xl md:text-6xl text-foreground mb-4" style={{ fontWeight: 400, letterSpacing: "0.02em" }}>
+                Réservez votre <em className="italic" style={{ fontWeight: 300 }}>prochaine séance</em>
               </h1>
-
-              <p className="font-body text-sm md:text-base text-muted-foreground mt-4 max-w-2xl mx-auto" style={{ fontWeight: 400 }}>
-                Choisissez votre créneau en 30 secondes. Plus vous réservez tôt, plus vous gardez les meilleurs horaires.
+              <p className="font-body text-muted-foreground mb-8 max-w-lg mx-auto" style={{ fontWeight: 300, fontSize: "14px" }}>
+                Choisissez votre créneau en 30 secondes. Places limitées — petits groupes, suivi personnalisé.
               </p>
-
-              <p className="font-body text-xs md:text-sm text-muted-foreground/90 mt-3 max-w-3xl mx-auto">
-                Planning Pilates, Reformer et Yoga à Casablanca: vue Today pour réserver rapidement les places du jour, et vue Semaine pour organiser
-                votre routine complète.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-7 text-left">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-border text-left">
                 {[
-                  { icon: Clock, title: "Réservation immédiate", desc: "Validation rapide avec paiement en ligne, pack ou sur place." },
-                  { icon: ShieldCheck, title: "Politique claire", desc: "Annulation gratuite jusqu'à 2h avant le cours." },
-                  { icon: Zap, title: "Capacité boutique", desc: "Petits groupes pour un suivi personnalisé." },
+                  { icon: Clock, title: "Réservation immédiate", desc: "Paiement en ligne, pack ou sur place." },
+                  { icon: ShieldCheck, title: "Politique claire", desc: "Annulation gratuite jusqu'à 2h avant." },
+                  { icon: Zap, title: "Petits groupes", desc: "6 personnes max — suivi individualisé." },
                 ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="bg-secondary/70 border border-border rounded-2xl p-4">
-                    <Icon size={16} className="text-terra mb-2" />
-                    <p className="font-body text-sm text-foreground" style={{ fontWeight: 500 }}>{title}</p>
-                    <p className="font-body text-xs text-muted-foreground mt-1" style={{ fontWeight: 400 }}>{desc}</p>
+                  <div key={title} className="p-5 border-r border-border last:border-r-0">
+                    <Icon size={15} className="text-terra mb-3" />
+                    <p className="font-body text-foreground text-[13px] mb-1" style={{ fontWeight: 500 }}>{title}</p>
+                    <p className="font-body text-muted-foreground text-[12px]" style={{ fontWeight: 300 }}>{desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           </motion.div>
 
-          <div className="bg-terra text-warm-white rounded-2xl p-4 md:p-5 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+          <div className="bg-terra text-white p-4 md:p-5 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div>
-              <p className="font-body text-[10px] tracking-[0.2em] uppercase opacity-90" style={{ fontWeight: 500 }}>Offre découverte</p>
-              <p className="font-body text-sm md:text-base" style={{ fontWeight: 400 }}>Nouveau chez EVØLV ? Réservez d'abord votre créneau, puis demandez votre offre d'essai sur WhatsApp.</p>
+              <p className="font-body text-[10px] tracking-[0.2em] uppercase opacity-80 mb-1" style={{ fontWeight: 500 }}>Offre découverte</p>
+              <p className="font-body text-sm" style={{ fontWeight: 300 }}>Nouveau chez EVØLV ? Réservez votre créneau puis demandez votre offre d'essai sur WhatsApp.</p>
             </div>
-            <a href="https://wa.me/33668710966" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-warm-white text-terra px-4 py-2 rounded-full font-body text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity" style={{ fontWeight: 600 }}>
-              Demander l'offre <ArrowRight size={14} />
+            <a href="https://wa.me/33668710966" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white text-terra px-5 py-2.5 font-body text-[11px] tracking-[0.2em] uppercase hover:opacity-90 transition-opacity shrink-0" style={{ fontWeight: 600 }}>
+              Demander l'offre <ArrowRight size={13} />
             </a>
           </div>
 
@@ -331,7 +314,7 @@ const PlanningPage = () => {
               initial={{ y: 30, scale: 0.95 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 30, scale: 0.95 }}
-              className="bg-card w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden"
+              className="bg-card w-full max-w-sm shadow-2xl overflow-hidden border border-border"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="px-6 py-5 border-b border-border flex justify-between items-center">
@@ -345,7 +328,7 @@ const PlanningPage = () => {
                 </div>
                 <button
                   onClick={resetBooking}
-                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground"
+                  className="w-8 h-8 border border-border bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -370,7 +353,7 @@ const PlanningPage = () => {
                     setShowEquipmentPicker(false);
                     setShowOptionsModal(true);
                   }}
-                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-terra text-white py-3.5 font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                   style={{ fontWeight: 600 }}
                 >
                   Continuer <ArrowRight size={16} />
@@ -395,7 +378,7 @@ const PlanningPage = () => {
               initial={{ y: 30, scale: 0.95 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 30, scale: 0.95 }}
-              className="bg-card w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden"
+              className="bg-card w-full max-w-sm shadow-2xl overflow-hidden border border-border"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="px-6 py-5 border-b border-border flex justify-between items-center">
@@ -404,7 +387,7 @@ const PlanningPage = () => {
                 </p>
                 <button
                   onClick={resetBooking}
-                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground"
+                  className="w-8 h-8 border border-border bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -427,7 +410,7 @@ const PlanningPage = () => {
                   <>
                     <p className="font-body text-sm text-muted-foreground mb-4">Inscrivez-vous à la liste d'attente ou choisissez une session proche disponible.</p>
                     {alternativeSessions.length > 0 && (
-                      <div className="mb-4 rounded-2xl border border-border bg-secondary/40 p-3 space-y-2">
+                      <div className="mb-4 border border-border bg-secondary/40 p-3 space-y-2">
                         <p className="font-body text-[11px] uppercase tracking-widest text-terra">Sessions les plus proches</p>
                         {alternativeSessions.map((alt) => (
                           <button
@@ -437,7 +420,7 @@ const PlanningPage = () => {
                               setShowWaitlist(false);
                               handleSelectSession(alt);
                             }}
-                            className="w-full text-left rounded-xl border border-border bg-card px-3 py-2 hover:border-foreground/30 transition-colors"
+                            className="w-full text-left border border-border bg-card px-3 py-2 hover:border-foreground/30 transition-colors"
                           >
                             <p className="font-body text-[12px] text-foreground font-medium">{alt.title} · {alt.time}</p>
                             <p className="font-body text-[10px] text-muted-foreground">{formatDay(alt.date)} · {alt.instructor}</p>
@@ -470,7 +453,7 @@ const PlanningPage = () => {
                     <button
                       disabled={!name || !email || !isValidEmail(email) || loading}
                       onClick={handleJoinWaitlist}
-                      className="w-full bg-terra text-warm-white py-3 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-terra text-white py-3 font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                       style={{ fontWeight: 600 }}
                     >
                       {loading ? (
@@ -503,7 +486,7 @@ const PlanningPage = () => {
               initial={{ y: 30, scale: 0.95 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 30, scale: 0.95 }}
-              className="bg-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden"
+              className="bg-card w-full max-w-md shadow-2xl overflow-hidden border border-border"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="px-6 py-5 border-b border-border flex justify-between items-center">
@@ -520,7 +503,7 @@ const PlanningPage = () => {
                     setShowOptionsModal(false);
                     resetBooking();
                   }}
-                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground"
+                  className="w-8 h-8 border border-border bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -528,9 +511,9 @@ const PlanningPage = () => {
               <div className="p-6 space-y-3">
                 <button
                   onClick={() => setWantsDrink(!wantsDrink)}
-                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsDrink ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
+                  className={`w-full flex items-center gap-3 p-4 border transition-all ${wantsDrink ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
+                  <div className="w-9 h-9 bg-secondary/50 flex items-center justify-center shrink-0">
                     <Coffee size={18} className="text-terra" />
                   </div>
                   <div className="text-left flex-1">
@@ -550,7 +533,7 @@ const PlanningPage = () => {
                       <button
                         key={d}
                         onClick={() => setSelectedDrink(d)}
-                        className={`px-3 py-1.5 rounded-full font-body text-xs transition-all ${selectedDrink === d ? "bg-terra text-warm-white" : "bg-secondary border border-border text-muted-foreground"}`}
+                        className={`px-3 py-1.5 font-body text-xs transition-all border ${selectedDrink === d ? "bg-terra text-white border-terra" : "bg-secondary border-border text-muted-foreground"}`}
                         style={{ fontWeight: 500 }}
                       >
                         {d}
@@ -560,9 +543,9 @@ const PlanningPage = () => {
                 )}
                 <button
                   onClick={() => setWantsMat(!wantsMat)}
-                  className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all ${wantsMat ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
+                  className={`w-full flex items-center gap-3 p-4 border transition-all ${wantsMat ? "border-terra bg-secondary/20" : "border-border bg-card hover:border-foreground/20"}`}
                 >
-                  <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
+                  <div className="w-9 h-9 bg-secondary/50 flex items-center justify-center shrink-0">
                     <Dumbbell size={18} className="text-terra" />
                   </div>
                   <div className="text-left flex-1">
@@ -580,7 +563,7 @@ const PlanningPage = () => {
                     setShowOptionsModal(false);
                     setShowPaymentModal(true);
                   }}
-                  className="w-full bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-terra text-white py-3.5 font-body text-xs tracking-widest uppercase hover:bg-foreground/80 transition-colors flex items-center justify-center gap-2"
                   style={{ fontWeight: 600 }}
                 >
                   Continuer <ArrowRight size={16} />
@@ -605,10 +588,10 @@ const PlanningPage = () => {
               initial={{ y: 30, scale: 0.95 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 30, scale: 0.95 }}
-              className="bg-card w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
+              className="bg-card w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border border-border"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="px-6 py-5 border-b border-border flex justify-between items-center sticky top-0 bg-card z-10 rounded-t-3xl">
+              <div className="px-6 py-5 border-b border-border flex justify-between items-center sticky top-0 bg-card z-10">
                 <div>
                   <p className="font-display text-lg text-foreground" style={{ fontWeight: 400 }}>
                     Vos informations
@@ -621,7 +604,7 @@ const PlanningPage = () => {
                 </div>
                 <button
                   onClick={() => setShowPaymentModal(false)}
-                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground"
+                  className="w-8 h-8 border border-border bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -674,7 +657,7 @@ const PlanningPage = () => {
                       setPayOnSite(false);
                       setUsePackCode(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${!payOnSite && !usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 border transition-all ${!payOnSite && !usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <CreditCard size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">Payer en ligne (Stripe)</span>
@@ -684,7 +667,7 @@ const PlanningPage = () => {
                       setPayOnSite(true);
                       setUsePackCode(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${payOnSite ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 border transition-all ${payOnSite ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <Clock size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">Payer sur place</span>
@@ -694,7 +677,7 @@ const PlanningPage = () => {
                       setUsePackCode(true);
                       setPayOnSite(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all ${usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
+                    className={`w-full flex items-center gap-3 p-3.5 border transition-all ${usePackCode ? "border-terra bg-secondary/20" : "border-border bg-card"}`}
                   >
                     <Ticket size={16} className="text-terra" />
                     <span className="font-body text-sm text-foreground">J'ai un code pack</span>
@@ -719,7 +702,7 @@ const PlanningPage = () => {
                     setShowPaymentModal(false);
                     setShowOptionsModal(true);
                   }}
-                  className="flex-1 border border-border text-foreground py-3.5 rounded-full font-body text-xs tracking-widest uppercase hover:bg-card transition-colors"
+                  className="flex-1 border border-border text-foreground py-3.5 font-body text-xs tracking-widest uppercase hover:bg-card transition-colors"
                   style={{ fontWeight: 500 }}
                 >
                   Retour
@@ -727,7 +710,7 @@ const PlanningPage = () => {
                 <button
                   disabled={!name || !email || !isValidEmail(email) || loading || (usePackCode && !packCode)}
                   onClick={handleSubmit}
-                  className="flex-1 bg-terra text-warm-white py-3.5 rounded-full font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors"
+                  className="flex-1 bg-terra text-white py-3.5 font-body text-xs tracking-widest uppercase disabled:opacity-40 hover:bg-foreground/80 transition-colors"
                   style={{ fontWeight: 600 }}
                 >
                   {loading || packValidating

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import SpineWatermark from "@/components/brand/SpineWatermark";
 
 interface ClassesSectionProps {
   onBookClick: () => void;
@@ -8,11 +7,11 @@ interface ClassesSectionProps {
 }
 
 const tabs = [
-  { id: "reformer", label: "Reformer Pilates" },
-  { id: "springwall", label: "Reformer + Springwall" },
+  { id: "reformer", label: "Reformer" },
+  { id: "springwall", label: "Springwall" },
   { id: "yoga", label: "Yoga" },
   { id: "fitness", label: "Mat & Fitness" },
-  { id: "maternite", label: "Maternité & Post-natal" },
+  { id: "maternite", label: "Maternité" },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -25,80 +24,25 @@ interface Course {
 
 const disciplineData: Record<TabId, Course[]> = {
   reformer: [
-    {
-      name: "Reformer Signature",
-      tag: "Signature",
-      detail:
-        "Corps entier en 55 minutes. Renforcement profond, posture corrigée, silhouette redessinée — guidé par votre coach, en groupe intimiste de 6.",
-    },
-    {
-      name: "Reformer Jumpboard",
-      tag: "Cardio",
-      detail:
-        "Intensité cardio sans impact articulaire. Endurance, force, brûlure — sur une machine qui absorbe l'impact à votre place.",
-    },
+    { name: "Reformer Signature", tag: "Signature", detail: "Corps entier en 55 minutes. Renforcement profond, posture corrigée, silhouette redessinée — guidé par votre coach, en groupe intimiste de 6." },
+    { name: "Reformer Jumpboard", tag: "Cardio", detail: "Intensité cardio sans impact articulaire. Endurance, force, brûlure — sur une machine qui absorbe l'impact à votre place." },
   ],
   springwall: [
-    {
-      name: "Reformer + Springwall Combo",
-      tag: "Complet",
-      detail:
-        "Bas du corps au Reformer, haut du corps au Springwall. La séance la plus complète du studio EVØLV.",
-    },
+    { name: "Reformer + Springwall Combo", tag: "Complet", detail: "Bas du corps au Reformer, haut du corps au Springwall. La séance la plus complète du studio EVØLV." },
   ],
   yoga: [
-    {
-      name: "Vinyasa Yoga",
-      tag: "Flow",
-      detail:
-        "Fluidité et force. Chaque mouvement suit votre souffle — un yoga qui renforce autant qu'il libère.",
-    },
-    {
-      name: "Hatha Yoga",
-      tag: "Équilibre",
-      detail:
-        "Postures tenues, respiration consciente. Le yoga dans son essence — pour ancrer, assouplir, recentrer.",
-    },
-    {
-      name: "Power Yoga",
-      tag: "Intensif",
-      detail:
-        "Yoga athlétique. Séquences intenses pour bâtir force, endurance et concentration.",
-    },
+    { name: "Vinyasa Yoga", tag: "Flow", detail: "Fluidité et force. Chaque mouvement suit votre souffle — un yoga qui renforce autant qu'il libère." },
+    { name: "Hatha Yoga", tag: "Équilibre", detail: "Postures tenues, respiration consciente. Le yoga dans son essence — pour ancrer, assouplir, recentrer." },
+    { name: "Power Yoga", tag: "Intensif", detail: "Yoga athlétique. Séquences intenses pour bâtir force, endurance et concentration." },
   ],
   fitness: [
-    {
-      name: "Mat Pilates",
-      tag: null,
-      detail:
-        "La puissance au sol. Développez votre centre de force — contrôle, respiration, muscles profonds.",
-    },
-    {
-      name: "Barre Fit",
-      tag: null,
-      detail:
-        "Inspiré du ballet. Micro-mouvements précis qui sculptent et tonifient avec grâce.",
-    },
-    {
-      name: "Cardio Zumba",
-      tag: "Fun",
-      detail:
-        "Se défouler, vraiment. Cardio déguisé en célébration — rythmes, chaleur, énergie.",
-    },
+    { name: "Mat Pilates", tag: null, detail: "La puissance au sol. Développez votre centre de force — contrôle, respiration, muscles profonds." },
+    { name: "Barre Fit", tag: null, detail: "Inspiré du ballet. Micro-mouvements précis qui sculptent et tonifient avec grâce." },
+    { name: "Cardio Zumba", tag: "Fun", detail: "Se défouler, vraiment. Cardio déguisé en célébration — rythmes, chaleur, énergie." },
   ],
   maternite: [
-    {
-      name: "Post-natal",
-      tag: "Maman",
-      detail:
-        "Retrouvez votre corps à votre rythme. Périnée, abdominaux profonds, bien-être global — accompagnée avec expertise.",
-    },
-    {
-      name: "Maman & Bébé",
-      tag: "Duo",
-      detail:
-        "Une heure pour vous deux. Votre bébé participe, vous vous reconnectez à votre corps.",
-    },
+    { name: "Post-natal", tag: "Maman", detail: "Retrouvez votre corps à votre rythme. Périnée, abdominaux profonds, bien-être global — accompagnée avec expertise." },
+    { name: "Maman & Bébé", tag: "Duo", detail: "Une heure pour vous deux. Votre bébé participe, vous vous reconnectez à votre corps." },
   ],
 };
 
@@ -108,8 +52,8 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
 
   useEffect(() => {
     fetch("/api/site-content?section=disciplines_visibility")
-      .then(r => r.json())
-      .then(data => {
+      .then((r) => r.json())
+      .then((data) => {
         if (data?.content) {
           const vis = data.content as any;
           const list = vis[context];
@@ -130,115 +74,89 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
   const courses = disciplineData[activeTab];
 
   return (
-    <section id="cours" className="min-h-screen overflow-hidden bg-background flex flex-col">
+    <section id="cours" className="bg-background border-t border-border">
       {/* Header */}
-      <div className="relative py-20 px-6 text-center overflow-hidden flex-shrink-0">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse at 50% 50%, hsl(var(--stone)/0.06) 0%, transparent 65%)" }}
-        />
-        <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/3 pointer-events-none" style={{ opacity: 0.12 }}>
-          <SpineWatermark size={380} opacity={0.06} />
+      <div className="py-16 px-6 border-b border-border">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+            <p className="brand-label mb-5">Nos disciplines</p>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <h2 className="font-display text-foreground" style={{ fontSize: "clamp(32px, 5.5vw, 64px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.05 }}>
+                Les{" "}
+                <em className="italic" style={{ fontWeight: 300 }}>Cours</em>
+              </h2>
+              <p className="font-body text-muted-foreground max-w-xs leading-[1.8]" style={{ fontWeight: 300, fontSize: "13px" }}>
+                Une pratique pour chaque corps — choisissez ce qui vous correspond.
+              </p>
+            </div>
+          </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10"
-        >
-          <p className="brand-label justify-center mb-6">
-            Nos disciplines
-          </p>
-          <h2
-            className="font-display text-foreground"
-            style={{ fontSize: "clamp(36px, 6vw, 76px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.1 }}
-          >
-            Les{" "}
-            <em className="italic" style={{ fontStyle: "italic", fontWeight: 300 }}>Cours</em>
-          </h2>
-          <p className="font-body text-foreground/50 mt-6 max-w-sm mx-auto leading-[1.95]" style={{ fontWeight: 300, fontSize: "14px" }}>
-            Une pratique pour chaque corps, chaque intention — choisissez ce qui vous correspond.
-          </p>
-        </motion.div>
       </div>
 
-      {/* Tab navigation */}
-      <div className="relative flex-shrink-0 px-4">
-        <div className="absolute top-0 left-0 right-0 h-px bg-border" />
-        <div className="overflow-x-auto scrollbar-none">
-          <div className="flex gap-0 min-w-max mx-auto justify-center">
-            {filteredTabs.map((tab) => {
-              const isActive = tab.id === activeTab;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className="relative px-6 py-4 font-body text-[10px] tracking-[0.22em] uppercase transition-colors whitespace-nowrap flex-shrink-0"
-                  style={{
-                    fontWeight: isActive ? 500 : 400,
-                    color: isActive ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
-                  }}
-                >
-                  {tab.label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="tab-underline"
-                      className="absolute bottom-0 left-6 right-6 h-px bg-foreground"
-                      transition={{ type: "spring", stiffness: 380, damping: 36 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
+      {/* Tab bar */}
+      <div className="border-b border-border bg-card">
+        <div className="container mx-auto max-w-5xl px-6">
+          <div className="overflow-x-auto scrollbar-none">
+            <div className="flex min-w-max">
+              {filteredTabs.map((tab) => {
+                const isActive = tab.id === activeTab;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className="relative px-6 py-4 font-body text-[10px] tracking-[0.22em] uppercase transition-colors whitespace-nowrap"
+                    style={{ fontWeight: isActive ? 500 : 400, color: isActive ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
+                  >
+                    {tab.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="tab-underline"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-terra"
+                        transition={{ type: "spring", stiffness: 400, damping: 38 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
       </div>
 
       {/* Course cards */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 md:py-16">
+      <div className="px-6 py-12">
         <div className="container mx-auto max-w-5xl">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border"
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35 }}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 border border-border"
             >
               {courses.map((course, cIdx) => (
                 <motion.div
                   key={course.name}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: cIdx * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="group relative p-8 bg-background cursor-default transition-all hover:bg-secondary/30"
+                  transition={{ delay: cIdx * 0.05, duration: 0.5 }}
+                  className="relative p-8 border-r border-b border-border last:border-r-0 bg-background hover:bg-card transition-colors duration-200 group"
                 >
-                  {course.tag && (
-                    <span
-                      className="inline-block font-body text-[9px] tracking-[0.25em] uppercase text-foreground/40 border border-foreground/15 px-2.5 py-1 mb-5"
-                      style={{ fontWeight: 500 }}
-                    >
+                  {course.tag ? (
+                    <span className="inline-block font-body text-[9px] tracking-[0.25em] uppercase bg-terra/10 text-terra px-2.5 py-1 mb-5" style={{ fontWeight: 500 }}>
                       {course.tag}
                     </span>
+                  ) : (
+                    <div className="mb-5 h-[26px]" />
                   )}
-                  {!course.tag && <div className="mb-5 h-[26px]" />}
-
-                  <h4
-                    className="font-display text-foreground mb-4 group-hover:opacity-70 transition-opacity"
-                    style={{ fontSize: "clamp(18px, 2.2vw, 24px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.2 }}
-                  >
+                  <h4 className="font-display text-foreground mb-3" style={{ fontSize: "clamp(17px, 2vw, 22px)", fontWeight: 400, letterSpacing: "0.01em", lineHeight: 1.2 }}>
                     {course.name}
                   </h4>
-
-                  <p className="font-body text-foreground/50 leading-[1.9]" style={{ fontWeight: 300, fontSize: "13px" }}>
+                  <p className="font-body text-foreground/65 leading-[1.85]" style={{ fontWeight: 300, fontSize: "13px" }}>
                     {course.detail}
                   </p>
-
-                  <div className="absolute bottom-0 left-0 h-px w-0 bg-foreground group-hover:w-full transition-all duration-500" />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-terra group-hover:w-full transition-all duration-400" />
                 </motion.div>
               ))}
             </motion.div>
@@ -247,26 +165,19 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
       </div>
 
       {/* CTA */}
-      <div className="relative py-12 text-center flex-shrink-0">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, hsl(var(--secondary)) 0%, transparent 60%)" }} />
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col items-center gap-5"
-        >
-          <p className="font-body text-foreground/40 text-[10px] tracking-[0.3em] uppercase" style={{ fontWeight: 400 }}>
+      <div className="px-6 pb-14 pt-2 border-t border-border">
+        <div className="container mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="font-body text-muted-foreground text-[11px] tracking-[0.2em] uppercase" style={{ fontWeight: 400 }}>
             Prêt·e à commencer ?
           </p>
           <button
             onClick={onBookClick}
-            className="inline-flex items-center gap-3 bg-foreground hover:bg-foreground/80 text-background px-10 py-4 font-body text-[10px] tracking-[0.3em] uppercase transition-all"
+            className="inline-flex items-center gap-3 bg-foreground hover:bg-foreground/80 text-background px-10 py-3.5 font-body text-[10px] tracking-[0.28em] uppercase transition-all"
             style={{ fontWeight: 500 }}
           >
             Réserver une séance →
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

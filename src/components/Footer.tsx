@@ -13,7 +13,7 @@ const Footer = () => {
           {/* Brand column */}
           <div className="flex flex-col items-start md:items-center gap-5">
             <motion.div whileHover={{ scale: 1.04 }} transition={{ type: "spring", stiffness: 300 }}>
-              <VertebraLogo size={56} variant="ink" animate showWordmark />
+              <VertebraLogo size={56} variant="fog" animate showWordmark />
             </motion.div>
           </div>
 

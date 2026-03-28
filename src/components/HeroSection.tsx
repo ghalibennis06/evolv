@@ -46,21 +46,6 @@ const HeroSection = ({ onBookClick }: HeroSectionProps) => {
     >
       <ParticleCanvas />
 
-      {/* Ambient rings */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        {[360, 560, 760].map((r, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: r, height: r,
-              border: "1px solid rgba(242,239,233,0.035)",
-              animation: `divider-spin ${50 + i * 16}s linear infinite ${i % 2 ? "reverse" : ""}`,
-            }}
-          />
-        ))}
-      </div>
-
       {/* ── MAIN HERO MARK — EvolvWordmark centered ─────────── */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -93,7 +78,7 @@ const HeroSection = ({ onBookClick }: HeroSectionProps) => {
             fontSize: "clamp(8px, 1vw, 10px)",
             fontWeight: 400,
             letterSpacing: "0.38em",
-            color: "rgba(242,239,233,0.28)",
+            color: "rgba(242,239,233,0.55)",
             fontFamily: "'Outfit', Inter, sans-serif",
           }}
         >
@@ -124,7 +109,7 @@ const HeroSection = ({ onBookClick }: HeroSectionProps) => {
           </Link>
           <Link
             to="/studio"
-            className="border border-white/10 text-white/35 px-10 py-4 text-[10px] tracking-[0.3em] uppercase hover:border-white/22 hover:text-white/55 transition-all"
+            className="border border-white/15 text-white/55 px-10 py-4 text-[10px] tracking-[0.3em] uppercase hover:border-white/35 hover:text-white/75 transition-all"
             style={{ fontWeight: 400, fontFamily: "'Outfit', Inter, sans-serif" }}
           >
             Le Studio

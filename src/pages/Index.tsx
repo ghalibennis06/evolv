@@ -7,11 +7,7 @@ import CoachesSection from "@/components/CoachesSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import UpcomingSessions from "@/components/UpcomingSessions";
-import FloatingCircles from "@/components/brand/FloatingCircles";
-import LogoDivider from "@/components/brand/LogoDivider";
-import SpineWatermark from "@/components/brand/SpineWatermark";
 import VertebraLogo from "@/components/brand/VertebraLogo";
-import StarfieldCanvas from "@/components/brand/StarfieldCanvas";
 import { useNavigate, Link } from "react-router-dom";
 import { useSessions } from "@/hooks/useSessions";
 import { getTypeColor } from "@/lib/schedule";
@@ -20,7 +16,6 @@ import {
   motion,
   useScroll,
   useTransform,
-  useVelocity,
   useSpring,
   AnimatePresence,
   useInView,
@@ -67,51 +62,6 @@ const ScrollProgressBar = () => {
   );
 };
 
-// ── Giant Meridian scroll anchor ──────────────────────────────────────────────
-const MeridianScrollAnchor = () => {
-  const { scrollYProgress } = useScroll();
-  const scrollVelocity = useVelocity(scrollYProgress);
-  const velocityY = useTransform(scrollVelocity, [-0.05, 0, 0.05], [60, 0, -60]);
-  const smoothVelocityY = useSpring(velocityY, { stiffness: 50, damping: 32, mass: 3.5 });
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.08, 0.25, 0.55, 0.85, 1],
-    [0.52, 0.70, 1.45, 1.28, 0.82, 0.55]
-  );
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.06, 0.18, 0.5, 0.82, 0.96, 1],
-    [0, 0, 0.13, 0.20, 0.13, 0.05, 0]
-  );
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const yBase = useTransform(scrollYProgress, [0, 1], [0, -380]);
-  const ySpring = useSpring(yBase, { stiffness: 28, damping: 26, mass: 4 });
-
-  return (
-    <div
-      className="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
-      style={{ zIndex: 0 }}
-      aria-hidden
-    >
-      {/* Terra radial glow behind meridian */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 900,
-          height: 900,
-          background: "radial-gradient(ellipse at center, rgba(184,99,74,0.07) 0%, transparent 65%)",
-          opacity,
-          scale,
-        }}
-      />
-      <motion.div style={{ rotate, opacity, scale, y: ySpring }}>
-        <motion.div style={{ y: smoothVelocityY }}>
-          <SpineWatermark size={800} opacity={0.04} />
-        </motion.div>
-      </motion.div>
-    </div>
-  );
-};
 
 // ── Animated counter ──────────────────────────────────────────────────────────
 const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
@@ -141,7 +91,7 @@ const isUuid = (v?: string | null) =>
   !!v && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
 
 const inputCls =
-  "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-terra/40 focus:border-terra";
+  "w-full border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-terra/40 focus:border-terra";
 
 // ── Carnets section ───────────────────────────────────────────────────────────
 const CarnetsSection = () => {
@@ -210,11 +160,6 @@ const CarnetsSection = () => {
       ref={sectionRef}
       className="relative py-14 px-6 overflow-hidden min-h-screen flex flex-col justify-center bg-secondary"
     >
-      {/* Terra & burgundy radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at 35% 50%, rgba(122,48,64,0.07) 0%, rgba(184,99,74,0.04) 40%, transparent 70%)" }}
-      />
 
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -230,9 +175,9 @@ const CarnetsSection = () => {
           </p>
           <h2
             className="font-display text-foreground mb-4"
-            style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 200, letterSpacing: "0.08em" }}
+            style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 400, letterSpacing: "0.04em" }}
           >
-            Achetez des <em className="italic text-terra">crédits</em>, réservez librement
+            Achetez des <em className="italic text-terra" style={{ fontWeight: 300 }}>crédits</em>, réservez librement
           </h2>
           <p className="font-body text-foreground/70 max-w-lg mx-auto leading-[1.9]" style={{ fontWeight: 400, fontSize: "14px" }}>
             Chaque crédit = 1 séance de votre choix. Achetez un pack, votre code est généré instantanément, et vous réservez quand vous voulez.
@@ -253,7 +198,7 @@ const CarnetsSection = () => {
             { step: "03", label: "Réservez librement", desc: "Utilisez vos crédits pour toute séance du planning" },
           ].map((item) => (
             <div key={item.step} className="flex items-start gap-3 max-w-[200px]">
-              <span className="font-display text-foreground/30 text-2xl shrink-0" style={{ fontWeight: 200, lineHeight: 1 }}>{item.step}</span>
+              <span className="font-display text-foreground/30 text-2xl shrink-0" style={{ fontWeight: 400, lineHeight: 1 }}>{item.step}</span>
               <div>
                 <p className="font-body text-foreground text-[12px] tracking-[0.15em] uppercase mb-0.5" style={{ fontWeight: 600 }}>{item.label}</p>
                 <p className="font-body text-foreground/55 text-[12px] leading-[1.7]" style={{ fontWeight: 300 }}>{item.desc}</p>
@@ -275,7 +220,7 @@ const CarnetsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`relative flex flex-col rounded-3xl border overflow-hidden transition-all hover:shadow-xl ${
+                className={`relative flex flex-col border overflow-hidden transition-all hover:shadow-xl ${
                   isPopular
                     ? "border-terra shadow-terra/20"
                     : "border-border"
@@ -289,7 +234,7 @@ const CarnetsSection = () => {
                 {/* Popular badge */}
                 {isPopular && (
                   <div className="absolute top-4 right-4 z-10">
-                    <span className="inline-flex items-center gap-1 font-body text-[8px] tracking-[0.3em] uppercase px-2.5 py-1 rounded-full bg-white/20 text-white" style={{ fontWeight: 600 }}>
+                    <span className="inline-flex items-center gap-1 font-body text-[8px] tracking-[0.3em] uppercase px-2.5 py-1 bg-white/20 text-white" style={{ fontWeight: 600 }}>
                       ★ Populaire
                     </span>
                   </div>
@@ -302,7 +247,7 @@ const CarnetsSection = () => {
                       className="font-display block"
                       style={{
                         fontSize: "clamp(56px, 8vw, 80px)",
-                        fontWeight: 200,
+                        fontWeight: 400,
                         color: isPopular ? "#FBF7F2" : "hsl(var(--terra))",
                         lineHeight: 1,
                       }}
@@ -344,7 +289,7 @@ const CarnetsSection = () => {
                   {savings > 0 && (
                     <div className="mb-3">
                       <span
-                        className="font-body text-[10px] px-2.5 py-1 rounded-full"
+                        className="font-body text-[10px] px-2.5 py-1 "
                         style={{
                           fontWeight: 600,
                           background: isPopular ? "rgba(255,255,255,0.15)" : "rgba(184,99,74,0.12)",
@@ -374,7 +319,7 @@ const CarnetsSection = () => {
                   {/* CTA */}
                   <button
                     onClick={() => openModal(plan)}
-                    className="w-full py-3 rounded-full font-body text-[11px] tracking-[0.22em] uppercase transition-all flex items-center justify-center gap-2 group"
+                    className="w-full py-3  font-body text-[11px] tracking-[0.22em] uppercase transition-all flex items-center justify-center gap-2 group"
                     style={{
                       fontWeight: 600,
                       background: isPopular ? "rgba(255,255,255,0.18)" : "hsl(var(--terra))",
@@ -419,12 +364,12 @@ const CarnetsSection = () => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 48, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 28 }}
-              className="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-border bg-card"
+              className="w-full max-w-md  overflow-hidden shadow-2xl border border-border bg-card"
               onClick={(e) => e.stopPropagation()}
             >
               {step === "confirmed" ? (
                 <div className="p-10 text-center">
-                  <div className="w-16 h-16 rounded-full bg-terra/15 flex items-center justify-center mx-auto mb-5">
+                  <div className="w-16 h-16  bg-terra/15 flex items-center justify-center mx-auto mb-5">
                     <Check size={30} className="text-terra" />
                   </div>
                   <h3 className="font-display text-2xl text-foreground mb-2" style={{ fontWeight: 300 }}>Demande envoyée ✓</h3>
@@ -433,10 +378,10 @@ const CarnetsSection = () => {
                     Présentez-vous sur place pour finaliser le paiement. Votre code sera activé par l'équipe.
                   </p>
                   <div className="flex flex-col gap-3">
-                    <a href="/mon-pack" className="w-full rounded-full border border-terra text-terra py-3 text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 hover:bg-foreground hover:text-white transition-all">
+                    <a href="/mon-pack" className="w-full  border border-terra text-terra py-3 text-[11px] tracking-[0.25em] uppercase flex items-center justify-center gap-2 hover:bg-foreground hover:text-white transition-all">
                       <Ticket size={13} /> Suivre ma carte
                     </a>
-                    <button onClick={closeModal} className="w-full rounded-full bg-terra py-3 text-white text-[11px] tracking-[0.25em] uppercase">
+                    <button onClick={closeModal} className="w-full  bg-terra py-3 text-white text-[11px] tracking-[0.25em] uppercase">
                       Fermer
                     </button>
                   </div>
@@ -467,17 +412,17 @@ const CarnetsSection = () => {
                     <div className="grid grid-cols-2 gap-2 pt-1">
                       <button
                         onClick={() => setMethod("online")}
-                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "online" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
+                        className={` py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "online" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
                       >En ligne</button>
                       <button
                         onClick={() => setMethod("cash_on_site")}
-                        className={`rounded-full py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "cash_on_site" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
+                        className={` py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all ${method === "cash_on_site" ? "bg-terra border-terra text-white" : "border-border text-muted-foreground hover:border-foreground/30"}`}
                       >Sur place</button>
                     </div>
                     <button
                       onClick={handleBuy}
                       disabled={!name || !email}
-                      className="w-full rounded-full bg-terra py-4 text-white text-[11px] tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-foreground/80 transition-all mt-1"
+                      className="w-full  bg-terra py-4 text-white text-[11px] tracking-[0.28em] uppercase flex items-center justify-center gap-2 disabled:opacity-40 hover:bg-foreground/80 transition-all mt-1"
                       style={{ fontWeight: 500 }}
                     >
                       <Sparkles size={13} />
@@ -552,37 +497,19 @@ const WhySection = () => {
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div style={{ x }} className="flex h-full">
           {WHY_ITEMS.map((item, i) => {
-            const isEven = i % 2 === 0;
-            const accentColor = isEven ? "#B8634A" : "hsl(var(--burgundy))";
+            const accentColor = "hsl(var(--terra))";
             return (
               <div
                 key={item.num}
-                className="w-screen h-screen flex-shrink-0 flex items-center relative overflow-hidden bg-background"
+                className="w-screen h-screen flex-shrink-0 flex items-center relative overflow-hidden bg-background border-r border-border"
               >
-                {/* Warm radial glow */}
-                <div className="absolute inset-0 pointer-events-none" style={{
-                  background: isEven
-                    ? "radial-gradient(ellipse at 15% 60%, rgba(184,99,74,0.11) 0%, transparent 55%)"
-                    : "radial-gradient(ellipse at 85% 40%, rgba(122,48,64,0.13) 0%, transparent 55%)",
-                }} />
-
-                {/* Large decorative meridian — upper right corner */}
-                <div className="absolute pointer-events-none" style={{ right: "-7vw", top: "-7vh", opacity: 0.09 }}>
-                  <motion.div
-                    animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-                    transition={{ duration: 80 + i * 15, repeat: Infinity, ease: "linear" }}
-                  >
-                    <SpineWatermark size={500} opacity={0.05} />
-                  </motion.div>
-                </div>
-
                 {/* Giant ghost number — bottom-left anchor */}
                 <div
                   className="absolute bottom-0 left-0 font-display select-none pointer-events-none"
                   style={{
                     fontSize: "clamp(200px, 32vw, 420px)",
-                    fontWeight: 100,
-                    color: isEven ? "rgba(184,99,74,0.045)" : "rgba(122,48,64,0.055)",
+                    fontWeight: 400,
+                    color: "rgba(181,120,90,0.04)",
                     lineHeight: 0.85,
                     letterSpacing: "-0.04em",
                   }}
@@ -592,11 +519,8 @@ const WhySection = () => {
                 {/* Content */}
                 <div className="container mx-auto max-w-5xl px-8 md:px-20 relative z-10">
                   <div className="max-w-xl">
-                    {/* Accent label with mini spinning meridian */}
+                    {/* Accent label */}
                     <div className="flex items-center gap-3 mb-8">
-                      <motion.div style={{ opacity: 0.45 }} animate={{ rotate: 360 }} transition={{ duration: 12, repeat: Infinity, ease: "linear" }}>
-                        <VertebraLogo size={18} variant="theme" animate={false} showWordmark={false} />
-                      </motion.div>
                       <p className="font-body text-[10px] tracking-[0.6em] uppercase" style={{ fontWeight: 500, color: accentColor }}>
                         {item.num} — {item.accent}
                       </p>
@@ -605,7 +529,7 @@ const WhySection = () => {
                     {/* Hook headline */}
                     <h3 className="font-display text-foreground mb-2" style={{
                       fontSize: "clamp(36px, 6.5vw, 82px)",
-                      fontWeight: 200, letterSpacing: "0.03em", lineHeight: 1.02,
+                      fontWeight: 400, letterSpacing: "0.03em", lineHeight: 1.02,
                     }}>{item.hook}</h3>
 
                     {/* Subhook italic */}
@@ -663,7 +587,7 @@ function TodaySessionsStrip() {
           <div className="flex items-center gap-3">
             <Link
               to="/carte-black"
-              className="inline-flex items-center gap-1.5 font-body text-[10px] tracking-[0.2em] uppercase bg-terra text-warm-white px-4 py-2 rounded-full hover:bg-foreground/80 transition-colors"
+              className="inline-flex items-center gap-1.5 font-body text-[10px] tracking-[0.2em] uppercase bg-terra text-white px-4 py-2  hover:bg-foreground/80 transition-colors"
               style={{ fontWeight: 500 }}
             >
               <Ticket size={10} /> Acheter des crédits
@@ -684,7 +608,7 @@ function TodaySessionsStrip() {
                 onClick={() => navigate(`/planning?session=${s.id}`)}
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex-shrink-0 bg-card border rounded-2xl p-4 text-left min-w-[170px] transition-all shadow-sm ${isFull ? "opacity-60 cursor-default border-border" : "hover:shadow-md cursor-pointer border-border hover:border-foreground/20"}`}
+                className={`flex-shrink-0 bg-card border p-4 text-left min-w-[170px] transition-all ${isFull ? "opacity-60 cursor-default border-border" : "hover:shadow-md cursor-pointer border-border hover:border-foreground/20"}`}
                 disabled={isFull}
                 style={{ borderTopWidth: 3, borderTopColor: c.dot }}
               >
@@ -692,7 +616,7 @@ function TodaySessionsStrip() {
                 <p className="font-display text-[13px] text-foreground leading-tight mb-1" style={{ fontWeight: 400 }}>{s.title}</p>
                 <p className="font-body text-[10px] text-muted-foreground mb-2">{s.instructor} · {s.duration}min</p>
                 <div className="flex items-center justify-between gap-2">
-                  <span className={`font-body text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full ${isFull ? "bg-destructive/10 text-destructive" : "bg-secondary/40 text-terra"}`} style={{ fontWeight: 600 }}>
+                  <span className={`font-body text-[9px] tracking-widest uppercase px-2.5 py-1 ${isFull ? "bg-destructive/10 text-destructive" : "bg-secondary/40 text-terra"}`} style={{ fontWeight: 600 }}>
                     {isFull ? "Complet" : `${spotsLeft} place${spotsLeft > 1 ? "s" : ""}`}
                   </span>
                   {!isFull && (
@@ -728,7 +652,7 @@ const SectionToggle = ({
     </span>
     <button
       onClick={onToggle}
-      className="flex items-center gap-1.5 font-body text-[9px] tracking-[0.25em] uppercase text-muted-foreground/60 hover:text-burgundy transition-colors"
+      className="flex items-center gap-1.5 font-body text-[9px] tracking-[0.25em] uppercase text-muted-foreground/60 hover:text-terra transition-colors"
       style={{ fontWeight: 700 }}
     >
       {collapsed ? "afficher" : "réduire"}
@@ -752,29 +676,16 @@ const Index = () => {
   const statsY = useTransform(statsScroll, [0, 1], ["4%", "-4%"]);
 
   const planningSectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: planningScroll } = useScroll({ target: planningSectionRef, offset: ["start end", "end start"] });
-  const planningBgY = useTransform(planningScroll, [0, 1], ["-5%", "5%"]);
 
   return (
     <main style={{ position: "relative" }}>
-      {/* Warm burgundy/terra ambient — fixed behind all sections */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          zIndex: -1,
-          background: "radial-gradient(ellipse at 25% 10%, rgba(122,48,64,0.22) 0%, transparent 45%), radial-gradient(ellipse at 78% 52%, rgba(184,99,74,0.18) 0%, transparent 42%), radial-gradient(ellipse at 48% 88%, rgba(122,48,64,0.14) 0%, transparent 38%)",
-        }}
-        aria-hidden
-      />
       <ScrollProgressBar />
-      <StarfieldCanvas />
-      <FloatingCircles />
       <Navbar onBookClick={goToBooking} />
       <HeroSection onBookClick={goToBooking} burgundyBackground />
       <TodaySessionsStrip />
 
       {/* Stats strip with parallax */}
-      <div ref={statsSectionRef} className="relative overflow-hidden bg-terra/12 border-y border-foreground/10 py-6 px-6">
+      <div ref={statsSectionRef} className="relative overflow-hidden bg-card border-y border-border py-8 px-6">
         <motion.div style={{ y: statsY }} className="container mx-auto max-w-5xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((s, i) => (
@@ -786,7 +697,7 @@ const Index = () => {
                 transition={{ delay: i * 0.1, duration: 0.7 }}
                 className="text-center"
               >
-                <p className="font-display text-4xl text-terra" style={{ fontWeight: 200 }}>
+                <p className="font-display text-4xl text-terra" style={{ fontWeight: 400 }}>
                   <AnimatedCounter target={s.value} suffix={s.suffix} />
                 </p>
                 <p className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground mt-1.5" style={{ fontWeight: 300 }}>
@@ -806,14 +717,12 @@ const Index = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <LogoDivider variant="sand" label="Planning" />
 
       <SectionToggle id="planning" label="Planning" collapsed={!!collapsed.planning} onToggle={() => toggle("planning")} />
       <AnimatePresence initial={false}>
         {!collapsed.planning && (
           <motion.div key="planning" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
-            <section ref={planningSectionRef} className="relative py-16 px-6 overflow-hidden bg-secondary">
-              <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(122,48,64,0.07) 0%, rgba(184,99,74,0.04) 100%)" }} />
+            <section ref={planningSectionRef} className="relative py-16 px-6 overflow-hidden bg-secondary border-t border-border">
 
               <div className="container mx-auto max-w-6xl relative z-10">
                 <div className="grid md:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-start">
@@ -827,19 +736,12 @@ const Index = () => {
                     className="md:sticky md:top-24 space-y-8"
                   >
                     <div>
-                      <div className="flex items-center gap-3 mb-5">
-                        <div style={{ opacity: 0.3 }}>
-                          <VertebraLogo size={22} variant="theme" animate showWordmark={false} />
-                        </div>
-                        <p className="font-body text-[10px] tracking-[0.45em] uppercase text-terra" style={{ fontWeight: 500 }}>
-                          Prochaines séances
-                        </p>
-                      </div>
+                      <p className="brand-label mb-5">Prochaines séances</p>
                       <h2
                         className="font-display text-foreground mb-5"
-                        style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 200, letterSpacing: "0.06em", lineHeight: 1.0 }}
+                        style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.0 }}
                       >
-                        Le <em className="italic text-terra">Planning</em>
+                        Le <em className="italic" style={{ fontWeight: 300 }}>Planning</em>
                       </h2>
                       <div className="w-8 h-px bg-terra mb-6" />
                     </div>
@@ -848,26 +750,26 @@ const Index = () => {
                     <div className="flex flex-col gap-2.5">
                       {[
                         { color: "bg-terra", label: "Reformer · Pilates" },
-                        { color: "bg-burgundy", label: "Yoga · Vinyasa · Hatha" },
+                        { color: "bg-terra", label: "Yoga · Vinyasa · Hatha" },
                         { color: "bg-terra/60", label: "Mat Pilates · Post-natal · Zumba" },
-                        { color: "bg-burgundy/60", label: "Barre Fit · Maman & Bébé" },
+                        { color: "bg-terra/60", label: "Barre Fit · Maman & Bébé" },
                       ].map((d) => (
                         <div key={d.label} className="flex items-center gap-2.5">
-                          <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${d.color}`} />
+                          <div className={`w-1.5 h-1.5  shrink-0 ${d.color}`} />
                           <span className="font-body text-[11px] text-muted-foreground" style={{ fontWeight: 300 }}>{d.label}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* Manifesto line */}
-                    <p className="font-display text-foreground/40 text-sm leading-[1.9]" style={{ fontWeight: 200, letterSpacing: "0.05em", fontStyle: "italic" }}>
+                    <p className="font-display text-foreground/40 text-sm leading-[1.9]" style={{ fontWeight: 400, letterSpacing: "0.05em", fontStyle: "italic" }}>
                       "Maintenu dès 2 participants.<br />1 crédit = 1 séance."
                     </p>
 
                     <div className="flex flex-col gap-3">
                       <Link
                         to="/planning"
-                        className="inline-flex items-center gap-3 bg-terra text-warm-white px-8 py-3.5 rounded-full font-body text-[11px] tracking-[0.3em] uppercase hover:bg-foreground/80 transition-all shadow-[0_6px_24px_rgba(184,99,74,0.28)] hover:shadow-[0_8px_32px_rgba(184,99,74,0.42)] group"
+                        className="inline-flex items-center gap-3 bg-terra text-white px-8 py-3.5  font-body text-[11px] tracking-[0.3em] uppercase hover:bg-foreground/80 transition-all shadow-[0_6px_24px_rgba(184,99,74,0.28)] hover:shadow-[0_8px_32px_rgba(184,99,74,0.42)] group"
                         style={{ fontWeight: 500 }}
                       >
                         Tout le planning
@@ -900,7 +802,6 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      <LogoDivider variant="sand" label="Cours" />
       <SectionToggle id="classes" label="Nos Cours" collapsed={!!collapsed.classes} onToggle={() => toggle("classes")} />
       <AnimatePresence initial={false}>
         {!collapsed.classes && (
@@ -910,7 +811,7 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      <SectionToggle id="why" label="Pourquoi The Circle" collapsed={!!collapsed.why} onToggle={() => toggle("why")} />
+      <SectionToggle id="why" label="Pourquoi EVØLV" collapsed={!!collapsed.why} onToggle={() => toggle("why")} />
       <AnimatePresence initial={false}>
         {!collapsed.why && (
           <motion.div key="why" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "clip" }}>
@@ -928,7 +829,6 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      <LogoDivider variant="sand" label="Coachs" />
       <SectionToggle id="coaches" label="L'Équipe" collapsed={!!collapsed.coaches} onToggle={() => toggle("coaches")} />
       <AnimatePresence initial={false}>
         {!collapsed.coaches && (

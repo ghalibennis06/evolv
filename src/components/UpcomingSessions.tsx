@@ -84,9 +84,9 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
           <Filter size={14} className="text-muted-foreground" />
           <button
             onClick={() => setFilterType(null)}
-            className={`px-4 py-1.5 rounded-full font-body text-[10px] tracking-widest uppercase transition-all ${
+            className={`px-4 py-1.5 font-body text-[10px] tracking-widest uppercase transition-all ${
               !filterType
-                ? "bg-terra text-warm-white"
+                ? "bg-terra text-white"
                 : "border border-border text-muted-foreground hover:border-foreground/20"
             }`}
             style={{ fontWeight: 500 }}
@@ -97,9 +97,9 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
             <button
               key={t}
               onClick={() => setFilterType(filterType === t ? null : t)}
-              className={`px-4 py-1.5 rounded-full font-body text-[10px] tracking-widest uppercase transition-all ${
+              className={`px-4 py-1.5 font-body text-[10px] tracking-widest uppercase transition-all ${
                 filterType === t
-                  ? "bg-terra text-warm-white"
+                  ? "bg-terra text-white"
                   : "border border-border text-muted-foreground hover:border-foreground/20"
               }`}
               style={{ fontWeight: 500 }}
@@ -128,7 +128,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className={`bg-card border p-5 transition-all relative rounded-2xl ${
+                    className={`bg-card border p-5 transition-all relative ${
                       isNext ? "border-success" : "border-border hover:border-foreground/20"
                     }`}
                     style={{
@@ -140,7 +140,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                   >
                     {isNext && (
                       <span
-                        className="absolute -top-px right-4 font-body text-[8px] tracking-[0.35em] uppercase text-warm-white px-3 py-1 rounded-b-lg"
+                        className="absolute -top-px right-4 font-body text-[8px] tracking-[0.35em] uppercase text-white px-3 py-1"
                         style={{ fontWeight: 500, background: "hsl(var(--success))" }}
                       >
                         Prochaine
@@ -149,7 +149,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
 
                     <div className="flex items-center justify-between flex-wrap gap-3">
                       <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-full bg-secondary/40 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-secondary/40 flex items-center justify-center">
                           <span className="font-body text-sm text-terra font-semibold">{session.time}</span>
                         </div>
                         <div>
@@ -181,7 +181,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                             )}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="border border-accent text-accent px-4 py-2 rounded-full font-body text-[10px] tracking-widest uppercase hover:bg-accent hover:text-warm-white transition-all"
+                            className="border border-accent text-accent px-4 py-2 font-body text-[10px] tracking-widest uppercase hover:bg-accent hover:text-white transition-all"
                             style={{ fontWeight: 500 }}
                           >
                             Liste d&apos;attente
@@ -190,7 +190,7 @@ const UpcomingSessions = ({ limit = null, showFilters = false }: Props) => {
                           // FIX BUG 6 — Passer l'ID de session dans l'URL
                           <a
                             href={`/planning?session=${session.id}`}
-                            className="border border-terra text-terra px-4 py-2 rounded-full font-body text-[10px] tracking-widest uppercase hover:bg-foreground hover:text-warm-white transition-all"
+                            className="border border-terra text-terra px-4 py-2 font-body text-[10px] tracking-widest uppercase hover:bg-foreground hover:text-white transition-all"
                             style={{ fontWeight: 500 }}
                           >
                             Réserver

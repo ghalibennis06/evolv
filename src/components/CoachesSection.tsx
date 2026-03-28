@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
-import SpineWatermark from "@/components/brand/SpineWatermark";
 import VertebraLogo from "@/components/brand/VertebraLogo";
 import { Link } from "react-router-dom";
 import coachAndy from "@/assets/coach-andy.jpg";
@@ -100,13 +99,10 @@ const PhotoPanel = ({ coach }: PhotoPanelProps) => (
       {coach.photo ? (
         <img src={coach.photo} alt={coach.name} className="w-full h-full object-cover" />
       ) : (
-        <div className="w-full h-full bg-secondary/30 flex items-center justify-center relative overflow-hidden">
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-            <SpineWatermark size={240} opacity={0.06} />
-          </div>
+        <div className="w-full h-full bg-card flex items-center justify-center">
           <span
-            className="font-display text-foreground/40 select-none relative z-10"
-            style={{ fontSize: "clamp(80px, 14vw, 130px)", fontWeight: 300 }}
+            className="font-display text-foreground/20 select-none"
+            style={{ fontSize: "clamp(80px, 14vw, 130px)", fontWeight: 400 }}
           >
             {coach.name[0]}
           </span>

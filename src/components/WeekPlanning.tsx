@@ -159,10 +159,10 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
 
   return (
     <div className="space-y-5">
-      <div className="bg-card border border-border rounded-2xl p-4 md:p-5">
+      <div className="bg-card border border-border p-4 md:p-5">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="inline-flex p-1 rounded-full border border-border bg-secondary mr-1">
+            <div className="inline-flex border border-border bg-secondary mr-1">
               <button
                 onClick={() => setPlanningView("today")}
                 className={`px-3 h-8 rounded-full text-[10px] tracking-[0.12em] uppercase transition-all ${
@@ -186,7 +186,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             <button
               onClick={() => setWeekOffset((p) => p - 1)}
               disabled={planningView === "today"}
-              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 border border-border bg-secondary flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeft size={16} />
             </button>
@@ -201,7 +201,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
             <button
               onClick={() => setWeekOffset((p) => p + 1)}
               disabled={planningView === "today"}
-              className="w-9 h-9 border border-border bg-secondary rounded-full flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 border border-border bg-secondary flex items-center justify-center text-foreground/60 hover:border-terra hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <ChevronRight size={16} />
             </button>
@@ -211,7 +211,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                 setWeekOffset(0);
                 setPlanningView("today");
               }}
-              className="ml-1 px-3 h-9 border border-border bg-secondary rounded-full text-[10px] tracking-[0.14em] uppercase text-foreground/60 hover:text-foreground hover:border-terra/40 transition-all"
+              className="ml-1 px-3 h-9 border border-border bg-secondary text-[10px] tracking-[0.14em] uppercase text-foreground/60 hover:text-foreground hover:border-terra/40 transition-all"
               style={{ fontFamily: "'Outfit', Inter, sans-serif" }}
             >
               Aujourd'hui
@@ -219,20 +219,20 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary/40 text-terra text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-secondary/40 text-terra text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
               <Calendar size={11} /> {weekSessions.length} séances
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
               <Users size={11} /> {remainingToday} places restantes aujourd'hui
             </span>
             {nextSession && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-secondary text-foreground/70 text-[10px] uppercase tracking-[0.12em]" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
                 <Flame size={11} /> Prochaine : {nextSession.time}
               </span>
             )}
             <Link
               to="/carte-black"
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-terra/40 text-terra text-[10px] uppercase tracking-[0.12em] hover:bg-secondary/50 transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 border border-terra/40 text-terra text-[10px] uppercase tracking-[0.12em] hover:bg-secondary/50 transition-colors"
               style={{ fontFamily: "'Outfit', Inter, sans-serif" }}
             >
               <CreditCard size={11} /> Recharger mes crédits
@@ -278,7 +278,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
               <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
                 <button
                   onClick={() => setCoachFilter("all")}
-                  className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === "all" ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
+                  className={`px-3 py-1.5 font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === "all" ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
                   style={{ fontWeight: coachFilter === "all" ? 500 : 400 }}
                 >
                   Tous les coachs
@@ -287,7 +287,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                   <button
                     key={c.id}
                     onClick={() => setCoachFilter(c.name)}
-                    className={`px-3 py-1.5 rounded-full font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === c.name ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
+                    className={`px-3 py-1.5 font-body text-[10px] tracking-[0.2em] uppercase border flex-shrink-0 transition-all ${coachFilter === c.name ? "bg-terra text-white border-terra" : "border-border text-foreground/60 hover:border-foreground/20"}`}
                     style={{ fontWeight: coachFilter === c.name ? 500 : 400 }}
                   >
                     {c.name}
@@ -299,7 +299,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
         )}
       </div>
 
-      <div className="bg-card border border-border rounded-2xl p-3 md:p-4">
+      <div className="bg-card border border-border p-3 md:p-4">
         <div className="flex items-center justify-between mb-3 px-1">
           <p className="text-xl text-foreground" style={{ fontWeight: 700, fontFamily: "'Outfit', Inter, sans-serif" }}>
             {planningView === "today" ? "Today · Disponibilités en direct" : "Semaine complète · Tous les jours"}
@@ -313,7 +313,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
 
         {planningView === "today" ? (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-border bg-secondary/30 p-4">
+            <div className="border border-border bg-secondary/30 p-4">
               <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>Matin</p>
               {todayMorning.length === 0 ? (
                 <p className="text-sm text-foreground/60" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>Aucun créneau ce matin.</p>
@@ -326,7 +326,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
               )}
             </div>
 
-            <div className="rounded-2xl border border-border bg-secondary/30 p-4">
+            <div className="border border-border bg-secondary/30 p-4">
               <p className="text-[11px] uppercase tracking-[0.18em] text-foreground/70 font-medium mb-2" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>Après-midi & soir</p>
               {todayEvening.length === 0 ? (
                 <p className="text-sm text-foreground/60" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>Aucun créneau cet après-midi.</p>
@@ -342,7 +342,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
         ) : (
           <div className="space-y-3">
             {weekSections.map((group) => (
-              <div key={group.date} className="rounded-2xl border border-border bg-secondary/20 p-3 md:p-4">
+              <div key={group.date} className="border border-border bg-secondary/20 p-3 md:p-4">
                 <div className="flex items-center justify-between mb-2.5">
                   <p className="text-sm text-foreground uppercase tracking-[0.12em]" style={{ fontWeight: 700, fontFamily: "'Outfit', Inter, sans-serif" }}>
                     {group.dayLabel} {formatDayNum(group.date)}
@@ -354,7 +354,7 @@ export default function WeekPlanning({ showFilters = true, onSessionSelect }: Pr
                 </div>
 
                 {group.sessions.length === 0 ? (
-                  <p className="text-sm text-foreground/60 border border-dashed border-border rounded-xl px-4 py-3 text-center" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
+                  <p className="text-sm text-foreground/60 border border-dashed border-border px-4 py-3 text-center" style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
                     Aucun créneau ce jour.
                   </p>
                 ) : (
@@ -401,7 +401,7 @@ function SessionCard({
       whileTap={{ scale: 0.99 }}
       onClick={() => onSessionSelect?.(session)}
       disabled={isPast}
-      className={`w-full text-left p-3 rounded-xl border-l-[5px] border transition-all ${getSessionAccentClass(session.type)} ${
+      className={`w-full text-left p-3 border-l-[5px] border transition-all ${getSessionAccentClass(session.type)} ${
         isPast ? "opacity-45 cursor-not-allowed border-border bg-background" : isNext ? "border-terra shadow-[0_0_0_2px_rgba(184,99,74,0.2)] bg-background" : "border-border hover:border-terra/40 bg-background"
       }`}
     >
@@ -412,7 +412,7 @@ function SessionCard({
             {session.title}
           </h4>
         </div>
-        <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase tracking-[0.1em] border ${colors.bg} ${colors.text} ${colors.border}`} style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
+        <span className={`px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] border ${colors.bg} ${colors.text} ${colors.border}`} style={{ fontFamily: "'Outfit', Inter, sans-serif" }}>
           {session.type}
         </span>
       </div>
