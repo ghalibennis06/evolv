@@ -80,7 +80,7 @@ const PricingSection = ({ onBookClick }: PricingSectionProps) => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="font-body text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-5" style={{ fontWeight: 400 }}>
+          <p className="brand-label justify-center mb-5">
             Formules & Abonnements
           </p>
           <h2 className="font-display text-4xl md:text-5xl text-foreground" style={{ fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.15 }}>

@@ -19,26 +19,22 @@ const StudioSection = () => {
           variants={reveal}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <p className="font-body text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-8" style={{ fontWeight: 400 }}>
+          <p className="brand-label justify-center mb-8">
             Notre philosophie
           </p>
           <h2 className="font-display text-4xl md:text-5xl text-foreground mb-10 leading-[1.15]" style={{ fontWeight: 400 }}>
-            L'excellence du mouvement,<br />
-            <em className="italic" style={{ fontStyle: "italic", fontWeight: 300 }}>réinventée</em>
+            Pas l'arrivée —<br />
+            <em className="italic" style={{ fontStyle: "italic", fontWeight: 300 }}>le mouvement perpétuel</em>
           </h2>
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <div className="w-10 h-px bg-foreground/20" />
-            <div className="w-1.5 h-1.5 rounded-full bg-foreground/20" />
-            <div className="w-10 h-px bg-foreground/20" />
-          </div>
+          <div className="brand-divider mb-12" />
           <p className="font-body text-[15px] text-foreground/65 leading-[1.95] mb-6" style={{ fontWeight: 300 }}>
-            EVØLV est né d'une conviction profonde : que le mouvement, pratiqué avec précision et intention, est la forme la plus pure de transformation. Un studio boutique dédié à l'excellence du Pilates.
+            EVØLV n'est pas un luxe pour le luxe. Ce n'est pas non plus de la performance clinique. C'est le point de rencontre précis — là où la rigueur est douce, et la beauté se mérite.
           </p>
           <p className="font-body text-[15px] text-foreground/65 leading-[1.95] mb-6" style={{ fontWeight: 300 }}>
-            Nos séances en <strong className="text-foreground font-medium">petits groupes de 6 personnes maximum</strong> garantissent un encadrement d'exception — précis, attentif, individualisé.
+            Nos séances en <strong className="text-foreground/90" style={{ fontWeight: 400 }}>petits groupes de 6 personnes maximum</strong> garantissent un encadrement d'exception — précis, attentif, individualisé.
           </p>
           <p className="font-body text-[15px] text-foreground/65 leading-[1.95]" style={{ fontWeight: 300 }}>
-            Des cours <strong className="text-foreground font-medium">post-natal et Maman & Bébé</strong> accompagnent les jeunes mamans dans une reprise douce, bienveillante et respectueuse du corps.
+            Des cours <strong className="text-foreground/90" style={{ fontWeight: 400 }}>post-natal et Maman & Bébé</strong> accompagnent les jeunes mamans dans une reprise douce, bienveillante et respectueuse du corps.
           </p>
         </motion.div>
       </div>

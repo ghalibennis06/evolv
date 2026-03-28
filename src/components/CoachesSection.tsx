@@ -162,7 +162,7 @@ const CoachesSection = () => {
 
           {/* Left: coach list */}
           <div className="flex-1">
-            <p className="font-body text-[10px] tracking-[0.45em] uppercase text-muted-foreground mb-3" style={{ fontWeight: 400 }}>
+            <p className="brand-label mb-3">
               L'Équipe
             </p>
             <h2

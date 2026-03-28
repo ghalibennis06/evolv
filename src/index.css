@@ -6,153 +6,173 @@
 
 @layer base {
   :root {
-    /* ── EVOLV LIGHT MODE — Ivory & Charcoal ── */
-    --background: 36 28% 96%;       /* #F9F6F1 warm ivory */
-    --foreground: 0 0% 11%;         /* #1C1C1C near-black */
+    /* ══════════════════════════════════════════════════════════
+       EVØLV LIGHT MODE — Fog, Bone, Sage
+       Brand palette: fog=#F0EDE8 bone=#E5DFD5 sage=#6B7A5C
+                      ink=#1C1C1A silver=#A8A49E clay=#B5785A
+    ══════════════════════════════════════════════════════════ */
+    --background:          37 21% 93%;   /* Fog   #F0EDE8 */
+    --foreground:          60  1% 11%;   /* Ink   #1C1C1A */
 
-    --card: 36 25% 98%;             /* #FDFBF8 pure ivory surface */
-    --card-foreground: 0 0% 11%;
+    --card:                38 24% 85%;   /* Bone  #E5DFD5 */
+    --card-foreground:     60  1% 11%;
 
-    --popover: 36 25% 98%;
-    --popover-foreground: 0 0% 11%;
+    --popover:             37 21% 93%;   /* Fog */
+    --popover-foreground:  60  1% 11%;
 
-    --primary: 0 0% 11%;            /* #1C1C1C charcoal — main CTA */
-    --primary-foreground: 36 28% 96%;
+    --primary:             60  1% 11%;   /* Ink — main CTA */
+    --primary-foreground:  37 21% 93%;   /* Fog */
 
-    --secondary: 30 12% 88%;        /* #E8E2DA stone light */
-    --secondary-foreground: 0 0% 11%;
+    --secondary:           38 20% 89%;   /* Bone light */
+    --secondary-foreground: 60 1% 11%;
 
-    --muted: 30 10% 82%;            /* #D4CDC4 muted stone */
-    --muted-foreground: 0 0% 38%;   /* #616161 readable gray */
+    --muted:               38 16% 88%;   /* Bone muted */
+    --muted-foreground:    36  5% 64%;   /* Silver #A8A49E */
 
-    --accent: 34 24% 63%;           /* #C4B5A5 warm stone */
-    --accent-foreground: 0 0% 11%;
+    --accent:              90 14% 42%;   /* Sage  #6B7A5C */
+    --accent-foreground:   37 21% 93%;   /* Fog */
 
-    --destructive: 0 48% 40%;
-    --destructive-foreground: 36 28% 96%;
+    --destructive:         0 48% 40%;
+    --destructive-foreground: 37 21% 93%;
 
-    --border: 30 15% 80%;           /* #CFC9C0 soft border */
-    --input: 30 15% 80%;
-    --ring: 0 0% 11%;
+    --border:              90  8% 75%;   /* Sage-tinted border */
+    --input:               90  8% 75%;
+    --ring:                90 14% 42%;   /* Sage */
 
-    --radius: 0.5rem;
+    --radius: 0rem;                      /* ARCHITECTURAL — zero radius */
 
-    /* ── EVOLV BRAND TOKENS ── */
-    --ivory: 36 28% 96%;
-    --cream: 34 22% 92%;
-    --stone: 34 24% 63%;
-    --stone-light: 34 20% 80%;
-    --stone-dark: 34 20% 48%;
-    --charcoal: 0 0% 11%;
-    --charcoal-deep: 0 0% 6%;
-    --charcoal-mid: 0 0% 23%;
-    --onyx: 0 0% 10%;
-    --pearl: 36 30% 97%;
-    --taupe: 30 16% 67%;
-    --gold: 36 44% 64%;
-    --gold-light: 36 42% 78%;
-    --gold-dark: 36 44% 45%;
-    --warm-white: 36 30% 98%;
+    /* ── BRAND IDENTITY PALETTE ── */
+    --brand-fog:        37 21% 93%;      /* #F0EDE8 */
+    --brand-bone:       38 24% 85%;      /* #E5DFD5 */
+    --brand-sage:       90 14% 42%;      /* #6B7A5C */
+    --brand-sage-light: 88 14% 54%;      /* #8A9A78 */
+    --brand-moss:       125 10% 26%;     /* #3D4A3E */
+    --brand-clay:       20 38% 53%;      /* #B5785A */
+    --brand-ink:        60  1% 11%;      /* #1C1C1A */
+    --brand-dusk:       60  1% 17%;      /* #2E2E2B */
+    --brand-silver:     36  5% 64%;      /* #A8A49E */
 
-    /* ── BRAND IDENTITY PALETTE (fog, sage, moss, clay) ── */
-    --brand-fog:        240 14% 94%;    /* #F0EDE8 warm off-white */
-    --brand-bone:       36 16% 87%;    /* #E5DFD5 warm bone */
-    --brand-sage:       90 10% 44%;    /* #6B7A5C muted sage green */
-    --brand-sage-light: 90 12% 57%;    /* #8A9A78 lighter sage */
-    --brand-moss:       122 9% 27%;    /* #3D4A3E deep moss */
-    --brand-clay:       20 33% 53%;    /* #B5785A warm clay terracotta */
-    --brand-ink:        60 2% 11%;     /* #1C1C1A near-black warm */
-    --brand-dusk:       60 2% 18%;     /* #2E2E2B dark dusk */
-    --brand-silver:     40 5% 65%;     /* #A8A49E warm silver */
+    /* ── LEGACY ALIASES (kept for backward-compat) ── */
+    --ivory:       37 21% 93%;
+    --cream:       38 20% 89%;
+    --stone:       90 14% 42%;
+    --stone-light: 90 10% 65%;
+    --stone-dark:  90 14% 32%;
+    --charcoal:    60  1% 11%;
+    --charcoal-deep: 60 1% 7%;
+    --charcoal-mid:  60 1% 20%;
+    --onyx:        60  1% 11%;
+    --pearl:       37 21% 96%;
+    --taupe:       36  5% 64%;
+    --gold:        20 38% 53%;           /* clay as gold-equivalent */
+    --gold-light:  20 30% 68%;
+    --gold-dark:   20 38% 40%;
+    --warm-white:  37 21% 96%;
 
-    /* ── SEMANTIC ALIASES — terra = clay, burgundy = deep moss ── */
-    --terra:    20 33% 53%;            /* #B5785A — EVOLV clay (warm accent) */
-    --burgundy: 122 9% 22%;            /* #31402F — EVOLV deep moss (NOT purple) */
+    /* ── SEMANTIC ACCENTS ── */
+    --terra:    20 38% 53%;              /* Clay   #B5785A — warm accent */
+    --burgundy: 125 10% 22%;             /* Moss deep #31402F */
 
     --font-display: "Playfair Display", Georgia, serif;
     --font-body: "Outfit", Inter, sans-serif;
 
     /* ── STATUS ── */
-    --success: 158 35% 35%;
-    --success-light: 158 35% 35% / 0.12;
-    --warning: 36 44% 64%;
-    --danger: 0 48% 40%;
-    --next: 158 35% 35%;
-    --next-glow: 158 35% 35% / 0.25;
+    --success:       158 35% 38%;
+    --success-light: 158 35% 38%;
+    --warning:       36 44% 55%;
+    --danger:        0 48% 40%;
+    --next:          158 35% 38%;
+    --next-glow:     158 35% 38%;
 
-    --sidebar-background: 36 25% 97%;
-    --sidebar-foreground: 0 0% 11%;
-    --sidebar-primary: 0 0% 11%;
-    --sidebar-primary-foreground: 36 28% 96%;
-    --sidebar-accent: 34 24% 63%;
-    --sidebar-accent-foreground: 0 0% 11%;
-    --sidebar-border: 30 15% 80%;
-    --sidebar-ring: 0 0% 11%;
+    --sidebar-background:          37 21% 93%;
+    --sidebar-foreground:          60  1% 11%;
+    --sidebar-primary:             60  1% 11%;
+    --sidebar-primary-foreground:  37 21% 93%;
+    --sidebar-accent:              90 14% 42%;
+    --sidebar-accent-foreground:   37 21% 93%;
+    --sidebar-border:              90  8% 75%;
+    --sidebar-ring:                90 14% 42%;
   }
 
   .dark {
-    /* ── EVOLV DARK MODE — Onyx & Gold ── */
-    --background: 0 0% 6%;           /* #0F0F0F deep onyx */
-    --foreground: 36 28% 94%;        /* #F5F0E8 warm light */
+    /* ══════════════════════════════════════════════════════════
+       EVØLV DARK MODE — Ink, Dusk, Sage-light
+       Brand palette: ink=#1C1C1A dusk=#2E2E2B fog=#F0EDE8
+                      sage-light=#8A9A78 silver=#A8A49E clay=#B5785A
+       Note: Dark is the brand's primary visual identity.
+    ══════════════════════════════════════════════════════════ */
+    --background:          60  1% 11%;   /* Ink   #1C1C1A */
+    --foreground:          37 21% 93%;   /* Fog   #F0EDE8 */
 
-    --card: 0 0% 10%;                /* #1A1A1A elevated card */
-    --card-foreground: 36 28% 94%;
+    --card:                60  1% 17%;   /* Dusk  #2E2E2B */
+    --card-foreground:     37 21% 93%;
 
-    --popover: 0 0% 10%;
-    --popover-foreground: 36 28% 94%;
+    --popover:             60  1% 15%;
+    --popover-foreground:  37 21% 93%;
 
-    --primary: 36 28% 94%;           /* warm white — CTA on dark */
-    --primary-foreground: 0 0% 6%;
+    --primary:             37 21% 93%;   /* Fog — CTA on dark */
+    --primary-foreground:  60  1% 11%;   /* Ink */
 
-    --secondary: 0 0% 15%;           /* #262626 */
-    --secondary-foreground: 36 22% 82%;
+    --secondary:           60  1% 20%;   /* Dusk medium */
+    --secondary-foreground: 36 5% 64%;   /* Silver */
 
-    --muted: 0 0% 18%;               /* #2E2E2E */
-    --muted-foreground: 0 0% 55%;
+    --muted:               60  1% 17%;   /* Dusk */
+    --muted-foreground:    36  5% 64%;   /* Silver #A8A49E */
 
-    --accent: 36 44% 64%;            /* gold on dark */
-    --accent-foreground: 0 0% 6%;
+    --accent:              88 14% 54%;   /* Sage-light #8A9A78 */
+    --accent-foreground:   60  1% 11%;   /* Ink */
 
-    --destructive: 0 52% 50%;
-    --destructive-foreground: 36 28% 96%;
+    --destructive:         0 52% 50%;
+    --destructive-foreground: 37 21% 93%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 36 44% 64%;
+    --border:              60  1% 22%;   /* Subtle warm dark border */
+    --input:               60  1% 22%;
+    --ring:                90 14% 42%;   /* Sage */
 
-    --ivory: 0 0% 8%;
-    --cream: 0 0% 12%;
-    --stone: 36 22% 55%;
-    --stone-light: 36 16% 40%;
-    --stone-dark: 36 22% 70%;
-    --charcoal: 36 28% 94%;
-    --charcoal-deep: 36 30% 98%;
-    --charcoal-mid: 36 22% 78%;
-    --onyx: 0 0% 6%;
-    --pearl: 0 0% 8%;
-    --taupe: 30 16% 52%;
-    --gold: 36 44% 68%;
-    --gold-light: 36 42% 80%;
-    --gold-dark: 36 44% 52%;
-    --warm-white: 36 30% 96%;
+    /* ── BRAND overrides for dark ── */
+    --brand-fog:        37 21% 93%;
+    --brand-bone:       38 16% 75%;
+    --brand-sage:       90 14% 42%;
+    --brand-sage-light: 88 14% 54%;
+    --brand-moss:       125 10% 26%;
+    --brand-clay:       20 38% 53%;
+    --brand-ink:        60  1% 11%;
+    --brand-dusk:       60  1% 17%;
+    --brand-silver:     36  5% 64%;
 
-    --success: 158 38% 48%;
-    --success-light: 158 38% 48% / 0.15;
-    --warning: 36 44% 68%;
-    --danger: 0 52% 50%;
+    /* ── LEGACY ALIASES ── */
+    --ivory:       60  1% 14%;
+    --cream:       60  1% 18%;
+    --stone:       88 14% 54%;
+    --stone-light: 60  1% 30%;
+    --stone-dark:  88 14% 68%;
+    --charcoal:    37 21% 93%;
+    --charcoal-deep: 37 21% 97%;
+    --charcoal-mid:  37 16% 78%;
+    --onyx:        60  1% 11%;
+    --pearl:       60  1% 14%;
+    --taupe:       36  5% 52%;
+    --gold:        20 38% 58%;
+    --gold-light:  20 30% 72%;
+    --gold-dark:   20 38% 46%;
+    --warm-white:  37 21% 96%;
 
-    /* ── BRAND overrides for dark mode ── */
-    --terra:    20 30% 62%;            /* lighter clay on dark */
-    --burgundy: 122 10% 35%;           /* lighter moss on dark */
+    --terra:    20 32% 62%;              /* lighter clay on dark */
+    --burgundy: 125 10% 35%;             /* lighter moss on dark */
 
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 36 28% 94%;
-    --sidebar-primary: 36 44% 64%;
-    --sidebar-primary-foreground: 0 0% 6%;
-    --sidebar-accent: 36 44% 64%;
-    --sidebar-accent-foreground: 0 0% 6%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 36 44% 64%;
+    --success:       158 38% 48%;
+    --success-light: 158 38% 48%;
+    --warning:       36 44% 62%;
+    --danger:        0 52% 50%;
+
+    --sidebar-background:          60  1% 11%;
+    --sidebar-foreground:          37 21% 93%;
+    --sidebar-primary:             88 14% 54%;
+    --sidebar-primary-foreground:  60  1% 11%;
+    --sidebar-accent:              88 14% 54%;
+    --sidebar-accent-foreground:   60  1% 11%;
+    --sidebar-border:              60  1% 22%;
+    --sidebar-ring:                90 14% 42%;
   }
 }
 

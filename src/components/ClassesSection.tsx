@@ -148,7 +148,7 @@ const ClassesSection = ({ onBookClick, context = "index" }: ClassesSectionProps)
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10"
         >
-          <p className="font-body text-[10px] tracking-[0.45em] uppercase text-muted-foreground mb-6" style={{ fontWeight: 400 }}>
+          <p className="brand-label justify-center mb-6">
             Nos disciplines
           </p>
           <h2
