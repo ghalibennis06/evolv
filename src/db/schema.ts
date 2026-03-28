@@ -1,11 +1,13 @@
 import {
-  pgTable, uuid, text, integer, boolean, timestamp, jsonb, pgEnum, unique,
+  pgSchema, uuid, text, integer, boolean, timestamp, jsonb, pgEnum, unique,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
+const evolv = pgSchema("evolv");
+
 // ── Admin users (replaces Supabase Auth) ──────────────────────────────────────
 
-export const adminUsers = pgTable("admin_users", {
+export const adminUsers = evolv.table("admin_users", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull().unique(),
   password_hash: text("password_hash").notNull(),
@@ -16,7 +18,7 @@ export const adminUsers = pgTable("admin_users", {
 
 // ── Sessions (planning) ───────────────────────────────────────────────────────
 
-export const sessions = pgTable("sessions", {
+export const sessions = evolv.table("sessions", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
   type: text("type").notNull().default("Reformer"),
@@ -33,7 +35,7 @@ export const sessions = pgTable("sessions", {
   updated_at: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const sessionParticipants = pgTable("session_participants", {
+export const sessionParticipants = evolv.table("session_participants", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   session_id: uuid("session_id").references(() => sessions.id, { onDelete: "cascade" }).notNull(),
   first_name: text("first_name").notNull(),
@@ -47,7 +49,7 @@ export const sessionParticipants = pgTable("session_participants", {
 
 // ── Pricing ───────────────────────────────────────────────────────────────────
 
-export const pricing = pgTable("pricing", {
+export const pricing = evolv.table("pricing", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   price: integer("price").notNull(),
@@ -67,7 +69,7 @@ export const pricing = pgTable("pricing", {
 
 // ── Packs (Carte Signature) ───────────────────────────────────────────────────
 
-export const packs = pgTable("packs", {
+export const packs = evolv.table("packs", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   pack_code: text("pack_code").notNull().unique(),
   client_name: text("client_name").notNull(),
@@ -89,7 +91,7 @@ export const packs = pgTable("packs", {
 
 // ── Code creation requests (payment flow) ────────────────────────────────────
 
-export const codeCreationRequests = pgTable("code_creation_requests", {
+export const codeCreationRequests = evolv.table("code_creation_requests", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   client_name: text("client_name"),
   client_email: text("client_email"),
@@ -109,7 +111,7 @@ export const codeCreationRequests = pgTable("code_creation_requests", {
 
 // ── Pack usage log ────────────────────────────────────────────────────────────
 
-export const packUsageLog = pgTable("pack_usage_log", {
+export const packUsageLog = evolv.table("pack_usage_log", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   pack_id: uuid("pack_id").references(() => packs.id, { onDelete: "cascade" }).notNull(),
   pack_code: text("pack_code"),
@@ -124,7 +126,7 @@ export const packUsageLog = pgTable("pack_usage_log", {
 
 // ── Blackcard usage ───────────────────────────────────────────────────────────
 
-export const blackcardUsage = pgTable("blackcard_usage", {
+export const blackcardUsage = evolv.table("blackcard_usage", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   blackcard_id: uuid("blackcard_id").references(() => packs.id, { onDelete: "cascade" }).notNull(),
   client_id: text("client_id"),
@@ -135,7 +137,7 @@ export const blackcardUsage = pgTable("blackcard_usage", {
 
 // ── Activity log ──────────────────────────────────────────────────────────────
 
-export const activityLog = pgTable("activity_log", {
+export const activityLog = evolv.table("activity_log", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   actor: text("actor").notNull(),
   action: text("action").notNull(),
@@ -146,7 +148,7 @@ export const activityLog = pgTable("activity_log", {
 
 // ── Coaches ───────────────────────────────────────────────────────────────────
 
-export const coaches = pgTable("coaches", {
+export const coaches = evolv.table("coaches", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   role: text("role"),
@@ -160,7 +162,7 @@ export const coaches = pgTable("coaches", {
 
 // ── Boutique products ─────────────────────────────────────────────────────────
 
-export const products = pgTable("products", {
+export const products = evolv.table("products", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   description: text("description"),
@@ -176,7 +178,7 @@ export const products = pgTable("products", {
 
 // ── Admin drinks ──────────────────────────────────────────────────────────────
 
-export const adminDrinks = pgTable("admin_drinks", {
+export const adminDrinks = evolv.table("admin_drinks", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   description: text("description"),
@@ -191,7 +193,7 @@ export const adminDrinks = pgTable("admin_drinks", {
 
 // ── Site content (CMS) ────────────────────────────────────────────────────────
 
-export const siteContent = pgTable("site_content", {
+export const siteContent = evolv.table("site_content", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   section: text("section").notNull().unique(),
   content: jsonb("content").notNull().default({}),
@@ -200,7 +202,7 @@ export const siteContent = pgTable("site_content", {
 
 // ── Waitlist ──────────────────────────────────────────────────────────────────
 
-export const waitlist = pgTable("waitlist", {
+export const waitlist = evolv.table("waitlist", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   email: text("email").notNull(),
@@ -213,7 +215,7 @@ export const waitlist = pgTable("waitlist", {
 
 // ── Contact submissions ───────────────────────────────────────────────────────
 
-export const contactSubmissions = pgTable("contact_submissions", {
+export const contactSubmissions = evolv.table("contact_submissions", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   email: text("email").notNull(),
@@ -226,14 +228,14 @@ export const contactSubmissions = pgTable("contact_submissions", {
 
 // ── CRM tables ────────────────────────────────────────────────────────────────
 
-export const clientTags = pgTable("client_tags", {
+export const clientTags = evolv.table("client_tags", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   client_email: text("client_email").notNull(),
   tag: text("tag").notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => ({ uniq: unique().on(t.client_email, t.tag) }));
 
-export const retentionOffers = pgTable("retention_offers", {
+export const retentionOffers = evolv.table("retention_offers", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   client_email: text("client_email"),
   offer_type: text("offer_type").notNull(),
@@ -242,7 +244,7 @@ export const retentionOffers = pgTable("retention_offers", {
   created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const clientFollowups = pgTable("client_followups", {
+export const clientFollowups = evolv.table("client_followups", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   client_email: text("client_email").notNull(),
   status: text("status").notNull().default("pending"),
@@ -250,7 +252,7 @@ export const clientFollowups = pgTable("client_followups", {
   created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const reminders = pgTable("reminders", {
+export const reminders = evolv.table("reminders", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   session_id: uuid("session_id"),
   message: text("message"),
